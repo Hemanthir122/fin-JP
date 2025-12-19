@@ -53,6 +53,9 @@ const jobSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true
+    },
+    endDate: {
+        type: Date
     }
 }, {
     timestamps: true

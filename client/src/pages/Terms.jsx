@@ -9,59 +9,61 @@ function Terms() {
                     <p className="page-subtitle">
                         Please read these terms carefully before using JobsConnect
                     </p>
-                    <p className="last-updated">Last Updated: December 15, 2024</p>
+                    <p className="last-updated">Last Updated: December 22, 2024</p>
                 </div>
             </div>
 
             <div className="container">
                 <div className="legal-content card">
+
                     <section className="legal-section">
                         <h2>1. Acceptance of Terms</h2>
                         <p>
-                            By accessing and using JobsConnect ("the Platform"), you accept and agree to be bound
-                            by these Terms and Conditions. If you do not agree to these terms, please do not use
-                            our services. These terms apply to all visitors, users, and others who access or use
-                            the Platform.
+                            By accessing and using JobsConnect ("the Platform"), you agree to be bound by these
+                            Terms and Conditions. If you do not agree with any part of these terms, please do not
+                            use our services. These terms apply to all visitors, users, and others who access or
+                            use the Platform.
                         </p>
                     </section>
 
                     <section className="legal-section">
                         <h2>2. Description of Service</h2>
                         <p>
-                            JobsConnect is an online job portal that connects job seekers with employers. We provide
-                            a platform for posting and viewing job listings, internships, and walk-in opportunities.
+                            JobsConnect is an online job portal that connects job seekers with employers. The
+                            Platform provides access to job listings, internships, and walk-in opportunities.
                             Our services include:
                         </p>
                         <ul>
                             <li>Job listing and search functionality</li>
                             <li>Company profiles and job categorization</li>
-                            <li>Job application redirection to employer websites</li>
+                            <li>Redirection to employer or external application pages</li>
                             <li>Job alerts and notifications</li>
                         </ul>
                     </section>
 
                     <section className="legal-section">
                         <h2>3. User Responsibilities</h2>
-                        <p>As a user of JobsConnect, you agree to:</p>
+                        <p>By using JobsConnect, you agree to:</p>
                         <ul>
-                            <li>Provide accurate and truthful information when using our services</li>
-                            <li>Not misuse or attempt to manipulate the Platform</li>
+                            <li>Provide accurate and truthful information</li>
+                            <li>Use the Platform only for lawful purposes</li>
+                            <li>Not misuse, interfere with, or disrupt the Platform</li>
                             <li>Respect intellectual property rights</li>
-                            <li>Not post any content that is illegal, harmful, or offensive</li>
-                            <li>Not use automated systems to access the Platform without permission</li>
+                            <li>Not upload or share harmful, offensive, or illegal content</li>
+                            <li>Not use automated tools without prior permission</li>
                         </ul>
                     </section>
 
                     <section className="legal-section">
-                        <h2>4. Job Listings</h2>
+                        <h2>4. Job Listings Disclaimer</h2>
                         <p>
-                            JobsConnect does not guarantee the accuracy, completeness, or reliability of any job
+                            JobsConnect does not guarantee the accuracy, completeness, or reliability of job
                             listings posted on the Platform. We are not responsible for:
                         </p>
                         <ul>
-                            <li>The content of job postings provided by employers</li>
-                            <li>The hiring decisions made by employers</li>
-                            <li>Any disputes arising between job seekers and employers</li>
+                            <li>The content or authenticity of job postings</li>
+                            <li>Employer hiring decisions</li>
+                            <li>Communication between job seekers and employers</li>
                             <li>The outcome of any job application</li>
                         </ul>
                     </section>
@@ -69,61 +71,85 @@ function Terms() {
                     <section className="legal-section">
                         <h2>5. Intellectual Property</h2>
                         <p>
-                            All content on JobsConnect, including but not limited to text, graphics, logos, and
-                            software, is the property of JobsConnect or its content suppliers and is protected by
-                            copyright and other intellectual property laws. You may not reproduce, distribute, or
-                            create derivative works from this content without our express written permission.
+                            All content on JobsConnect, including text, graphics, logos, and software, is the
+                            property of JobsConnect or its licensors and is protected by applicable intellectual
+                            property laws. Unauthorized reproduction or distribution is prohibited.
                         </p>
                     </section>
 
                     <section className="legal-section">
-                        <h2>6. Privacy</h2>
+                        <h2>6. Privacy Policy</h2>
                         <p>
-                            Your privacy is important to us. Please review our Privacy Policy, which also governs
-                            your use of the Platform, to understand our practices regarding the collection and use
-                            of your personal information.
+                            Your privacy is important to us. Please review our Privacy Policy to understand how
+                            we collect, use, and protect your personal information. By using the Platform, you
+                            consent to our data practices.
                         </p>
                     </section>
 
                     <section className="legal-section">
-                        <h2>7. Limitation of Liability</h2>
+                        <h2>7. Eligibility</h2>
                         <p>
-                            JobsConnect shall not be liable for any indirect, incidental, special, consequential,
-                            or punitive damages arising out of or relating to your use of the Platform. This
-                            includes, but is not limited to, damages for loss of profits, goodwill, use, data,
-                            or other intangible losses.
+                            You must be at least 18 years of age to use JobsConnect. By accessing the Platform,
+                            you confirm that you meet this requirement or have obtained legal parental consent
+                            where applicable.
                         </p>
                     </section>
 
                     <section className="legal-section">
-                        <h2>8. Modifications to Terms</h2>
+                        <h2>8. Account Termination</h2>
                         <p>
-                            We reserve the right to modify these Terms and Conditions at any time. We will notify
-                            users of any significant changes by posting a notice on our Platform. Your continued
-                            use of the Platform after such modifications constitutes your acceptance of the
-                            updated terms.
+                            We reserve the right to suspend or terminate access to the Platform, without prior
+                            notice, if a user violates these Terms or engages in unlawful or harmful activities.
                         </p>
                     </section>
 
                     <section className="legal-section">
-                        <h2>9. Governing Law</h2>
+                        <h2>9. Third-Party Services & Advertisements</h2>
                         <p>
-                            These Terms shall be governed by and construed in accordance with the laws of India,
-                            without regard to its conflict of law provisions. Any disputes arising under these
-                            terms shall be subject to the exclusive jurisdiction of the courts in India.
+                            JobsConnect may display advertisements and links to third-party websites, including
+                            services provided by Google AdSense. These third parties may use cookies or similar
+                            technologies to display relevant advertisements. JobsConnect does not control or
+                            endorse third-party content or practices.
                         </p>
                     </section>
 
                     <section className="legal-section">
-                        <h2>10. Contact Information</h2>
+                        <h2>10. Limitation of Liability</h2>
                         <p>
-                            If you have any questions about these Terms and Conditions, please contact us at:
+                            JobsConnect shall not be liable for any indirect, incidental, special, or
+                            consequential damages arising from your use of the Platform, including loss of data,
+                            revenue, or opportunities.
+                        </p>
+                    </section>
+
+                    <section className="legal-section">
+                        <h2>11. Modifications to Terms</h2>
+                        <p>
+                            We may update these Terms and Conditions at any time. Continued use of the Platform
+                            after changes are posted constitutes acceptance of the revised terms.
+                        </p>
+                    </section>
+
+                    <section className="legal-section">
+                        <h2>12. Governing Law</h2>
+                        <p>
+                            These Terms shall be governed by and interpreted in accordance with the laws of
+                            India. Any disputes shall be subject to the exclusive jurisdiction of the courts of
+                            India.
+                        </p>
+                    </section>
+
+                    <section className="legal-section">
+                        <h2>13. Contact Information</h2>
+                        <p>
+                            If you have any questions regarding these Terms and Conditions, you may contact us at:
                         </p>
                         <ul>
-                            <li>Email: legal@jobsconnect.com</li>
-                            <li>Address: 123 Business Park, Tech City, India 400001</li>
+                            <li>Email: technifyz@technifyz.online</li>
+                            <li>Address: Bangalore, Karnataka, India</li>
                         </ul>
                     </section>
+
                 </div>
             </div>
         </div>

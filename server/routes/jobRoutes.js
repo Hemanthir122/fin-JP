@@ -8,15 +8,29 @@ router.get('/', async (req, res) => {
     try {
         const { search, location, type, company, page = 1, limit = 12 } = req.query;
 
-        let query = { isActive: true };
+        let query = {
+            isActive: true,
+            $or: [
+                { endDate: { $exists: false } },
+                { endDate: null },
+                { endDate: { $gte: new Date() } }
+            ]
+        };
 
         // Search filter
         if (search) {
-            query.$or = [
-                { title: { $regex: search, $options: 'i' } },
-                { company: { $regex: search, $options: 'i' } },
-                { location: { $regex: search, $options: 'i' } }
-            ];
+            query = {
+                $and: [
+                    query,
+                    {
+                        $or: [
+                            { title: { $regex: search, $options: 'i' } },
+                            { company: { $regex: search, $options: 'i' } },
+                            { location: { $regex: search, $options: 'i' } }
+                        ]
+                    }
+                ]
+            };
         }
 
         // Location filter
@@ -57,7 +71,15 @@ router.get('/', async (req, res) => {
 // Get latest 9 jobs for homepage
 router.get('/latest', async (req, res) => {
     try {
-        const jobs = await Job.find({ isActive: true })
+        const jobs = await Job.find({
+            isActive: true,
+            $or: [
+                { endDate: { $exists: false } },
+                { endDate: null },
+                { endDate: { $gte: new Date() } }
+            ]
+        })
+
             .sort({ createdAt: -1 })
             .limit(9);
 
@@ -70,7 +92,15 @@ router.get('/latest', async (req, res) => {
 // Get unique locations for filter
 router.get('/locations', async (req, res) => {
     try {
-        const locations = await Job.distinct('location', { isActive: true });
+        const locations = await Job.distinct('location', {
+            isActive: true,
+            $or: [
+                { endDate: { $exists: false } },
+                { endDate: null },
+                { endDate: { $gte: new Date() } }
+            ]
+        });
+
         res.json(locations);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -80,7 +110,15 @@ router.get('/locations', async (req, res) => {
 // Get unique job titles/roles for filter
 router.get('/roles', async (req, res) => {
     try {
-        const roles = await Job.distinct('title', { isActive: true });
+        const roles = await Job.distinct('title', {
+            isActive: true,
+            $or: [
+                { endDate: { $exists: false } },
+                { endDate: null },
+                { endDate: { $gte: new Date() } }
+            ]
+        });
+
         res.json(roles);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -92,8 +130,14 @@ router.get('/company/:companyName', async (req, res) => {
     try {
         const jobs = await Job.find({
             company: { $regex: req.params.companyName, $options: 'i' },
-            isActive: true
+            isActive: true,
+            $or: [
+                { endDate: { $exists: false } },
+                { endDate: null },
+                { endDate: { $gte: new Date() } }
+            ]
         }).sort({ createdAt: -1 });
+
 
         res.json(jobs);
     } catch (error) {

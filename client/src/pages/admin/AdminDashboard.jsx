@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Briefcase, Users, Calendar, Plus, List, TrendingUp, Clock } from 'lucide-react';
+import { Briefcase, Users, Calendar, Plus, List, TrendingUp, Clock, Menu } from 'lucide-react';
+
 import api from '../../utils/api';
 import './Admin.css';
 
@@ -13,6 +14,8 @@ function AdminDashboard() {
         recentJobs: []
     });
     const [loading, setLoading] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
 
     useEffect(() => {
         fetchStats();
@@ -71,11 +74,12 @@ function AdminDashboard() {
 
     return (
         <div className="admin-page">
-            <div className="admin-sidebar">
+            <div className={`admin-sidebar ${isSidebarOpen ? 'show' : ''}`}>
                 <div className="admin-logo">
                     <span className="logo-text">Jobs</span>
                     <span className="logo-accent">Connect</span>
                 </div>
+
                 <nav className="admin-nav">
                     <Link to="/admin" className="nav-item active">
                         Dashboard
@@ -94,12 +98,30 @@ function AdminDashboard() {
                 </div>
             </div>
 
+            {/* Overlay for mobile sidebar */}
+            {isSidebarOpen && (
+                <div
+                    className="sidebar-overlay"
+                    onClick={() => setIsSidebarOpen(false)}
+                ></div>
+            )}
+
+
             <div className="admin-content">
                 <div className="admin-header">
-                    <div>
-                        <h1>Dashboard</h1>
-                        <p>Welcome back! Here's an overview of your job portal.</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <button
+                            className="mobile-menu-btn"
+                            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                        >
+                            <Menu size={24} />
+                        </button>
+                        <div>
+                            <h1>Dashboard</h1>
+                            <p>Welcome back! Here's an overview of your job portal.</p>
+                        </div>
                     </div>
+
                     <Link to="/admin/post-job" className="btn btn-primary">
                         <Plus size={18} />
                         Post New Job

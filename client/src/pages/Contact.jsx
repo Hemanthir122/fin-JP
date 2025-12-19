@@ -127,8 +127,8 @@ function Contact() {
                                     </div>
                                     <div className="method-info">
                                         <h4>Email Us</h4>
-                                        <a href="mailto:contact@jobsconnect.com">contact@jobsconnect.com</a>
-                                        <a href="mailto:support@jobsconnect.com">support@jobsconnect.com</a>
+                                        <a href="mailto:contact@jobsconnect.com">technifyz@technifyz.online</a>
+                                        <a href="mailto:support@jobsconnect.com">technifyz@technifyz.online</a>
                                     </div>
                                 </div>
 
@@ -138,7 +138,7 @@ function Contact() {
                                     </div>
                                     <div className="method-info">
                                         <h4>Call Us</h4>
-                                        <a href="tel:+1234567890">+1 (234) 567-890</a>
+                                        <a href="tel:+1234567890">Comming Soon</a>
                                         <span className="availability">Mon-Fri, 9AM-6PM IST</span>
                                     </div>
                                 </div>
@@ -150,8 +150,7 @@ function Contact() {
                                     <div className="method-info">
                                         <h4>Visit Us</h4>
                                         <address>
-                                            123 Business Park<br />
-                                            Tech City, India 400001
+                                            Bangalore, Karnataka, India
                                         </address>
                                     </div>
                                 </div>

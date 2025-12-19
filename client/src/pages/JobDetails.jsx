@@ -116,38 +116,36 @@ function JobDetails() {
                                     {getTypeLabel(job.type)}
                                 </span>
                                 <h1 className="job-title-lg">{job.title}</h1>
-                                <Link
-                                    to={`/company/${encodeURIComponent(job.company)}`}
-                                    className="job-company-link"
-                                >
-                                    {job.company}
-                                </Link>
+
+
+                            </div>
+
+                            <div className="job-header-right">
+                                <button className="btn btn-ghost" onClick={handleShare}>
+                                    <Share2 size={18} />
+                                    Share
+                                </button>
                             </div>
                         </div>
-                        <div className="job-header-right">
-                            <button className="btn btn-ghost" onClick={handleShare}>
-                                <Share2 size={18} />
-                                Share
-                            </button>
-                        </div>
-                    </div>
 
-                    <div className="job-meta-bar">
-                        <div className="meta-chip">
-                            <MapPin size={16} />
-                            {job.location}
-                        </div>
-                        <div className="meta-chip">
-                            <Briefcase size={16} />
-                            {job.experience} years
-                        </div>
-                        <div className="meta-chip">
-                            <span className="meta-chip-label">Package:</span>
-                            {job.package} LPA
-                        </div>
-                        <div className="meta-chip">
-                            <Clock size={16} />
-                            Posted {formatDate(job.createdAt)}
+                        <div className="job-meta-bar">
+                            <div className="meta-chip">
+                                <MapPin size={16} />
+                                {job.location}
+                            </div>
+                            <div className="meta-chip">
+                                <Briefcase size={16} />
+                                {job.experience} years
+                            </div>
+                            <div className="meta-chip">
+                                <span className="meta-chip-label">Package:</span>
+                                {job.package}
+
+                            </div>
+                            <div className="meta-chip">
+                                <Clock size={16} />
+                                Posted {formatDate(job.createdAt)}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -243,7 +241,7 @@ function JobDetails() {
                                     </div>
                                     <div className="overview-item">
                                         <span className="overview-label">Package</span>
-                                        <span className="overview-value highlight">{job.package} LPA</span>
+                                        <span className="overview-value highlight">{job.package}</span>
                                     </div>
                                     <div className="overview-item">
                                         <span className="overview-label">Posted On</span>

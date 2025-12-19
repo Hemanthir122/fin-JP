@@ -392,6 +392,135 @@ Join our team and help build a strong digital presence for our brand.`,
             'Report on marketing KPIs and ROI',
             'Test and optimize landing pages for conversions'
         ]
+    },
+    'Trainee': {
+        description: `We are looking for enthusiastic Trainees to join our organization. As a Trainee, you will undergo comprehensive training and shadow experienced professionals to learn about our business operations, processes, and technologies.
+
+You will have the opportunity to work on real-world projects, gain hands-on experience, and develop the skills necessary for a successful career. We provide a supportive learning environment and mentorship to help you grow.
+
+The ideal candidate should be a recent graduate with a strong academic record, eagerness to learn, and good communication skills. If you are ready to kickstart your career, we encourage you to apply.`,
+        skills: [
+            'Communication', 'Learning Agility', 'Teamwork', 'Basic Computer Skills',
+            'Problem Solving', 'Adaptability', 'Time Management'
+        ],
+        responsibilities: [
+            'Participate in training sessions and workshops',
+            'Assist senior team members with daily tasks and projects',
+            'Learn and understand company policies, procedures, and systems',
+            'Prepare reports and presentations as required',
+            'Collaborate with other trainees and team members',
+            'Complete assigned tasks and assessments within deadlines',
+            'Seek feedback and actively work on self-improvement',
+            'Demonstrate a positive attitude and willingness to learn'
+        ]
+    },
+    'GET role': {
+        description: `We are hiring Graduate Engineer Trainees (GET) to join our engineering team. This program is designed to provide fresh engineering graduates with technical training and exposure to various engineering domains.
+
+As a GET, you will work on challenging engineering projects, learn from industry experts, and develop technical expertise. You will rotate through different departments to gain a holistic understanding of our engineering operations.
+
+The ideal candidate should have a degree in engineering, strong technical fundamentals, and a passion for engineering. If you are an aspiring engineer looking for a platform to launch your career, apply now.`,
+        skills: [
+            'Engineering Fundamentals', 'Technical Knowledge', 'Project Management',
+            'Analytical Skills', 'AutoCAD', 'Programming Basics', 'MS Office'
+        ],
+        responsibilities: [
+            'Undergo technical training and on-the-job learning',
+            'Assist in design, testing, and implementation of engineering solutions',
+            'Analyze technical data and prepare engineering reports',
+            'Support engineering teams in project execution',
+            'Troubleshoot technical issues and propose solutions',
+            'Adhere to safety standards and engineering best practices',
+            'Document technical specifications and project details',
+            'Participate in project reviews and technical discussions'
+        ]
+    },
+    'Customer Support': {
+        description: `We are seeking focused Customer Support Representatives to assist our customers. In this role, you will be the first point of contact for customer inquiries, issues, and feedback.
+
+You will provide timely and accurate assistance via phone, email, or chat, ensuring high levels of customer satisfaction. You will troubleshoot problems, answer questions, and escalate complex issues to the appropriate teams.
+
+The ideal candidate should have excellent communication skills, patience, and a customer-centric approach. If you enjoy helping people and solving problems, we want to hear from you.`,
+        skills: [
+            'Customer Service', 'Communication', 'Problem Solving', 'Empathy',
+            'CRM Software', 'Active Listening', 'Conflict Resolution', 'Typing Skills'
+        ],
+        responsibilities: [
+            'Respond to customer inquiries via phone, email, and chat',
+            'Resolve customer complaints and issues in a timely manner',
+            'Provide accurate information about products and services',
+            'Document customer interactions and issues in the CRM system',
+            'Follow up with customers to ensure their issues are resolved',
+            'Gather customer feedback and suggest improvements',
+            'Adhere to support policies and procedures',
+            'Maintain a positive and professional demeanor'
+        ]
+    },
+    'Tech Support': {
+        description: `We are looking for a Tech Support Specialist to provide technical assistance to our users. You will troubleshoot hardware and software issues, install and configure systems, and ensure smooth operation of IT infrastructure.
+
+In this role, you will diagnose technical problems, provide step-by-step solutions, and document technical issues. You will work with a team of IT professionals to maintain system availability and security.
+
+The ideal candidate should have strong technical knowledge, troubleshooting skills, and the ability to explain technical concepts to non-technical users.`,
+        skills: [
+            'Technical Troubleshooting', 'Hardware Support', 'Software Installation',
+            'Networking Basics', 'Windows/Linux OS', 'Remote Support Tools',
+            'Customer Service', 'Documentation'
+        ],
+        responsibilities: [
+            'Diagnose and resolve hardware and software issues',
+            'Install, configure, and update operating systems and applications',
+            'Provide technical support to users via phone, email, or in-person',
+            'Troubleshoot network connectivity and access issues',
+            'Manage user accounts and permissions',
+            'Maintain inventory of IT assets and equipment',
+            'Document technical issues and solutions in the knowledge base',
+            'Escalate complex technical problems to senior staff'
+        ]
+    },
+    'Service Desk': {
+        description: `We are hiring for a Service Desk Analyst role. You will act as the single point of contact for all IT-related incidents and service requests.
+
+You will classify, prioritize, and coordinate the resolution of incidents, ensuring minimal disruption to business operations. You will monitor service levels and communicate status updates to stakeholders.
+
+The ideal candidate should be organized, detail-oriented, and have experience with IT service management (ITSM) tools.`,
+        skills: [
+            'ITSM Tools', 'Incident Management', 'Service Request Management',
+            'Communication', 'Prioritization', 'ITIL Foundation',
+            'Troubleshooting', 'Reporting'
+        ],
+        responsibilities: [
+            'Receive and log IT incidents and service requests',
+            'Categorize and prioritize tickets based on impact and urgency',
+            'Perform initial diagnosis and resolution of incidents',
+            'Assign tickets to appropriate technical teams for resolution',
+            'Monitor ticket status and ensure timely closure',
+            'Communicate incident updates to affected users',
+            'Generate reports on service desk performance',
+            'Participate in incident review meetings'
+        ]
+    },
+    'Voice Process': {
+        description: `We are seeking candidates for our Voice Process team. In this role, you will handle inbound and outbound calls to assist customers, verifies details, or conduct surveys.
+
+You will communicate effectively in English and/or local languages, following scripts and guidelines. You will maintain call quality and adhere to compliance standards.
+
+The ideal candidate should have excellent verbal communication skills, a polite telephone manner, and the ability to handle high call volumes.`,
+        skills: [
+            'Verbal Communication', 'Telecalling', 'Active Listening',
+            'Language Proficiency', 'Persuasion', 'Data Entry',
+            'Patience', 'Customer Handling'
+        ],
+        responsibilities: [
+            'Handle inbound and outbound calls professionally',
+            'Provide information and assistance to callers',
+            'Follow call scripts and standard operating procedures',
+            'Record call details and customer information accurately',
+            'Meet daily call targets and quality metrics',
+            'Handle customer objections and queries effectively',
+            'Ensure compliance with regulatory requirements',
+            'Participate in team meetings and training sessions'
+        ]
     }
 };
 

@@ -84,11 +84,11 @@ function Footer() {
                         <ul className="footer-contact">
                             <li>
                                 <span className="contact-label">Email:</span>
-                                <a href="mailto:contact@jobsconnect.com">contact@jobsconnect.com</a>
+                                <a href="mailto:contact@jobsconnect.com">technifyz@technifyz.online</a>
                             </li>
                             <li>
                                 <span className="contact-label">Support:</span>
-                                <a href="mailto:support@jobsconnect.com">support@jobsconnect.com</a>
+                                <a href="mailto:support@jobsconnect.com">technifyz@technifyz.online</a>
                             </li>
                         </ul>
                     </div>

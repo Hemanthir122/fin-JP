@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Edit, Trash2, Eye } from 'lucide-react';
+import { Search, Edit, Trash2, Eye, Menu } from 'lucide-react';
+
 import api from '../../utils/api';
 import './Admin.css';
 
@@ -9,6 +10,8 @@ function ManageJobs() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
 
     useEffect(() => {
         fetchJobs();
@@ -65,11 +68,12 @@ function ManageJobs() {
 
     return (
         <div className="admin-page">
-            <div className="admin-sidebar">
+            <div className={`admin-sidebar ${isSidebarOpen ? 'show' : ''}`}>
                 <div className="admin-logo">
                     <span className="logo-text">Jobs</span>
                     <span className="logo-accent">Connect</span>
                 </div>
+
                 <nav className="admin-nav">
                     <Link to="/admin" className="nav-item">
                         Dashboard
@@ -88,12 +92,30 @@ function ManageJobs() {
                 </div>
             </div>
 
+            {/* Overlay for mobile sidebar */}
+            {isSidebarOpen && (
+                <div
+                    className="sidebar-overlay"
+                    onClick={() => setIsSidebarOpen(false)}
+                ></div>
+            )}
+
+
             <div className="admin-content">
                 <div className="admin-header">
-                    <div>
-                        <h1>Manage Jobs</h1>
-                        <p>View, edit, and delete job listings</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <button
+                            className="mobile-menu-btn"
+                            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                        >
+                            <Menu size={24} />
+                        </button>
+                        <div>
+                            <h1>Manage Jobs</h1>
+                            <p>View, edit, and delete job listings</p>
+                        </div>
                     </div>
+
                     <Link to="/admin/post-job" className="btn btn-primary">
                         Post New Job
                     </Link>

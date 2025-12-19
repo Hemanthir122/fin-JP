@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { X, Plus, Check, Building2 } from 'lucide-react';
+import { X, Plus, Check, Building2, Menu } from 'lucide-react';
+
 import api from '../../utils/api';
 import roleTemplates from '../../data/roleTemplates';
 import './Admin.css';
@@ -13,6 +14,8 @@ function EditJob() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
 
     const [formData, setFormData] = useState({
         title: '',
@@ -26,8 +29,10 @@ function EditJob() {
         skills: [],
         responsibilities: [],
         qualifications: [],
-        applyLink: ''
+        applyLink: '',
+        endDate: ''
     });
+
 
     const [skillInput, setSkillInput] = useState('');
     const [responsibilityInput, setResponsibilityInput] = useState('');
@@ -45,7 +50,12 @@ function EditJob() {
                 api.get(`/jobs/${id}`),
                 api.get('/companies')
             ]);
-            setFormData(jobRes.data);
+            const jobData = jobRes.data;
+            if (jobData.endDate) {
+                jobData.endDate = new Date(jobData.endDate).toISOString().split('T')[0];
+            }
+            setFormData(jobData);
+
             setCompanies(companiesRes.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -57,11 +67,17 @@ function EditJob() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+
+        let finalValue = value;
+        if (name === 'company' && value.length > 0) {
+            finalValue = value.charAt(0).toUpperCase() + value.slice(1);
+        }
+
+        setFormData(prev => ({ ...prev, [name]: finalValue }));
 
         if (name === 'company') {
             const matchingCompany = companies.find(
-                c => c.name.toLowerCase() === value.toLowerCase()
+                c => c.name.toLowerCase() === finalValue.toLowerCase()
             );
             if (matchingCompany && matchingCompany.logo) {
                 setFormData(prev => ({ ...prev, companyLogo: matchingCompany.logo }));
@@ -154,7 +170,12 @@ function EditJob() {
         setSaving(true);
 
         try {
-            await api.put(`/jobs/${id}`, formData);
+            const payload = { ...formData };
+            if (!payload.endDate) {
+                payload.endDate = null;
+            }
+            await api.put(`/jobs/${id}`, payload);
+
             setSuccess(true);
             setTimeout(() => {
                 navigate('/admin/manage-jobs');
@@ -174,12 +195,21 @@ function EditJob() {
     if (loading) {
         return (
             <div className="admin-page">
-                <div className="admin-sidebar">
+                <div className={`admin-sidebar ${isSidebarOpen ? 'show' : ''}`}>
                     <div className="admin-logo">
                         <span className="logo-text">Jobs</span>
                         <span className="logo-accent">Connect</span>
                     </div>
                 </div>
+
+                {/* Overlay for mobile sidebar */}
+                {isSidebarOpen && (
+                    <div
+                        className="sidebar-overlay"
+                        onClick={() => setIsSidebarOpen(false)}
+                    ></div>
+                )}
+
                 <div className="admin-content">
                     <div className="loading-container">
                         <div className="spinner"></div>
@@ -191,11 +221,12 @@ function EditJob() {
 
     return (
         <div className="admin-page">
-            <div className="admin-sidebar">
+            <div className={`admin-sidebar ${isSidebarOpen ? 'show' : ''}`}>
                 <div className="admin-logo">
                     <span className="logo-text">Jobs</span>
                     <span className="logo-accent">Connect</span>
                 </div>
+
                 <nav className="admin-nav">
                     <Link to="/admin" className="nav-item">
                         Dashboard
@@ -214,13 +245,31 @@ function EditJob() {
                 </div>
             </div>
 
+            {/* Overlay for mobile sidebar */}
+            {isSidebarOpen && (
+                <div
+                    className="sidebar-overlay"
+                    onClick={() => setIsSidebarOpen(false)}
+                ></div>
+            )}
+
+
             <div className="admin-content admin-form-page">
                 <div className="admin-header">
-                    <div>
-                        <h1>Edit Job</h1>
-                        <p>Update job listing details</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <button
+                            className="mobile-menu-btn"
+                            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                        >
+                            <Menu size={24} />
+                        </button>
+                        <div>
+                            <h1>Edit Job</h1>
+                            <p>Update job listing details</p>
+                        </div>
                     </div>
                 </div>
+
 
                 {success ? (
                     <div className="form-card">
@@ -370,7 +419,21 @@ function EditJob() {
                                     </select>
                                 </div>
                                 <div className="form-group">
+                                    <label className="label">End Date (Auto-remove)</label>
+                                    <input
+                                        type="date"
+                                        name="endDate"
+                                        value={formData.endDate}
+                                        onChange={handleChange}
+                                        className="input"
+                                    />
+                                    <small style={{ color: 'var(--text-muted)', fontSize: '11px', marginTop: '4px' }}>
+                                        Job will be removed automatically after this date (Optional)
+                                    </small>
+                                </div>
+                                <div className="form-group">
                                     <label className="label">Apply Link</label>
+
                                     <input
                                         type="url"
                                         name="applyLink"
