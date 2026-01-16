@@ -3,7 +3,7 @@ const axios = require('axios');
 async function testEndpoints() {
     try {
         console.log('Testing /api/walkins...');
-        const res = await axios.get('http://localhost:5000/api/walkins');
+        const res = await axios.get('https://fin-jp.vercel.app/api/walkins');
         console.log('Status:', res.status);
         console.log('Data:', res.data);
     } catch (error) {
