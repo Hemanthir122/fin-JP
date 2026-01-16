@@ -24,7 +24,7 @@ function Navbar() {
     const navLinks = [
         { path: '/jobs', label: 'Jobs' },
         { path: '/internships', label: 'Internships' },
-        { path: '/walkins', label: 'Walk-ins' },
+        { path: '/walkins', label: 'Walk-in/Email' },
     ];
 
     return (

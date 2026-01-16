@@ -1,45 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  /* Primary Colors */
-  /* Primary Colors - Matched to Logo (Blue) */
-  --primary: #2563eb;
-  --primary-light: #60a5fa;
-  --primary-dark: #1e40af;
+  /* Primary Colors - Orange Theme */
+  --primary: #f97316;
+  --primary-light: #fb923c;
+  --primary-dark: #ea580c;
 
-  /* Accent Colors - Matched to Logo (Green) */
-  --accent-teal: #14b8a6;
-  --accent-cyan: #06b6d4;
-  --accent-purple: #a855f7;
-  --accent-pink: #ec4899;
+  /* Accent Colors */
+  --accent-teal: #ff8c00;
+  --accent-cyan: #ffa500;
+  --accent-purple: #ff6b35;
+  --accent-pink: #ff4500;
   --accent-green: #22c55e;
   --accent-orange: #f97316;
 
-  /* Background Colors */
-  --bg-dark: #0c0c14;
-  --bg-card: #161622;
-  --bg-card-hover: #1e1e2e;
-  --bg-glass: rgba(22, 22, 34, 0.8);
+  /* Background Colors - White/Light Theme */
+  --bg-dark: #ffffff;
+  --bg-card: #f8fafc;
+  --bg-card-hover: #f1f5f9;
+  --bg-glass: rgba(255, 255, 255, 0.9);
 
-  /* Text Colors */
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  /* Text Colors - Black/Dark */
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--accent-teal) 100%);
-  --gradient-hero: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 50%, #172554 100%);
-  --gradient-card: linear-gradient(145deg, rgba(37, 99, 235, 0.08) 0%, rgba(20, 184, 166, 0.08) 100%);
-  --gradient-glow: linear-gradient(135deg, rgba(37, 99, 235, 0.4) 0%, rgba(20, 184, 166, 0.4) 100%);
+  /* Gradients - White/Orange */
+  --gradient-primary: linear-gradient(135deg, #f97316 0%, #ff8c00 100%);
+  --gradient-hero: linear-gradient(135deg, #ffffff 0%, #fff7ed 50%, #ffedd5 100%);
+  --gradient-card: linear-gradient(145deg, rgba(249, 115, 22, 0.08) 0%, rgba(255, 140, 0, 0.08) 100%);
+  --gradient-glow: linear-gradient(135deg, rgba(249, 115, 22, 0.4) 0%, rgba(255, 140, 0, 0.4) 100%);
 
   /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 40px rgba(124, 58, 237, 0.3);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.2);
+  --shadow-glow: 0 0 40px rgba(249, 115, 22, 0.3);
 
   /* Border */
-  --border-color: rgba(255, 255, 255, 0.08);
+  --border-color: rgba(0, 0, 0, 0.08);
   --border-radius: 12px;
   --border-radius-lg: 16px;
 
@@ -120,12 +119,12 @@ body {
 .btn-primary {
   background: var(--gradient-primary);
   color: white;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 6px 25px rgba(249, 115, 22, 0.5);
 }
 
 .btn-secondary {
@@ -135,7 +134,7 @@ body {
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(249, 115, 22, 0.05);
   border-color: var(--primary);
 }
 
@@ -147,7 +146,7 @@ body {
 
 .btn-ghost:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(249, 115, 22, 0.05);
 }
 
 /* Cards */
@@ -162,7 +161,7 @@ body {
 .card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: rgba(249, 115, 22, 0.3);
 }
 
 /* Form Elements */
@@ -185,7 +184,7 @@ body {
 .textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
 }
 
 .input::placeholder {
@@ -232,8 +231,8 @@ body {
 }
 
 .badge-job {
-  background: rgba(99, 102, 241, 0.2);
-  color: var(--primary-light);
+  background: rgba(249, 115, 22, 0.2);
+  color: var(--primary-dark);
 }
 
 .badge-internship {
@@ -367,11 +366,11 @@ body {
 
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
   }
 
   50% {
-    box-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 40px rgba(249, 115, 22, 0.5);
   }
 }
 

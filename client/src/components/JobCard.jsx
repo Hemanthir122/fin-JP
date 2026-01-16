@@ -8,7 +8,7 @@ function JobCard({ job }) {
             case 'internship':
                 return 'Internship';
             case 'walkin':
-                return 'Walk-in';
+                return 'Walk-in/Email';
             default:
                 return 'Full Time';
         }

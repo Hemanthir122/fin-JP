@@ -9,7 +9,7 @@ function Footer() {
         { path: '/', label: 'Home' },
         { path: '/jobs', label: 'Jobs' },
         { path: '/internships', label: 'Internships' },
-        { path: '/walkins', label: 'Walk-ins' },
+        { path: '/walkins', label: 'Walk-in/Email' },
     ];
 
     const legalLinks = [

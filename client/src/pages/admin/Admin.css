@@ -55,12 +55,12 @@
 
 .nav-item:hover {
     color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .nav-item.active {
     color: var(--text-primary);
-    background: rgba(99, 102, 241, 0.15);
+    background: rgba(249, 115, 22, 0.15);
     border-left: 3px solid var(--primary);
 }
 
@@ -134,7 +134,7 @@
 }
 
 .stat-primary .stat-icon {
-    background: rgba(99, 102, 241, 0.15);
+    background: rgba(249, 115, 22, 0.15);
     color: var(--primary-light);
 }
 
@@ -239,7 +239,7 @@
 }
 
 .recent-job-item:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .job-info {
@@ -293,7 +293,7 @@
 }
 
 .quick-action:hover {
-    background: rgba(99, 102, 241, 0.1);
+    background: rgba(249, 115, 22, 0.1);
     color: var(--text-primary);
 }
 
@@ -374,7 +374,7 @@
 }
 
 .autocomplete-item:hover {
-    background: rgba(99, 102, 241, 0.1);
+    background: rgba(249, 115, 22, 0.1);
 }
 
 .autocomplete-item img {
@@ -406,8 +406,8 @@
     align-items: center;
     gap: 6px;
     padding: 6px 12px;
-    background: rgba(99, 102, 241, 0.15);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: rgba(249, 115, 22, 0.15);
+    border: 1px solid rgba(249, 115, 22, 0.3);
     border-radius: 50px;
     color: var(--primary-light);
     font-size: 13px;
@@ -455,7 +455,7 @@
 }
 
 .jobs-table th {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(0, 0, 0, 0.02);
     color: var(--text-muted);
     font-size: 12px;
     font-weight: 600;
@@ -469,7 +469,7 @@
 }
 
 .jobs-table tr:hover td {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .table-actions {
@@ -487,13 +487,13 @@
 }
 
 .table-btn-edit {
-    background: rgba(99, 102, 241, 0.15);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: rgba(249, 115, 22, 0.15);
+    border: 1px solid rgba(249, 115, 22, 0.3);
     color: var(--primary-light);
 }
 
 .table-btn-edit:hover {
-    background: rgba(99, 102, 241, 0.25);
+    background: rgba(249, 115, 22, 0.25);
 }
 
 .table-btn-delete {

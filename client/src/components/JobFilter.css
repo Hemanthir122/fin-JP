@@ -2,7 +2,7 @@
     position: sticky;
     top: 70px;
     z-index: 100;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
 }
 
 .filter-container {
@@ -99,7 +99,7 @@
 .filter-select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
 }
 
 .filter-input::placeholder {
@@ -159,6 +159,7 @@
 @media (max-width: 640px) {
     .job-filter-container {
         top: 60px;
+        margin-top: 15px;
     }
 
     .mobile-filter-toggle {

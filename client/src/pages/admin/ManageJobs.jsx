@@ -19,8 +19,20 @@ function ManageJobs() {
 
     const fetchJobs = async () => {
         try {
-            const response = await api.get('/jobs', { params: { limit: 100 } });
-            setJobs(response.data.jobs);
+            const [jobsRes, walkinsRes] = await Promise.all([
+                api.get('/jobs', { params: { limit: 100 } }),
+                api.get('/walkins', { params: { limit: 100 } })
+            ]);
+
+            const jobsList = jobsRes.data.jobs.map(j => ({ ...j, model: 'job' }));
+            const walkinsList = walkinsRes.data.walkins.map(w => ({ ...w, type: 'walkin', model: 'walkin' }));
+
+            // Sort by createdAt desc
+            const allJobs = [...jobsList, ...walkinsList].sort((a, b) =>
+                new Date(b.createdAt) - new Date(a.createdAt)
+            );
+
+            setJobs(allJobs);
         } catch (error) {
             console.error('Error fetching jobs:', error);
         } finally {
@@ -28,10 +40,11 @@ function ManageJobs() {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this job?')) {
+    const handleDelete = async (id, type) => {
+        if (window.confirm('Are you sure you want to delete this listing?')) {
             try {
-                await api.delete(`/jobs/${id}`);
+                const endpoint = type === 'walkin' ? `/walkins/${id}` : `/jobs/${id}`;
+                await api.delete(endpoint);
                 setJobs(jobs.filter(job => job._id !== id));
             } catch (error) {
                 console.error('Error deleting job:', error);
@@ -53,15 +66,16 @@ function ManageJobs() {
             case 'internship':
                 return 'Internship';
             case 'walkin':
-                return 'Walk-in';
+                return 'Walk-in/Email';
             default:
                 return 'Full Time';
         }
     };
 
     const filteredJobs = jobs.filter(job => {
-        const matchesSearch = job.title.toLowerCase().includes(search.toLowerCase()) ||
-            job.company.toLowerCase().includes(search.toLowerCase());
+        const titleMatch = (job.title || '').toLowerCase().includes(search.toLowerCase());
+        const companyMatch = (job.company || '').toLowerCase().includes(search.toLowerCase());
+        const matchesSearch = titleMatch || companyMatch;
         const matchesType = !typeFilter || job.type === typeFilter;
         return matchesSearch && matchesType;
     });
@@ -150,7 +164,7 @@ function ManageJobs() {
                                 <option value="">All Types</option>
                                 <option value="job">Full Time Jobs</option>
                                 <option value="internship">Internships</option>
-                                <option value="walkin">Walk-ins</option>
+                                <option value="walkin">Walk-in/Email</option>
                             </select>
                         </div>
                     </div>
@@ -176,10 +190,10 @@ function ManageJobs() {
                                     {filteredJobs.map((job) => (
                                         <tr key={job._id}>
                                             <td>
-                                                <strong>{job.title}</strong>
+                                                <strong>{job.type === 'walkin' ? (job.title || job.company) : job.title}</strong>
                                             </td>
                                             <td>{job.company}</td>
-                                            <td>{job.location}</td>
+                                            <td>{job.location || (job.type === 'walkin' ? 'N/A' : '-')}</td>
                                             <td>
                                                 <span className={`badge badge-${job.type}`}>
                                                     {getTypeLabel(job.type)}
@@ -189,21 +203,21 @@ function ManageJobs() {
                                             <td>
                                                 <div className="table-actions">
                                                     <Link
-                                                        to={`/job/${job._id}`}
+                                                        to={`/job/${job._id}?type=${job.type}`}
                                                         target="_blank"
                                                         className="table-btn table-btn-edit"
                                                     >
                                                         <Eye size={14} />
                                                     </Link>
                                                     <Link
-                                                        to={`/admin/edit-job/${job._id}`}
+                                                        to={`/admin/edit-job/${job._id}?type=${job.type}`}
                                                         className="table-btn table-btn-edit"
                                                     >
                                                         <Edit size={14} />
                                                     </Link>
                                                     <button
                                                         className="table-btn table-btn-delete"
-                                                        onClick={() => handleDelete(job._id)}
+                                                        onClick={() => handleDelete(job._id, job.type)}
                                                     >
                                                         <Trash2 size={14} />
                                                     </button>

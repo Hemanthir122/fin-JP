@@ -83,7 +83,7 @@ function JobFilter({ onFilter, companies = [], locations = [], roles = [] }) {
                                 <option value="">All Types</option>
                                 <option value="job">Full Time Jobs</option>
                                 <option value="internship">Internships</option>
-                                <option value="walkin">Walk-ins</option>
+                                <option value="walkin">Walk-in/Email</option>
                             </select>
                         </div>
 

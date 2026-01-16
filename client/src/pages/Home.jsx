@@ -1,47 +1,30 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Target, Zap, Shield, Users } from 'lucide-react';
 import Hero from '../components/Hero';
 import JobCard from '../components/JobCard';
 import JobFilter from '../components/JobFilter';
-import api from '../utils/api';
+import { useLatestJobs, useCompanies, useLocations } from '../hooks/useJobs';
 import './Home.css';
 
 function Home() {
-    const [jobs, setJobs] = useState([]);
-    const [companies, setCompanies] = useState([]);
-    const [locations, setLocations] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [filteredJobs, setFilteredJobs] = useState([]);
+    const [filters, setFilters] = useState({});
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    // React Query hooks - cached and deduplicated
+    const { data: jobs = [], isLoading: jobsLoading } = useLatestJobs();
+    const { data: companies = [] } = useCompanies();
+    const { data: locations = [] } = useLocations();
 
-    const fetchData = async () => {
-        try {
-            const [jobsRes, companiesRes, locationsRes] = await Promise.all([
-                api.get('/jobs/latest'),
-                api.get('/companies'),
-                api.get('/jobs/locations')
-            ]);
-            setJobs(jobsRes.data);
-            setFilteredJobs(jobsRes.data);
-            setCompanies(companiesRes.data);
-            setLocations(locationsRes.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const loading = jobsLoading;
 
-    const handleFilter = useCallback(({ search, location, type, company }) => {
-        let filtered = [...jobs];
+    // Client-side filtering on already fetched data
+    const filteredJobs = useMemo(() => {
+        let result = [...jobs];
+        const { search, location, type, company } = filters;
 
         if (search) {
             const searchLower = search.toLowerCase();
-            filtered = filtered.filter(job =>
+            result = result.filter(job =>
                 job.title.toLowerCase().includes(searchLower) ||
                 job.company.toLowerCase().includes(searchLower) ||
                 job.location.toLowerCase().includes(searchLower)
@@ -49,23 +32,27 @@ function Home() {
         }
 
         if (location) {
-            filtered = filtered.filter(job =>
+            result = result.filter(job =>
                 job.location.toLowerCase().includes(location.toLowerCase())
             );
         }
 
         if (type) {
-            filtered = filtered.filter(job => job.type === type);
+            result = result.filter(job => job.type === type);
         }
 
         if (company) {
-            filtered = filtered.filter(job =>
+            result = result.filter(job =>
                 job.company.toLowerCase().includes(company.toLowerCase())
             );
         }
 
-        setFilteredJobs(filtered);
-    }, [jobs]);
+        return result;
+    }, [jobs, filters]);
+
+    const handleFilter = useCallback((newFilters) => {
+        setFilters(newFilters);
+    }, []);
 
     const features = [
         {

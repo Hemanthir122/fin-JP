@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 
 // Route imports
 const jobRoutes = require('./routes/jobRoutes');
+const walkinRoutes = require('./routes/walkinRoutes');
 const companyRoutes = require('./routes/companyRoutes');
 const statsRoutes = require('./routes/statsRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -24,6 +25,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/jobs', jobRoutes);
+app.use('/api/walkins', walkinRoutes);
 app.use('/api/companies', companyRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/auth', authRoutes);

@@ -1,37 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
     MapPin, Briefcase, Clock, Building2,
     CheckCircle, ArrowLeft, ExternalLink, Share2
 } from 'lucide-react';
-import api from '../utils/api';
+import { useJobDetails, useCompanyJobs, useWalkinDetails } from '../hooks/useJobs';
 import './JobDetails.css';
 
 function JobDetails() {
     const { id } = useParams();
-    const [job, setJob] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [relatedJobs, setRelatedJobs] = useState([]);
 
-    useEffect(() => {
-        fetchJob();
-    }, [id]);
+    const queryParams = new URLSearchParams(window.location.search);
+    const typeParam = queryParams.get('type');
 
-    const fetchJob = async () => {
-        setLoading(true);
-        try {
-            const response = await api.get(`/jobs/${id}`);
-            setJob(response.data);
+    // Check if we need to fetch from jobs or walkins
+    const isWalkin = typeParam === 'walkin';
 
-            // Fetch related jobs from same company
-            const relatedRes = await api.get(`/jobs/company/${encodeURIComponent(response.data.company)}`);
-            setRelatedJobs(relatedRes.data.filter(j => j._id !== id).slice(0, 3));
-        } catch (error) {
-            console.error('Error fetching job:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    // React Query hooks - cached
+    // We need useJobDetails or useWalkinDetails based on type
+    // Since hooks shouldn't be conditional, we can use useQuery directly or import both hooks
+    // But useWalkinDetails is not imported yet. Let's fix imports first.
+    // For now, assuming imports are fixed
+    const { data: jobData, isLoading: isLoadingJob } = useJobDetails(id);
+    const { data: walkinData, isLoading: isLoadingWalkin } = useWalkinDetails(id);
+
+    const job = isWalkin ? walkinData : jobData;
+    const isLoading = isWalkin ? isLoadingWalkin : isLoadingJob;
+    const { data: companyJobs = [] } = useCompanyJobs(job?.company);
+
+    // Filter out current job from related jobs
+    const relatedJobs = useMemo(() => {
+        if (!job || !companyJobs.length) return [];
+        return companyJobs.filter(j => j._id !== id).slice(0, 3);
+    }, [companyJobs, job, id]);
 
     const getTypeLabel = (type) => {
         switch (type) {
@@ -60,13 +61,12 @@ function JobDetails() {
                 url: window.location.href
             });
         } catch (error) {
-            // Fallback: copy to clipboard
             navigator.clipboard.writeText(window.location.href);
             alert('Link copied to clipboard!');
         }
     };
 
-    if (loading) {
+    if (isLoading) {
         return (
             <div className="job-details-page">
                 <div className="loading-container">
@@ -106,18 +106,16 @@ function JobDetails() {
                         <div className="job-header-left">
                             <div className="job-company-logo-lg">
                                 {job.companyLogo ? (
-                                    <img src={job.companyLogo} alt={job.company} />
+                                    <img src={job.companyLogo} alt={job.company} loading="lazy" decoding="async" />
                                 ) : (
                                     <Building2 size={40} />
                                 )}
                             </div>
                             <div className="job-header-info">
-                                <span className={`badge badge-${job.type}`}>
-                                    {getTypeLabel(job.type)}
+                                <span className={`badge badge-${isWalkin ? 'walkin' : job.type}`}>
+                                    {isWalkin ? 'Walk-in / Email' : getTypeLabel(job.type)}
                                 </span>
-                                <h1 className="job-title-lg">{job.title}</h1>
-
-
+                                <h1 className="job-title-lg">{job.title || job.company}</h1>
                             </div>
 
                             <div className="job-header-right">
@@ -129,19 +127,24 @@ function JobDetails() {
                         </div>
 
                         <div className="job-meta-bar">
-                            <div className="meta-chip">
-                                <MapPin size={16} />
-                                {job.location}
-                            </div>
-                            <div className="meta-chip">
-                                <Briefcase size={16} />
-                                {job.experience} years
-                            </div>
-                            <div className="meta-chip">
-                                <span className="meta-chip-label">Package:</span>
-                                {job.package}
-
-                            </div>
+                            {job.location && (
+                                <div className="meta-chip">
+                                    <MapPin size={16} />
+                                    {job.location}
+                                </div>
+                            )}
+                            {job.experience && (
+                                <div className="meta-chip">
+                                    <Briefcase size={16} />
+                                    {job.experience} years
+                                </div>
+                            )}
+                            {job.package && (
+                                <div className="meta-chip">
+                                    <span className="meta-chip-label">Package:</span>
+                                    {job.package}
+                                </div>
+                            )}
                             <div className="meta-chip">
                                 <Clock size={16} />
                                 Posted {formatDate(job.createdAt)}
@@ -208,18 +211,20 @@ function JobDetails() {
                                 </section>
                             )}
 
-                            {/* Apply Button - In Page */}
-                            <div className="apply-section">
-                                <a
-                                    href={job.applyLink || '#'}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="btn btn-primary btn-lg btn-apply"
-                                >
-                                    Apply Now
-                                    <ExternalLink size={18} />
-                                </a>
-                            </div>
+                            {/* Apply Button - In Page - Hidden for Walkins */}
+                            {!isWalkin && (
+                                <div className="apply-section">
+                                    <a
+                                        href={job.applyLink || '#'}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="btn btn-primary btn-lg btn-apply"
+                                    >
+                                        Apply Now
+                                        <ExternalLink size={18} />
+                                    </a>
+                                </div>
+                            )}
                         </div>
 
                         {/* Sidebar */}
@@ -229,20 +234,26 @@ function JobDetails() {
                                 <div className="overview-list">
                                     <div className="overview-item">
                                         <span className="overview-label">Job Type</span>
-                                        <span className="overview-value">{getTypeLabel(job.type)}</span>
+                                        <span className="overview-value">{isWalkin ? 'Walk-in / Email' : getTypeLabel(job.type)}</span>
                                     </div>
-                                    <div className="overview-item">
-                                        <span className="overview-label">Location</span>
-                                        <span className="overview-value">{job.location}</span>
-                                    </div>
-                                    <div className="overview-item">
-                                        <span className="overview-label">Experience</span>
-                                        <span className="overview-value">{job.experience} years</span>
-                                    </div>
-                                    <div className="overview-item">
-                                        <span className="overview-label">Package</span>
-                                        <span className="overview-value highlight">{job.package}</span>
-                                    </div>
+                                    {job.location && (
+                                        <div className="overview-item">
+                                            <span className="overview-label">Location</span>
+                                            <span className="overview-value">{job.location}</span>
+                                        </div>
+                                    )}
+                                    {job.experience && (
+                                        <div className="overview-item">
+                                            <span className="overview-label">Experience</span>
+                                            <span className="overview-value">{job.experience} years</span>
+                                        </div>
+                                    )}
+                                    {job.package && (
+                                        <div className="overview-item">
+                                            <span className="overview-label">Package</span>
+                                            <span className="overview-value highlight">{job.package}</span>
+                                        </div>
+                                    )}
                                     <div className="overview-item">
                                         <span className="overview-label">Posted On</span>
                                         <span className="overview-value">{formatDate(job.createdAt)}</span>

@@ -1,65 +1,46 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import JobCard from '../components/JobCard';
+import WalkinCard from '../components/WalkinCard';
+import Pagination from '../components/Pagination';
 import JobFilter from '../components/JobFilter';
-import api from '../utils/api';
+import { useJobs, useCompanies, useLocations, useWalkins } from '../hooks/useJobs';
 import './Jobs.css';
 
 function Jobs({ type: propType }) {
     const [searchParams] = useSearchParams();
-    const [jobs, setJobs] = useState([]);
-    const [companies, setCompanies] = useState([]);
-    const [locations, setLocations] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [total, setTotal] = useState(0);
     const [filters, setFilters] = useState({});
 
-    useEffect(() => {
-        fetchFilters();
-    }, []);
+    // Build query params for the API
+    const queryParams = useMemo(() => ({
+        page: currentPage,
+        limit: 20,
+        ...filters,
+        ...(propType && { type: propType }),
+    }), [currentPage, filters, propType]);
 
-    useEffect(() => {
-        fetchJobs();
-    }, [currentPage, filters, propType]);
+    // React Query hooks - cached and deduplicated
+    // Use the appropriate hook based on the type
+    const isWalkin = propType === 'walkin';
 
-    const fetchFilters = async () => {
-        try {
-            const [companiesRes, locationsRes] = await Promise.all([
-                api.get('/companies'),
-                api.get('/jobs/locations')
-            ]);
-            setCompanies(companiesRes.data);
-            setLocations(locationsRes.data);
-        } catch (error) {
-            console.error('Error fetching filters:', error);
-        }
-    };
+    const { data: jobsData, isLoading: isLoadingJobs } = useJobs(
+        !isWalkin ? queryParams : { ...queryParams, enabled: false }
+    );
 
-    const fetchJobs = async () => {
-        setLoading(true);
-        try {
-            const params = {
-                page: currentPage,
-                limit: 12,
-                ...filters
-            };
+    const { data: walkinsData, isLoading: isLoadingWalkins } = useWalkins(
+        isWalkin ? queryParams : { ...queryParams, enabled: false }
+    );
 
-            if (propType) {
-                params.type = propType;
-            }
+    const { data: companies = [] } = useCompanies();
+    const { data: locations = [] } = useLocations();
 
-            const response = await api.get('/jobs', { params });
-            setJobs(response.data.jobs);
-            setTotalPages(response.data.totalPages);
-            setTotal(response.data.total);
-        } catch (error) {
-            console.error('Error fetching jobs:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const data = isWalkin ? walkinsData : jobsData;
+    const isLoading = isWalkin ? isLoadingWalkins : isLoadingJobs;
+
+    const jobs = isWalkin ? (data?.walkins || []) : (data?.jobs || []);
+    const totalPages = data?.totalPages || 1;
+    const total = data?.total || 0;
 
     const handleFilter = useCallback((newFilters) => {
         setFilters(newFilters);
@@ -71,7 +52,7 @@ function Jobs({ type: propType }) {
             case 'internship':
                 return 'Internship Opportunities';
             case 'walkin':
-                return 'Walk-in Interviews';
+                return 'Walk-in / Email Opportunities';
             default:
                 return 'All Job Opportunities';
         }
@@ -82,7 +63,7 @@ function Jobs({ type: propType }) {
             case 'internship':
                 return 'Start your career with hands-on experience at top companies';
             case 'walkin':
-                return 'Direct walk-in opportunities - No prior appointment needed';
+                return 'Direct walk-in and email application opportunities - Apply directly!';
             default:
                 return 'Discover thousands of opportunities from leading companies';
         }
@@ -107,7 +88,7 @@ function Jobs({ type: propType }) {
                     locations={locations}
                 />
 
-                {loading ? (
+                {isLoading ? (
                     <div className="loading-container">
                         <div className="spinner"></div>
                     </div>
@@ -116,31 +97,21 @@ function Jobs({ type: propType }) {
                         <div className="jobs-grid grid grid-3">
                             {jobs.map((job, index) => (
                                 <div key={job._id} className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
-                                    <JobCard job={job} />
+                                    {isWalkin || job.type === 'walkin' ? (
+                                        <WalkinCard job={job} />
+                                    ) : (
+                                        <JobCard job={job} />
+                                    )}
                                 </div>
                             ))}
                         </div>
 
                         {totalPages > 1 && (
-                            <div className="pagination">
-                                <button
-                                    className="btn btn-secondary"
-                                    disabled={currentPage === 1}
-                                    onClick={() => setCurrentPage(prev => prev - 1)}
-                                >
-                                    Previous
-                                </button>
-                                <span className="page-info">
-                                    Page {currentPage} of {totalPages}
-                                </span>
-                                <button
-                                    className="btn btn-secondary"
-                                    disabled={currentPage === totalPages}
-                                    onClick={() => setCurrentPage(prev => prev + 1)}
-                                >
-                                    Next
-                                </button>
-                            </div>
+                            <Pagination
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={setCurrentPage}
+                            />
                         )}
                     </>
                 ) : (
@@ -155,3 +126,4 @@ function Jobs({ type: propType }) {
 }
 
 export default Jobs;
+

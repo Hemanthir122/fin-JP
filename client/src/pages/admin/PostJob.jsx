@@ -159,11 +159,18 @@ function PostJob() {
         setLoading(true);
 
         try {
-            const payload = { ...formData };
-            if (!payload.endDate) {
-                payload.endDate = null;
+            if (formData.type === 'walkin') {
+                await api.post('/walkins', {
+                    company: formData.company,
+                    description: formData.description
+                });
+            } else {
+                const payload = { ...formData };
+                if (!payload.endDate) {
+                    payload.endDate = null;
+                }
+                await api.post('/jobs', payload);
             }
-            await api.post('/jobs', payload);
 
             setSuccess(true);
             setTimeout(() => {
@@ -245,6 +252,30 @@ function PostJob() {
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit}>
+                        {/* Job Type Selection - FIRST */}
+                        <div className="form-card">
+                            <h2>Select Job Type</h2>
+                            <div className="form-group">
+                                <label className="label">Job Type *</label>
+                                <select
+                                    name="type"
+                                    value={formData.type}
+                                    onChange={handleChange}
+                                    className="select"
+                                    required
+                                >
+                                    <option value="job">Full Time Job</option>
+                                    <option value="internship">Internship</option>
+                                    <option value="walkin">Walk-in / Email</option>
+                                </select>
+                                <small style={{ color: 'var(--text-muted)', marginTop: '8px', display: 'block' }}>
+                                    {formData.type === 'walkin'
+                                        ? 'Walk-in/Email requires only company name and description'
+                                        : 'Full job details required for this type'}
+                                </small>
+                            </div>
+                        </div>
+
                         {/* Company Information */}
                         <div className="form-card">
                             <h2>Company Information</h2>
@@ -281,139 +312,128 @@ function PostJob() {
                                         </div>
                                     )}
                                 </div>
-                                <div className="form-group">
-                                    <label className="label">Company Logo URL</label>
-                                    <input
-                                        type="url"
-                                        name="companyLogo"
-                                        value={formData.companyLogo}
-                                        onChange={handleChange}
-                                        className="input"
-                                        placeholder="https://example.com/logo.png"
-                                    />
-                                </div>
+                                {formData.type !== 'walkin' && (
+                                    <div className="form-group">
+                                        <label className="label">Company Logo URL</label>
+                                        <input
+                                            type="url"
+                                            name="companyLogo"
+                                            value={formData.companyLogo}
+                                            onChange={handleChange}
+                                            className="input"
+                                            placeholder="https://example.com/logo.png"
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
 
-                        {/* Job Information */}
-                        <div className="form-card">
-                            <h2>Job Information</h2>
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label className="label">Job Title/Role *</label>
-                                    <select
-                                        value={formData.title}
-                                        onChange={handleRoleSelect}
-                                        className="select"
-                                        required
-                                    >
-                                        <option value="">Select a role...</option>
-                                        {roleOptions.map((role) => (
-                                            <option key={role} value={role}>{role}</option>
-                                        ))}
-                                    </select>
-                                    <small style={{ color: 'var(--text-muted)', marginTop: '8px', display: 'block' }}>
-                                        Selecting a role auto-fills description, skills & responsibilities
-                                    </small>
+                        {/* Job Information - Only for non-walkin types */}
+                        {formData.type !== 'walkin' && (
+                            <div className="form-card">
+                                <h2>Job Information</h2>
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label className="label">Job Title/Role *</label>
+                                        <select
+                                            value={formData.title}
+                                            onChange={handleRoleSelect}
+                                            className="select"
+                                            required
+                                        >
+                                            <option value="">Select a role...</option>
+                                            {roleOptions.map((role) => (
+                                                <option key={role} value={role}>{role}</option>
+                                            ))}
+                                        </select>
+                                        <small style={{ color: 'var(--text-muted)', marginTop: '8px', display: 'block' }}>
+                                            Selecting a role auto-fills description, skills & responsibilities
+                                        </small>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="label">Or enter custom title</label>
+                                        <input
+                                            type="text"
+                                            name="title"
+                                            value={formData.title}
+                                            onChange={handleChange}
+                                            className="input"
+                                            placeholder="e.g., Senior Software Engineer"
+                                        />
+                                    </div>
                                 </div>
-                                <div className="form-group">
-                                    <label className="label">Or enter custom title</label>
-                                    <input
-                                        type="text"
-                                        name="title"
-                                        value={formData.title}
-                                        onChange={handleChange}
-                                        className="input"
-                                        placeholder="e.g., Senior Software Engineer"
-                                    />
+
+                                <div className="form-row form-row-3">
+                                    <div className="form-group">
+                                        <label className="label">Location *</label>
+                                        <input
+                                            type="text"
+                                            name="location"
+                                            value={formData.location}
+                                            onChange={handleChange}
+                                            className="input"
+                                            placeholder="e.g., Bangalore, India"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="label">Package/Salary *</label>
+                                        <input
+                                            type="text"
+                                            name="package"
+                                            value={formData.package}
+                                            onChange={handleChange}
+                                            className="input"
+                                            placeholder="e.g., 8-12 LPA"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="label">Experience *</label>
+                                        <input
+                                            type="text"
+                                            name="experience"
+                                            value={formData.experience}
+                                            onChange={handleChange}
+                                            className="input"
+                                            placeholder="e.g., 2-4 years"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label className="label">End Date (Auto-remove)</label>
+                                        <input
+                                            type="date"
+                                            name="endDate"
+                                            value={formData.endDate}
+                                            onChange={handleChange}
+                                            className="input"
+                                        />
+                                        <small style={{ color: 'var(--text-muted)', fontSize: '11px', marginTop: '4px' }}>
+                                            Job will be removed automatically after this date (Optional)
+                                        </small>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="label">Apply Link</label>
+                                        <input
+                                            type="url"
+                                            name="applyLink"
+                                            value={formData.applyLink}
+                                            onChange={handleChange}
+                                            className="input"
+                                            placeholder="https://careers.company.com/apply"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-
-                            <div className="form-row form-row-3">
-                                <div className="form-group">
-                                    <label className="label">Location *</label>
-                                    <input
-                                        type="text"
-                                        name="location"
-                                        value={formData.location}
-                                        onChange={handleChange}
-                                        className="input"
-                                        placeholder="e.g., Bangalore, India"
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label className="label">Package/Salary *</label>
-                                    <input
-                                        type="text"
-                                        name="package"
-                                        value={formData.package}
-                                        onChange={handleChange}
-                                        className="input"
-                                        placeholder="e.g., 8-12 LPA"
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label className="label">Experience *</label>
-                                    <input
-                                        type="text"
-                                        name="experience"
-                                        value={formData.experience}
-                                        onChange={handleChange}
-                                        className="input"
-                                        placeholder="e.g., 2-4 years"
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label className="label">Job Type *</label>
-                                    <select
-                                        name="type"
-                                        value={formData.type}
-                                        onChange={handleChange}
-                                        className="select"
-                                        required
-                                    >
-                                        <option value="job">Full Time Job</option>
-                                        <option value="internship">Internship</option>
-                                        <option value="walkin">Walk-in Interview</option>
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <label className="label">End Date (Auto-remove)</label>
-                                    <input
-                                        type="date"
-                                        name="endDate"
-                                        value={formData.endDate}
-                                        onChange={handleChange}
-                                        className="input"
-                                    />
-                                    <small style={{ color: 'var(--text-muted)', fontSize: '11px', marginTop: '4px' }}>
-                                        Job will be removed automatically after this date (Optional)
-                                    </small>
-                                </div>
-                                <div className="form-group">
-                                    <label className="label">Apply Link</label>
-                                    <input
-                                        type="url"
-                                        name="applyLink"
-                                        value={formData.applyLink}
-                                        onChange={handleChange}
-                                        className="input"
-                                        placeholder="https://careers.company.com/apply"
-                                    />
-                                </div>
-                            </div>
-
-                        </div>
+                        )}
 
                         {/* Description */}
                         <div className="form-card">
-                            <h2>Job Description</h2>
+                            <h2>{formData.type === 'walkin' ? 'Walk-in / Email Details' : 'Job Description'}</h2>
                             <div className="form-group">
                                 <label className="label">Description *</label>
                                 <textarea
@@ -421,122 +441,130 @@ function PostJob() {
                                     value={formData.description}
                                     onChange={handleChange}
                                     className="textarea"
-                                    rows="10"
-                                    placeholder="Enter job description..."
+                                    rows={formData.type === 'walkin' ? '15' : '10'}
+                                    placeholder={formData.type === 'walkin'
+                                        ? 'Enter all walk-in/email details including date, time, venue, contact info, eligibility criteria, documents required, etc...'
+                                        : 'Enter job description...'}
                                     required
                                 ></textarea>
                             </div>
                         </div>
 
-                        {/* Skills */}
-                        <div className="form-card">
-                            <h2>Required Skills</h2>
-                            <div className="form-group">
-                                <label className="label">Skills (Press Enter to add)</label>
-                                <div className="skills-input-container">
-                                    {formData.skills.map((skill, index) => (
-                                        <span key={index} className="skill-tag-input">
-                                            {skill}
-                                            <button type="button" onClick={() => removeSkill(skill)}>
-                                                <X size={14} />
-                                            </button>
-                                        </span>
-                                    ))}
-                                    <input
-                                        type="text"
-                                        value={skillInput}
-                                        onChange={(e) => setSkillInput(e.target.value)}
-                                        onKeyPress={addSkill}
-                                        placeholder="Type skill and press Enter..."
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Responsibilities */}
-                        <div className="form-card">
-                            <h2>Roles & Responsibilities</h2>
-                            <div className="form-group">
-                                <label className="label">Add Responsibility</label>
-                                <div className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={responsibilityInput}
-                                        onChange={(e) => setResponsibilityInput(e.target.value)}
-                                        className="input"
-                                        placeholder="Enter responsibility..."
-                                        style={{ flex: 1 }}
-                                    />
-                                    <button type="button" className="btn btn-secondary" onClick={addResponsibility}>
-                                        <Plus size={18} />
-                                    </button>
-                                </div>
-                            </div>
-                            {formData.responsibilities.length > 0 && (
-                                <ul className="responsibilities-list" style={{ marginTop: '16px' }}>
-                                    {formData.responsibilities.map((item, index) => (
-                                        <li key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                            <span style={{ display: 'flex', gap: '12px', flex: 1 }}>
-                                                <Check size={18} style={{ color: 'var(--accent-green)', flexShrink: 0, marginTop: '3px' }} />
-                                                {item}
+                        {/* Skills - Only for non-walkin types */}
+                        {formData.type !== 'walkin' && (
+                            <div className="form-card">
+                                <h2>Required Skills</h2>
+                                <div className="form-group">
+                                    <label className="label">Skills (Press Enter to add)</label>
+                                    <div className="skills-input-container">
+                                        {formData.skills.map((skill, index) => (
+                                            <span key={index} className="skill-tag-input">
+                                                {skill}
+                                                <button type="button" onClick={() => removeSkill(skill)}>
+                                                    <X size={14} />
+                                                </button>
                                             </span>
-                                            <button
-                                                type="button"
-                                                onClick={() => removeResponsibility(index)}
-                                                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-                                            >
-                                                <X size={16} />
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
-
-                        {/* Qualifications */}
-                        <div className="form-card">
-                            <h2>Qualifications</h2>
-                            <div className="form-group">
-                                <label className="label">Add Qualification</label>
-                                <div className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={qualificationInput}
-                                        onChange={(e) => setQualificationInput(e.target.value)}
-                                        className="input"
-                                        placeholder="Enter qualification..."
-                                        style={{ flex: 1 }}
-                                    />
-                                    <button type="button" className="btn btn-secondary" onClick={addQualification}>
-                                        <Plus size={18} />
-                                    </button>
+                                        ))}
+                                        <input
+                                            type="text"
+                                            value={skillInput}
+                                            onChange={(e) => setSkillInput(e.target.value)}
+                                            onKeyPress={addSkill}
+                                            placeholder="Type skill and press Enter..."
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                            {formData.qualifications.length > 0 && (
-                                <ul className="responsibilities-list" style={{ marginTop: '16px' }}>
-                                    {formData.qualifications.map((item, index) => (
-                                        <li key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                            <span style={{ display: 'flex', gap: '12px', flex: 1 }}>
-                                                <Check size={18} style={{ color: 'var(--accent-green)', flexShrink: 0, marginTop: '3px' }} />
-                                                {item}
-                                            </span>
-                                            <button
-                                                type="button"
-                                                onClick={() => removeQualification(index)}
-                                                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-                                            >
-                                                <X size={16} />
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
+                        )}
+
+                        {/* Responsibilities - Only for non-walkin types */}
+                        {formData.type !== 'walkin' && (
+                            <div className="form-card">
+                                <h2>Roles & Responsibilities</h2>
+                                <div className="form-group">
+                                    <label className="label">Add Responsibility</label>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            value={responsibilityInput}
+                                            onChange={(e) => setResponsibilityInput(e.target.value)}
+                                            className="input"
+                                            placeholder="Enter responsibility..."
+                                            style={{ flex: 1 }}
+                                        />
+                                        <button type="button" className="btn btn-secondary" onClick={addResponsibility}>
+                                            <Plus size={18} />
+                                        </button>
+                                    </div>
+                                </div>
+                                {formData.responsibilities.length > 0 && (
+                                    <ul className="responsibilities-list" style={{ marginTop: '16px' }}>
+                                        {formData.responsibilities.map((item, index) => (
+                                            <li key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                                <span style={{ display: 'flex', gap: '12px', flex: 1 }}>
+                                                    <Check size={18} style={{ color: 'var(--accent-green)', flexShrink: 0, marginTop: '3px' }} />
+                                                    {item}
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeResponsibility(index)}
+                                                    style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                                                >
+                                                    <X size={16} />
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Qualifications - Only for non-walkin types */}
+                        {formData.type !== 'walkin' && (
+                            <div className="form-card">
+                                <h2>Qualifications</h2>
+                                <div className="form-group">
+                                    <label className="label">Add Qualification</label>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            value={qualificationInput}
+                                            onChange={(e) => setQualificationInput(e.target.value)}
+                                            className="input"
+                                            placeholder="Enter qualification..."
+                                            style={{ flex: 1 }}
+                                        />
+                                        <button type="button" className="btn btn-secondary" onClick={addQualification}>
+                                            <Plus size={18} />
+                                        </button>
+                                    </div>
+                                </div>
+                                {formData.qualifications.length > 0 && (
+                                    <ul className="responsibilities-list" style={{ marginTop: '16px' }}>
+                                        {formData.qualifications.map((item, index) => (
+                                            <li key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                                <span style={{ display: 'flex', gap: '12px', flex: 1 }}>
+                                                    <Check size={18} style={{ color: 'var(--accent-green)', flexShrink: 0, marginTop: '3px' }} />
+                                                    {item}
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeQualification(index)}
+                                                    style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                                                >
+                                                    <X size={16} />
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        )}
 
                         {/* Submit */}
                         <div className="form-actions">
                             <button type="submit" className="btn btn-primary" disabled={loading}>
-                                {loading ? 'Posting...' : 'Post Job'}
+                                {loading ? 'Posting...' : formData.type === 'walkin' ? 'Post Walk-in/Email' : 'Post Job'}
                             </button>
                             <Link to="/admin" className="btn btn-secondary">
                                 Cancel

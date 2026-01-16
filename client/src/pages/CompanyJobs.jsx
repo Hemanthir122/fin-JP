@@ -1,35 +1,17 @@
-import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Building2 } from 'lucide-react';
 import JobCard from '../components/JobCard';
-import api from '../utils/api';
+import { useCompanyJobs, useCompanyDetails } from '../hooks/useJobs';
 import './CompanyJobs.css';
 
 function CompanyJobs() {
     const { companyName } = useParams();
-    const [jobs, setJobs] = useState([]);
-    const [company, setCompany] = useState(null);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchCompanyJobs();
-    }, [companyName]);
+    // React Query hooks - cached
+    const { data: jobs = [], isLoading: jobsLoading } = useCompanyJobs(companyName);
+    const { data: company } = useCompanyDetails(companyName);
 
-    const fetchCompanyJobs = async () => {
-        setLoading(true);
-        try {
-            const [jobsRes, companyRes] = await Promise.all([
-                api.get(`/jobs/company/${encodeURIComponent(companyName)}`),
-                api.get(`/companies/${encodeURIComponent(companyName)}`)
-            ]);
-            setJobs(jobsRes.data);
-            setCompany(companyRes.data);
-        } catch (error) {
-            console.error('Error fetching company jobs:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const loading = jobsLoading;
 
     return (
         <div className="company-jobs-page">
@@ -43,7 +25,7 @@ function CompanyJobs() {
                     <div className="company-info">
                         <div className="company-logo-large">
                             {company?.logo ? (
-                                <img src={company.logo} alt={companyName} />
+                                <img src={company.logo} alt={companyName} loading="lazy" decoding="async" />
                             ) : (
                                 <Building2 size={48} />
                             )}

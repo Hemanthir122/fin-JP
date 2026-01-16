@@ -40,20 +40,39 @@ function EditJob() {
 
     const roleOptions = Object.keys(roleTemplates);
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const typeParam = queryParams.get('type');
+
     useEffect(() => {
         fetchData();
     }, [id]);
 
     const fetchData = async () => {
         try {
+            const apiEndpoint = typeParam === 'walkin' ? `/walkins/${id}` : `/jobs/${id}`;
             const [jobRes, companiesRes] = await Promise.all([
-                api.get(`/jobs/${id}`),
+                api.get(apiEndpoint),
                 api.get('/companies')
             ]);
             const jobData = jobRes.data;
             if (jobData.endDate) {
                 jobData.endDate = new Date(jobData.endDate).toISOString().split('T')[0];
             }
+
+            // Ensure type is set correctly for walkins
+            if (typeParam === 'walkin') {
+                jobData.type = 'walkin';
+                // Initialize missing fields for form compatibility
+                jobData.title = jobData.title || '';
+                jobData.location = jobData.location || '';
+                jobData.package = jobData.package || '';
+                jobData.experience = jobData.experience || '';
+                jobData.skills = jobData.skills || [];
+                jobData.responsibilities = jobData.responsibilities || [];
+                jobData.qualifications = jobData.qualifications || [];
+                jobData.applyLink = jobData.applyLink || '';
+            }
+
             setFormData(jobData);
 
             setCompanies(companiesRes.data);
@@ -170,11 +189,18 @@ function EditJob() {
         setSaving(true);
 
         try {
-            const payload = { ...formData };
-            if (!payload.endDate) {
-                payload.endDate = null;
+            if (formData.type === 'walkin') {
+                await api.put(`/walkins/${id}`, {
+                    company: formData.company,
+                    description: formData.description
+                });
+            } else {
+                const payload = { ...formData };
+                if (!payload.endDate) {
+                    payload.endDate = null;
+                }
+                await api.put(`/jobs/${id}`, payload);
             }
-            await api.put(`/jobs/${id}`, payload);
 
             setSuccess(true);
             setTimeout(() => {
@@ -415,7 +441,7 @@ function EditJob() {
                                     >
                                         <option value="job">Full Time Job</option>
                                         <option value="internship">Internship</option>
-                                        <option value="walkin">Walk-in Interview</option>
+                                        <option value="walkin">Walk-in / Email</option>
                                     </select>
                                 </div>
                                 <div className="form-group">

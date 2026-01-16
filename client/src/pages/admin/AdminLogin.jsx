@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, LogIn } from 'lucide-react';
+import api from '../../utils/api';
 import './AdminLogin.css';
 
 function AdminLogin() {
@@ -23,22 +24,22 @@ function AdminLogin() {
         setError('');
 
         try {
-            const response = await fetch('https://jp-delta.vercel.app/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
+            const response = await api.post('/auth/login', formData);
+            const data = response.data; // axios response has data field
 
-            const data = await response.json();
+            // Adjust based on actual API response structure
+            // authRoutes.js returns: { success: true, message: '...', admin: {...} } OR { message: '...' } (on error? no, error throws)
+            // success is implied if no error?
+            // authRoutes.js:res.json({ success: true ... })
 
-            if (response.ok) {
+            if (data.success) {
                 localStorage.setItem('adminEmail', data.admin.email);
                 navigate('/admin');
             } else {
                 setError(data.message || 'Login failed');
             }
         } catch (err) {
-            setError('Server error. Please try again.');
+            setError(err.response?.data?.message || 'Login failed');
         } finally {
             setLoading(false);
         }
