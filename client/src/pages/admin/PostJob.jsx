@@ -334,24 +334,23 @@ function PostJob() {
                                 <h2>Job Information</h2>
                                 <div className="form-row">
                                     <div className="form-group">
-                                        <label className="label">Job Title/Role *</label>
+                                        <label className="label">Load from Template (Optional)</label>
                                         <select
-                                            value={formData.title}
                                             onChange={handleRoleSelect}
                                             className="select"
-                                            required
+                                            defaultValue=""
                                         >
-                                            <option value="">Select a role...</option>
+                                            <option value="">Select a role to auto-fill...</option>
                                             {roleOptions.map((role) => (
                                                 <option key={role} value={role}>{role}</option>
                                             ))}
                                         </select>
                                         <small style={{ color: 'var(--text-muted)', marginTop: '8px', display: 'block' }}>
-                                            Selecting a role auto-fills description, skills & responsibilities
+                                            Selecting a role will auto-fill description, skills & responsibilities. You can edit them afterwards.
                                         </small>
                                     </div>
                                     <div className="form-group">
-                                        <label className="label">Or enter custom title</label>
+                                        <label className="label">Job Title/Role *</label>
                                         <input
                                             type="text"
                                             name="title"
@@ -359,6 +358,7 @@ function PostJob() {
                                             onChange={handleChange}
                                             className="input"
                                             placeholder="e.g., Senior Software Engineer"
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -390,15 +390,21 @@ function PostJob() {
                                     </div>
                                     <div className="form-group">
                                         <label className="label">Experience *</label>
-                                        <input
-                                            type="text"
+                                        <select
                                             name="experience"
                                             value={formData.experience}
                                             onChange={handleChange}
-                                            className="input"
-                                            placeholder="e.g., 2-4 years"
+                                            className="select"
                                             required
-                                        />
+                                        >
+                                            <option value="">Select Experience</option>
+                                            <option value="Fresher">Freshers</option>
+                                            <option value="0-1 years">0-1 years</option>
+                                            <option value="0-2 years">0-2 years</option>
+                                            <option value="1 year">1 year</option>
+                                            <option value="More than 2 years">More than 2 years</option>
+                                            <option value="Above 3 years">Above 3 years</option>
+                                        </select>
                                     </div>
                                 </div>
 

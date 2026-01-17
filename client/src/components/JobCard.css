@@ -167,3 +167,64 @@
         gap: 8px;
     }
 }
+
+.job-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    position: relative;
+    /* For dropdown positioning */
+}
+
+.btn-icon-more {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon-more:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-primary);
+}
+
+.job-card-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    padding: 4px;
+    z-index: 10;
+    min-width: 100px;
+    animation: fadeIn var(--transition-fast) ease-out;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 4px;
+}
+
+.menu-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+    color: var(--primary);
+}

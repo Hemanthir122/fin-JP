@@ -54,6 +54,27 @@
     line-height: 1.6;
 }
 
+.features-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 32px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-color);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.dot.active {
+    background: var(--primary);
+    transform: scale(1.2);
+}
+
 /* Jobs Section */
 .jobs-section {
     background: var(--bg-card);

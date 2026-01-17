@@ -103,6 +103,13 @@ function Home() {
                             </div>
                         ))}
                     </div>
+
+                    {/* Features Navigation Dots */}
+                    <div className="features-navigation">
+                        <span className="dot active"></span>
+                        <span className="dot"></span>
+                        <span className="dot"></span>
+                    </div>
                 </div>
             </section>
 

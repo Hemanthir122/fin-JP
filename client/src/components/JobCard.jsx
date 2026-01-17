@@ -1,8 +1,31 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Briefcase, Clock, Building2 } from 'lucide-react';
+import { MapPin, Briefcase, Clock, Building2, MoreVertical, Share2 } from 'lucide-react';
 import './JobCard.css';
 
 function JobCard({ job }) {
+    const [showMenu, setShowMenu] = useState(false);
+
+    const toggleMenu = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setShowMenu(!showMenu);
+    };
+
+    const handleShare = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        try {
+            await navigator.clipboard.writeText(`${window.location.origin}/job/${job._id}`);
+            alert('Job link copied to clipboard!');
+        } catch (err) {
+            console.error('Failed to copy link:', err);
+        }
+        setShowMenu(false);
+    };
+
+    // ... existing getTypeLabel and getTimeAgo functions ...
     const getTypeLabel = (type) => {
         switch (type) {
             case 'internship':
@@ -41,7 +64,7 @@ function JobCard({ job }) {
     const displaySkills = job.skills ? job.skills.slice(0, 4) : [];
 
     return (
-        <div className="job-card card">
+        <div className="job-card card" onMouseLeave={() => setShowMenu(false)}>
             <div className="job-card-top">
                 {/* Left: Logo */}
                 <div className="job-company-logo">
@@ -60,10 +83,25 @@ function JobCard({ job }) {
                     </Link>
                 </div>
 
-                {/* Badge */}
-                <span className={`badge badge-${job.type}`}>
-                    {getTypeLabel(job.type)}
-                </span>
+                {/* Badge OR Menu */}
+                <div className="job-card-actions">
+                    <span className={`badge badge-${job.type}`}>
+                        {getTypeLabel(job.type)}
+                    </span>
+
+                    <button className="btn-icon-more" onClick={toggleMenu}>
+                        <MoreVertical size={18} />
+                    </button>
+
+                    {showMenu && (
+                        <div className="job-card-menu">
+                            <button onClick={handleShare} className="menu-item">
+                                <Share2 size={14} />
+                                Share
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Skills */}
@@ -87,7 +125,9 @@ function JobCard({ job }) {
                 </div>
                 <div className="meta-item">
                     <span className="meta-label">Exp:</span>
-                    <span className="meta-value">{job.experience} years</span>
+                    <span className="meta-value">
+                        {job.experience}
+                    </span>
                 </div>
             </div>
 

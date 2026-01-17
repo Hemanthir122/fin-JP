@@ -136,7 +136,7 @@ function JobDetails() {
                             {job.experience && (
                                 <div className="meta-chip">
                                     <Briefcase size={16} />
-                                    {job.experience} years
+                                    {job.experience}
                                 </div>
                             )}
                             {job.package && (
@@ -245,7 +245,9 @@ function JobDetails() {
                                     {job.experience && (
                                         <div className="overview-item">
                                             <span className="overview-label">Experience</span>
-                                            <span className="overview-value">{job.experience} years</span>
+                                            <span className="overview-value">
+                                                {job.experience}
+                                            </span>
                                         </div>
                                     )}
                                     {job.package && (
