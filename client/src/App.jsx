@@ -15,6 +15,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import PostJob from './pages/admin/PostJob';
 import ManageJobs from './pages/admin/ManageJobs';
 import EditJob from './pages/admin/EditJob';
+import NotFound from './pages/NotFound';
 import './App.css';
 
 // Protected Route component
@@ -73,6 +74,7 @@ function App() {
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy" element={<Privacy />} />
                   <Route path="/about" element={<About />} />
+                  <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
               <Footer />

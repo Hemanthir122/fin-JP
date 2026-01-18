@@ -28,6 +28,16 @@ function JobDetails() {
     const isLoading = isWalkin ? isLoadingWalkin : isLoadingJob;
     const { data: companyJobs = [] } = useCompanyJobs(job?.company);
 
+    // Update document title for SEO
+    useMemo(() => {
+        if (job) {
+            document.title = `${job.title} at ${job.company} - JobsConnect`;
+        }
+        return () => {
+            document.title = 'JobsConnect - Find Your Dream Job';
+        };
+    }, [job]);
+
     // Filter out current job from related jobs
     const relatedJobs = useMemo(() => {
         if (!job || !companyJobs.length) return [];
