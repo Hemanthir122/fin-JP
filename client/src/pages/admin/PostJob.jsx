@@ -86,6 +86,18 @@ function PostJob() {
 
     const handleRoleSelect = (e) => {
         const selectedRole = e.target.value;
+
+        if (selectedRole === "") {
+            setFormData(prev => ({
+                ...prev,
+                title: "",
+                description: "",
+                skills: [],
+                responsibilities: []
+            }));
+            return;
+        }
+
         setFormData(prev => ({ ...prev, title: selectedRole }));
 
         if (roleTemplates[selectedRole]) {
@@ -100,9 +112,8 @@ function PostJob() {
         }
     };
 
-    const addSkill = (e) => {
-        if (e.key === 'Enter' && skillInput.trim()) {
-            e.preventDefault();
+    const handleAddSkill = () => {
+        if (skillInput.trim()) {
             if (!formData.skills.includes(skillInput.trim())) {
                 setFormData(prev => ({
                     ...prev,
@@ -110,6 +121,13 @@ function PostJob() {
                 }));
             }
             setSkillInput('');
+        }
+    };
+
+    const addSkillKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleAddSkill();
         }
     };
 
@@ -471,13 +489,20 @@ function PostJob() {
                                                 </button>
                                             </span>
                                         ))}
-                                        <input
-                                            type="text"
-                                            value={skillInput}
-                                            onChange={(e) => setSkillInput(e.target.value)}
-                                            onKeyPress={addSkill}
-                                            placeholder="Type skill and press Enter..."
-                                        />
+                                        <div style={{ display: 'flex', gap: '8px', width: '100%', marginTop: '8px' }}>
+                                            <input
+                                                type="text"
+                                                value={skillInput}
+                                                onChange={(e) => setSkillInput(e.target.value)}
+                                                onKeyPress={addSkillKeyPress}
+                                                placeholder="Type skill and press Enter..."
+                                                className="input"
+                                                style={{ flex: 1 }}
+                                            />
+                                            <button type="button" className="btn btn-secondary" onClick={handleAddSkill}>
+                                                <Plus size={18} />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
