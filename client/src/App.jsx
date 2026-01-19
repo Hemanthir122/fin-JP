@@ -27,62 +27,66 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+import { HelmetProvider } from 'react-helmet-async';
+
 function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="app">
-        <Routes>
-          {/* Admin Login - No protection */}
-          <Route path="/admin/login" element={<AdminLogin />} />
+    <HelmetProvider>
+      <Router>
+        <ScrollToTop />
+        <div className="app">
+          <Routes>
+            {/* Admin Login - No protection */}
+            <Route path="/admin/login" element={<AdminLogin />} />
 
-          {/* Protected Admin Routes */}
-          <Route path="/admin" element={
-            <ProtectedRoute>
-              <AdminDashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/post-job" element={
-            <ProtectedRoute>
-              <PostJob />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/manage-jobs" element={
-            <ProtectedRoute>
-              <ManageJobs />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/edit-job/:id" element={
-            <ProtectedRoute>
-              <EditJob />
-            </ProtectedRoute>
-          } />
+            {/* Protected Admin Routes */}
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/post-job" element={
+              <ProtectedRoute>
+                <PostJob />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/manage-jobs" element={
+              <ProtectedRoute>
+                <ManageJobs />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/edit-job/:id" element={
+              <ProtectedRoute>
+                <EditJob />
+              </ProtectedRoute>
+            } />
 
-          {/* Public Routes with Navbar/Footer */}
-          <Route path="/*" element={
-            <>
-              <Navbar />
-              <main className="main-content">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/jobs" element={<Jobs />} />
-                  <Route path="/internships" element={<Jobs type="internship" />} />
-                  <Route path="/walkins" element={<Jobs type="walkin" />} />
-                  <Route path="/job/:id" element={<JobDetails />} />
-                  <Route path="/company/:companyName" element={<CompanyJobs />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-              <Footer />
-            </>
-          } />
-        </Routes>
-      </div>
-    </Router>
+            {/* Public Routes with Navbar/Footer */}
+            <Route path="/*" element={
+              <>
+                <Navbar />
+                <main className="main-content">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/jobs" element={<Jobs />} />
+                    <Route path="/internships" element={<Jobs type="internship" />} />
+                    <Route path="/walkins" element={<Jobs type="walkin" />} />
+                    <Route path="/job/:id" element={<JobDetails />} />
+                    <Route path="/company/:companyName" element={<CompanyJobs />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </>
+            } />
+          </Routes>
+        </div>
+      </Router>
+    </HelmetProvider>
   );
 }
 

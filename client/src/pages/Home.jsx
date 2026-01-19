@@ -85,7 +85,7 @@ function Home() {
             <section className="section about-section">
                 <div className="container">
                     <div className="about-content">
-                        <h2 className="section-title">Why Choose JobsConnect?</h2>
+                        <h2 className="section-title">Why Choose JobConnects?</h2>
                         <p className="section-subtitle">
                             We connect talented individuals with their dream careers. Our platform
                             makes job hunting simple, efficient, and effective.

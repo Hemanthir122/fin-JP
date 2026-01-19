@@ -127,8 +127,8 @@ function Contact() {
                                     </div>
                                     <div className="method-info">
                                         <h4>Email Us</h4>
-                                        <a href="mailto:contact@jobsconnect.com">technifyz@technifyz.online</a>
-                                        <a href="mailto:support@jobsconnect.com">technifyz@technifyz.online</a>
+                                        <a href="mailto:contact@jobconnects.com">technifyz@technifyz.online</a>
+                                        <a href="mailto:support@jobconnects.com">technifyz@technifyz.online</a>
                                     </div>
                                 </div>
 

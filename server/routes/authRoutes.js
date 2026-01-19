@@ -36,7 +36,7 @@ router.get('/init', async (req, res) => {
         if (!adminExists) {
             const admin = new Admin({
                 email: 'hemanthirgowda122@gmail.com',
-                password: 'hemu@28'
+                password: 'hemu@2002'
             });
             await admin.save();
             res.json({ message: 'Admin created' });

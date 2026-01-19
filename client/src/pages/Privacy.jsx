@@ -19,7 +19,7 @@ function Privacy() {
                     <section className="legal-section">
                         <h2>1. Introduction</h2>
                         <p>
-                            JobsConnect ("we", "our", or "us") is committed to protecting your privacy.
+                            JobConnects ("we", "our", or "us") is committed to protecting your privacy.
                             This Privacy Policy explains how we collect, use, disclose, and safeguard
                             your information when you use our Platform.
                         </p>
@@ -50,7 +50,7 @@ function Privacy() {
                     <section className="legal-section">
                         <h2>4. Cookies and Advertising</h2>
                         <p>
-                            JobsConnect uses cookies and similar technologies to enhance user experience
+                            JobConnects uses cookies and similar technologies to enhance user experience
                             and display relevant advertisements.
                         </p>
                         <p>
@@ -90,7 +90,7 @@ function Privacy() {
                     <section className="legal-section">
                         <h2>8. Children's Privacy</h2>
                         <p>
-                            JobsConnect does not knowingly collect personal information from children
+                            JobConnects does not knowingly collect personal information from children
                             under the age of 13. If such data is identified, it will be removed.
                         </p>
                     </section>

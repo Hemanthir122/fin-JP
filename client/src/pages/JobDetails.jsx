@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
     MapPin, Briefcase, Clock, Building2,
     CheckCircle, ArrowLeft, ExternalLink, Share2
@@ -26,16 +27,53 @@ function JobDetails() {
 
     const job = isWalkin ? walkinData : jobData;
     const isLoading = isWalkin ? isLoadingWalkin : isLoadingJob;
+    const isExpired = job?.endDate && new Date(job.endDate) < new Date();
     const { data: companyJobs = [] } = useCompanyJobs(job?.company);
 
-    // Update document title for SEO
-    useMemo(() => {
-        if (job) {
-            document.title = `${job.title} at ${job.company} - JobsConnect`;
-        }
-        return () => {
-            document.title = 'JobsConnect - Find Your Dream Job';
+    // Generate Schema.org JSON-LD
+    const jobSchema = useMemo(() => {
+        if (!job) return null;
+
+        const schema = {
+            "@context": "https://schema.org/",
+            "@type": "JobPosting",
+            "title": job.title,
+            "description": job.description,
+            "identifier": {
+                "@type": "PropertyValue",
+                "name": job.company,
+                "value": job._id
+            },
+            "datePosted": job.createdAt,
+            "validThrough": job.endDate || new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
+            "employmentType": job.type === 'internship' ? "INTERN" : "FULL_TIME",
+            "hiringOrganization": {
+                "@type": "Organization",
+                "name": job.company,
+                "sameAs": "https://jobconnects.online",
+                "logo": job.companyLogo || "https://jobconnects.online/logo-jp.svg"
+            },
+            "jobLocation": {
+                "@type": "Place",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": job.location || "Bangalore",
+                    "addressRegion": "Karnataka",
+                    "addressCountry": "IN"
+                }
+            },
+            "baseSalary": {
+                "@type": "MonetaryAmount",
+                "currency": "INR",
+                "value": {
+                    "@type": "QuantitativeValue",
+                    "value": job.package || "Not Disclosed",
+                    "unitText": "YEAR"
+                }
+            }
         };
+
+        return JSON.stringify(schema);
     }, [job]);
 
     // Filter out current job from related jobs
@@ -104,6 +142,20 @@ function JobDetails() {
 
     return (
         <div className="job-details-page">
+            <Helmet>
+                <title>{job.title} | {job.company} - JobConnects</title>
+                <meta name="description" content={`Apply for ${job.title} at ${job.company} in ${job.location}. ${job.skills?.slice(0, 3).join(', ')} required. Find more jobs on JobConnects.`} />
+                <link rel="canonical" href={`https://jobconnects.online/job/${id}`} />
+                <meta property="og:title" content={`${job.title} at ${job.company}`} />
+                <meta property="og:description" content={`Apply for ${job.title} at ${job.company}. ${job.package || 'Competitive Salary'}.`} />
+                <meta property="og:url" content={`https://jobconnects.online/job/${id}`} />
+                <meta property="og:type" content="website" />
+                {jobSchema && (
+                    <script type="application/ld+json">
+                        {jobSchema}
+                    </script>
+                )}
+            </Helmet>
             {/* Header */}
             <div className="job-header">
                 <div className="container">
@@ -224,15 +276,21 @@ function JobDetails() {
                             {/* Apply Button - In Page - Hidden for Walkins */}
                             {!isWalkin && (
                                 <div className="apply-section">
-                                    <a
-                                        href={job.applyLink || '#'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="btn btn-primary btn-lg btn-apply"
-                                    >
-                                        Apply Now
-                                        <ExternalLink size={18} />
-                                    </a>
+                                    {isExpired ? (
+                                        <button className="btn btn-secondary btn-lg btn-apply" disabled style={{ opacity: 0.7, cursor: 'not-allowed' }}>
+                                            Job Expired
+                                        </button>
+                                    ) : (
+                                        <a
+                                            href={job.applyLink || '#'}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="btn btn-primary btn-lg btn-apply"
+                                        >
+                                            Apply Now
+                                            <ExternalLink size={18} />
+                                        </a>
+                                    )}
                                 </div>
                             )}
                         </div>

@@ -60,11 +60,14 @@ function JobCard({ job }) {
         }
     };
 
+    // Check for expiration
+    const isExpired = job.endDate && new Date(job.endDate) < new Date();
+
     // Get only first 4 skills
     const displaySkills = job.skills ? job.skills.slice(0, 4) : [];
 
     return (
-        <div className="job-card card" onMouseLeave={() => setShowMenu(false)}>
+        <div className={`job-card card ${isExpired ? 'expired' : ''}`} onMouseLeave={() => setShowMenu(false)}>
             <div className="job-card-top">
                 {/* Left: Logo */}
                 <div className="job-company-logo">
@@ -138,7 +141,7 @@ function JobCard({ job }) {
                     <span>{getTimeAgo(job.createdAt)}</span>
                 </div>
                 <Link to={`/job/${job._id}`} className="btn btn-primary btn-sm">
-                    Apply Now
+                    {isExpired ? 'Expired' : 'Apply Now'}
                 </Link>
             </div>
         </div>

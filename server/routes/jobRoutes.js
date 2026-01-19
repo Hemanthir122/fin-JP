@@ -8,14 +8,13 @@ router.get('/', async (req, res) => {
     try {
         const { search, location, type, company, page = 1, limit = 12 } = req.query;
 
+        // Show all active jobs, including expired/closed ones for archival view
         let query = {
-            isActive: true,
-            $or: [
-                { endDate: { $exists: false } },
-                { endDate: null },
-                { endDate: { $gte: new Date() } }
-            ]
+            isActive: true
         };
+
+        // Add cache control to reduce re-fetching
+        res.set('Cache-Control', 'public, max-age=300'); // 5 minutes
 
         // Search filter
         if (search) {
@@ -128,18 +127,30 @@ router.get('/roles', async (req, res) => {
 // Get jobs by company
 router.get('/company/:companyName', async (req, res) => {
     try {
-        const jobs = await Job.find({
+        const { page = 1, limit = 12 } = req.query;
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+
+        const query = {
             company: { $regex: req.params.companyName, $options: 'i' },
-            isActive: true,
-            $or: [
-                { endDate: { $exists: false } },
-                { endDate: null },
-                { endDate: { $gte: new Date() } }
-            ]
-        }).sort({ createdAt: -1 });
+            isActive: true
+            // Showing expired jobs here too for history
+        };
 
+        const jobs = await Job.find(query)
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(parseInt(limit));
 
-        res.json(jobs);
+        const total = await Job.countDocuments(query);
+
+        res.set('Cache-Control', 'public, max-age=300');
+
+        res.json({
+            jobs,
+            totalPages: Math.ceil(total / parseInt(limit)),
+            currentPage: parseInt(page),
+            total
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

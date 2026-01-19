@@ -32,7 +32,7 @@ function Footer() {
                     {/* Brand Section */}
                     <div className="footer-brand">
                         {/* <Link to="/" className="footer-logo">
-                            <img src="/src/assets/logo-v2.png" alt="JobsConnect" className="logo-image" />
+                            <img src="/src/assets/logo-v2.png" alt="JobConnects" className="logo-image" />
                         </Link> */}
                         <p className="footer-description">
                             Your trusted platform for finding the best jobs, internships, and walk-in
@@ -84,11 +84,11 @@ function Footer() {
                         <ul className="footer-contact">
                             <li>
                                 <span className="contact-label">Email:</span>
-                                <a href="mailto:contact@jobsconnect.com">technifyz@technifyz.online</a>
+                                <a href="mailto:contact@jobconnects.online">technifyz@technifyz.online</a>
                             </li>
                             <li>
                                 <span className="contact-label">Support:</span>
-                                <a href="mailto:support@jobsconnect.com">technifyz@technifyz.online</a>
+                                <a href="mailto:support@jobconnects.online">technifyz@technifyz.online</a>
                             </li>
                         </ul>
                     </div>
@@ -96,9 +96,9 @@ function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="footer-bottom">
-                    <p>&copy; {currentYear} JobsConnect. All rights reserved.</p>
+                    <p>&copy; {currentYear} JobConnects. All rights reserved.</p>
                     <p className="footer-disclaimer">
-                        JobsConnect is a job listing platform. We are not responsible for the
+                        JobConnects is a job listing platform. We are not responsible for the
                         accuracy of job postings or the actions of employers.
                     </p>
                 </div>

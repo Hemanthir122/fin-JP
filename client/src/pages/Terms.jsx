@@ -19,7 +19,7 @@ function Terms() {
                     <section className="legal-section">
                         <h2>1. Acceptance of Terms</h2>
                         <p>
-                            By accessing and using JobsConnect ("the Platform"), you agree to be bound by these
+                            By accessing and using JobConnects ("the Platform"), you agree to be bound by these
                             Terms and Conditions. If you do not agree with any part of these terms, please do not
                             use our services. These terms apply to all visitors, users, and others who access or
                             use the Platform.
@@ -29,7 +29,7 @@ function Terms() {
                     <section className="legal-section">
                         <h2>2. Description of Service</h2>
                         <p>
-                            JobsConnect is an online job portal that connects job seekers with employers. The
+                            JobConnects is an online job portal that connects job seekers with employers. The
                             Platform provides access to job listings, internships, and walk-in opportunities.
                             Our services include:
                         </p>
@@ -43,7 +43,7 @@ function Terms() {
 
                     <section className="legal-section">
                         <h2>3. User Responsibilities</h2>
-                        <p>By using JobsConnect, you agree to:</p>
+                        <p>By using JobConnects, you agree to:</p>
                         <ul>
                             <li>Provide accurate and truthful information</li>
                             <li>Use the Platform only for lawful purposes</li>
@@ -57,7 +57,7 @@ function Terms() {
                     <section className="legal-section">
                         <h2>4. Job Listings Disclaimer</h2>
                         <p>
-                            JobsConnect does not guarantee the accuracy, completeness, or reliability of job
+                            JobConnects does not guarantee the accuracy, completeness, or reliability of job
                             listings posted on the Platform. We are not responsible for:
                         </p>
                         <ul>
@@ -71,8 +71,8 @@ function Terms() {
                     <section className="legal-section">
                         <h2>5. Intellectual Property</h2>
                         <p>
-                            All content on JobsConnect, including text, graphics, logos, and software, is the
-                            property of JobsConnect or its licensors and is protected by applicable intellectual
+                            All content on JobConnects, including text, graphics, logos, and software, is the
+                            property of JobConnects or its licensors and is protected by applicable intellectual
                             property laws. Unauthorized reproduction or distribution is prohibited.
                         </p>
                     </section>
@@ -89,7 +89,7 @@ function Terms() {
                     <section className="legal-section">
                         <h2>7. Eligibility</h2>
                         <p>
-                            You must be at least 18 years of age to use JobsConnect. By accessing the Platform,
+                            You must be at least 18 years of age to use JobConnects. By accessing the Platform,
                             you confirm that you meet this requirement or have obtained legal parental consent
                             where applicable.
                         </p>
@@ -106,9 +106,9 @@ function Terms() {
                     <section className="legal-section">
                         <h2>9. Third-Party Services & Advertisements</h2>
                         <p>
-                            JobsConnect may display advertisements and links to third-party websites, including
+                            JobConnects may display advertisements and links to third-party websites, including
                             services provided by Google AdSense. These third parties may use cookies or similar
-                            technologies to display relevant advertisements. JobsConnect does not control or
+                            technologies to display relevant advertisements. JobConnects does not control or
                             endorse third-party content or practices.
                         </p>
                     </section>
@@ -116,7 +116,7 @@ function Terms() {
                     <section className="legal-section">
                         <h2>10. Limitation of Liability</h2>
                         <p>
-                            JobsConnect shall not be liable for any indirect, incidental, special, or
+                            JobConnects shall not be liable for any indirect, incidental, special, or
                             consequential damages arising from your use of the Platform, including loss of data,
                             revenue, or opportunities.
                         </p>

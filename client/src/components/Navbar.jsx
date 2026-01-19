@@ -31,9 +31,9 @@ function Navbar() {
         <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
             <div className="navbar-container container">
                 <Link to="/" className="navbar-logo">
-                    {/* <img src="/src/assets/Logos.png" alt="JobsConnect" className="logo-image" /> */}
-                    <span className="logo-text">Jobs</span>
-                    <span className="logo-accent">Connect</span>
+                    {/* <img src="/src/assets/Logos.png" alt="JobConnects" className="logo-image" /> */}
+                    <span className="logo-text">Job</span>
+                    <span className="logo-accent">Connects</span>
                 </Link>
 
                 {/* Desktop Navigation */}

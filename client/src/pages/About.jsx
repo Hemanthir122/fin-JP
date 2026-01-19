@@ -32,7 +32,7 @@ function About() {
             icon: Award,
             title: 'Free Access',
             description:
-                'JobsConnect is completely free for job seekers and is built to support students and early-career professionals.'
+                'JobConnects is completely free for job seekers and is built to support students and early-career professionals.'
         },
         {
             icon: Heart,
@@ -46,7 +46,7 @@ function About() {
         <div className="about-page">
             <div className="page-header">
                 <div className="container">
-                    <h1 className="page-title">About JobsConnect</h1>
+                    <h1 className="page-title">About JobConnects</h1>
                     <p className="page-subtitle">
                         A free job discovery platform built to help students and job seekers find opportunities.
                     </p>
@@ -61,7 +61,7 @@ function About() {
                         <div className="story-text">
                             <h2>Who We Are</h2>
                             <p>
-                                JobsConnect is an online job listing and job discovery platform created to help
+                                JobConnects is an online job listing and job discovery platform created to help
                                 students, fresh graduates, and professionals stay informed about job openings,
                                 internships, and walk-in opportunities.
                             </p>
@@ -79,7 +79,7 @@ function About() {
                             </p>
 
                             <p>
-                                JobsConnect is completely <strong>free to use</strong>. We do not charge job seekers
+                                JobConnects is completely <strong>free to use</strong>. We do not charge job seekers
                                 for accessing job listings, and our goal is to help users discover opportunities
                                 easily and efficiently.
                             </p>
@@ -130,7 +130,7 @@ function About() {
                 <section className="about-section">
                     <h2>Data & Privacy</h2>
                     <p>
-                        We respect user privacy. JobsConnect does not sell user data to third parties.
+                        We respect user privacy. JobConnects does not sell user data to third parties.
                         Any information collected is used only to improve platform functionality
                         and user experience, as described in our Privacy Policy.
                     </p>

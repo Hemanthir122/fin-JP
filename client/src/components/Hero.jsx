@@ -35,7 +35,7 @@ function Hero() {
 
                     <h1 className="hero-title animate-fadeIn stagger-1">
                         Find Your Dream Job with{' '}
-                        <span className="gradient-text">JobsConnect</span>
+                        <span className="gradient-text">JobConnects</span>
                     </h1>
 
                     <p className="hero-subtitle animate-fadeIn stagger-2">
@@ -54,19 +54,7 @@ function Hero() {
                         </Link>
                     </div>
 
-                    <div className="hero-stats animate-fadeIn stagger-4">
-                        {stats.map((stat, index) => (
-                            <div key={index} className="stat-item">
-                                <div className="stat-icon">
-                                    <stat.icon size={24} />
-                                </div>
-                                <div className="stat-info">
-                                    <span className="stat-value">{stat.value}</span>
-                                    <span className="stat-label">{stat.label}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    {/* Stats section removed as per request */}
                 </div>
             </div>
         </section>

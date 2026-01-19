@@ -228,3 +228,13 @@
     background: rgba(0, 0, 0, 0.03);
     color: var(--primary);
 }
+
+.job-card.expired {
+    filter: grayscale(100%);
+    opacity: 0.8;
+}
+
+.job-card.expired .badge {
+    background-color: #666;
+    color: #fff;
+}
