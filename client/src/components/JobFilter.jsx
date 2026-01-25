@@ -12,7 +12,7 @@ function JobFilter({ onFilter, companies = [], locations = [], roles = [] }) {
     useEffect(() => {
         const timer = setTimeout(() => {
             onFilter({ search, location, type, company });
-        }, 300);
+        }, 800);
 
         return () => clearTimeout(timer);
     }, [search, location, type, company, onFilter]);

@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import JobCard from '../components/JobCard';
 import WalkinCard from '../components/WalkinCard';
 import Pagination from '../components/Pagination';
@@ -71,6 +72,11 @@ function Jobs({ type: propType }) {
 
     return (
         <div className="jobs-page">
+            <Helmet>
+                <title>{getPageTitle()} | JobConnects</title>
+                <meta name="description" content={`${getPageDescription()}. Search and apply for the best opportunities on JobConnects.`} />
+                <link rel="canonical" href={`https://jobconnects.online${propType ? '/' + propType + 's' : '/jobs'}`} />
+            </Helmet>
             <div className="jobs-page-header">
                 <div className="container">
                     <h1 className="page-title">{getPageTitle()}</h1>

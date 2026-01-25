@@ -13,8 +13,8 @@ export const jobKeys = {
 
 // Default options for long stale times
 const defaultQueryOptions = {
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 30 * 60 * 1000,   // 30 minutes (formerly cacheTime)
+    staleTime: 30 * 60 * 1000, // 30 minutes
+    gcTime: 60 * 60 * 1000,    // 60 minutes
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     retry: 1,
@@ -122,9 +122,10 @@ export function useCompanies() {
             const { data } = await api.get('/companies');
             return data;
         },
-        staleTime: 10 * 60 * 1000,
-        gcTime: 60 * 60 * 1000,
+        staleTime: 24 * 60 * 60 * 1000, // 24 hours (Static data)
+        gcTime: 24 * 60 * 60 * 1000,
         refetchOnWindowFocus: false,
+        refetchOnMount: false
     });
 }
 
@@ -136,9 +137,10 @@ export function useLocations() {
             const { data } = await api.get('/jobs/locations');
             return data;
         },
-        staleTime: 10 * 60 * 1000,
-        gcTime: 60 * 60 * 1000,
+        staleTime: 24 * 60 * 60 * 1000, // 24 hours (Static data)
+        gcTime: 24 * 60 * 60 * 1000,
         refetchOnWindowFocus: false,
+        refetchOnMount: false
     });
 }
 
@@ -150,7 +152,9 @@ export function useLatestJobs() {
             const { data } = await api.get('/jobs/latest');
             return data;
         },
-        ...defaultQueryOptions,
+        staleTime: 10 * 60 * 1000, // 10 minutes (Home page)
+        gcTime: 60 * 60 * 1000,
+        refetchOnWindowFocus: false
     });
 }
 
@@ -163,7 +167,10 @@ export function useCompanyDetails(companyName) {
             return data;
         },
         enabled: !!companyName,
-        ...defaultQueryOptions,
+        staleTime: 60 * 60 * 1000, // 1 hour
+        gcTime: 24 * 60 * 60 * 1000,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false
     });
 }
 

@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Target, Zap, Shield, Users } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import JobCard from '../components/JobCard';
 import JobFilter from '../components/JobFilter';
@@ -79,6 +80,11 @@ function Home() {
 
     return (
         <div className="home-page">
+            <Helmet>
+                <title>JobConnects - Find Best Jobs, Internships & Walk-ins in India</title>
+                <meta name="description" content="Find the latest jobs, internships, and walk-in drive opportunities in India. Connect with top recruitng companies like TCS, Infosys, Wipro, and more." />
+                <link rel="canonical" href="https://jobconnects.online/" />
+            </Helmet>
             <Hero />
 
             {/* About Section */}
