@@ -184,7 +184,7 @@ function EditJob() {
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e, status) => {
         e.preventDefault();
         setSaving(true);
 
@@ -192,10 +192,11 @@ function EditJob() {
             if (formData.type === 'walkin') {
                 await api.put(`/walkins/${id}`, {
                     company: formData.company,
-                    description: formData.description
+                    description: formData.description,
+                    status
                 });
             } else {
-                const payload = { ...formData };
+                const payload = { ...formData, status };
                 if (!payload.endDate) {
                     payload.endDate = null;
                 }
@@ -596,10 +597,25 @@ function EditJob() {
 
                         {/* Submit */}
                         <div className="form-actions">
-                            <button type="submit" className="btn btn-primary" disabled={saving}>
-                                {saving ? 'Saving...' : 'Update Job'}
-                            </button>
-                            <Link to="/admin/manage-jobs" className="btn btn-secondary">
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button
+                                    type="button"
+                                    onClick={(e) => handleSubmit(e, 'draft')}
+                                    className="btn btn-secondary"
+                                    disabled={saving}
+                                >
+                                    {saving ? 'Saving...' : 'Save as Draft'}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={(e) => handleSubmit(e, 'published')}
+                                    className="btn btn-primary"
+                                    disabled={saving}
+                                >
+                                    {saving ? 'Publishing...' : 'Publish Job'}
+                                </button>
+                            </div>
+                            <Link to="/admin/manage-jobs" className="btn btn-secondary" style={{ marginLeft: 'auto' }}>
                                 Cancel
                             </Link>
                         </div>

@@ -13,8 +13,22 @@ router.get('/', async (req, res) => {
             isActive: true
         };
 
-        // Add cache control to reduce re-fetching
-        res.set('Cache-Control', 'public, max-age=300'); // 5 minutes
+        // Filter by status (default to 'published' unless 'all' or specific status requested)
+        if (req.query.status && req.query.status !== 'all') {
+            query.status = req.query.status;
+        } else if (req.query.status !== 'all') {
+            query.$or = [
+                { status: 'published' },
+                { status: { $exists: false } }
+            ];
+        }
+
+        // Add cache control to reduce re-fetching, but disable for admin (status=all)
+        if (req.query.status === 'all') {
+            res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+        } else {
+            res.set('Cache-Control', 'public, max-age=300'); // 5 minutes
+        }
 
         // Search filter
         if (search) {
@@ -73,9 +87,17 @@ router.get('/latest', async (req, res) => {
         const jobs = await Job.find({
             isActive: true,
             $or: [
-                { endDate: { $exists: false } },
-                { endDate: null },
-                { endDate: { $gte: new Date() } }
+                { status: 'published' },
+                { status: { $exists: false } }
+            ],
+            $and: [
+                {
+                    $or: [
+                        { endDate: { $exists: false } },
+                        { endDate: null },
+                        { endDate: { $gte: new Date() } }
+                    ]
+                }
             ]
         })
 
@@ -94,9 +116,17 @@ router.get('/locations', async (req, res) => {
         const locations = await Job.distinct('location', {
             isActive: true,
             $or: [
-                { endDate: { $exists: false } },
-                { endDate: null },
-                { endDate: { $gte: new Date() } }
+                { status: 'published' },
+                { status: { $exists: false } }
+            ],
+            $and: [
+                {
+                    $or: [
+                        { endDate: { $exists: false } },
+                        { endDate: null },
+                        { endDate: { $gte: new Date() } }
+                    ]
+                }
             ]
         });
 
@@ -112,9 +142,17 @@ router.get('/roles', async (req, res) => {
         const roles = await Job.distinct('title', {
             isActive: true,
             $or: [
-                { endDate: { $exists: false } },
-                { endDate: null },
-                { endDate: { $gte: new Date() } }
+                { status: 'published' },
+                { status: { $exists: false } }
+            ],
+            $and: [
+                {
+                    $or: [
+                        { endDate: { $exists: false } },
+                        { endDate: null },
+                        { endDate: { $gte: new Date() } }
+                    ]
+                }
             ]
         });
 
@@ -132,7 +170,11 @@ router.get('/company/:companyName', async (req, res) => {
 
         const query = {
             company: { $regex: req.params.companyName, $options: 'i' },
-            isActive: true
+            isActive: true,
+            $or: [
+                { status: 'published' },
+                { status: { $exists: false } }
+            ]
             // Showing expired jobs here too for history
         };
 

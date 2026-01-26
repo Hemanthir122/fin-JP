@@ -20,7 +20,7 @@ function ManageJobs() {
     const fetchJobs = async () => {
         try {
             const [jobsRes, walkinsRes] = await Promise.all([
-                api.get('/jobs', { params: { limit: 100 } }),
+                api.get('/jobs', { params: { limit: 100, status: 'all' } }),
                 api.get('/walkins', { params: { limit: 100 } })
             ]);
 
@@ -40,16 +40,28 @@ function ManageJobs() {
         }
     };
 
-    const handleDelete = async (id, type) => {
-        if (window.confirm('Are you sure you want to delete this listing?')) {
-            try {
-                const endpoint = type === 'walkin' ? `/walkins/${id}` : `/jobs/${id}`;
-                await api.delete(endpoint);
-                setJobs(jobs.filter(job => job._id !== id));
-            } catch (error) {
-                console.error('Error deleting job:', error);
-                alert('Error deleting job. Please try again.');
-            }
+    const [deleteModal, setDeleteModal] = useState({ show: false, id: null, type: null });
+
+    const openDeleteModal = (id, type) => {
+        setDeleteModal({ show: true, id, type });
+    };
+
+    const closeDeleteModal = () => {
+        setDeleteModal({ show: false, id: null, type: null });
+    };
+
+    const confirmDelete = async () => {
+        const { id, type } = deleteModal;
+        if (!id) return;
+
+        try {
+            const endpoint = type === 'walkin' ? `/walkins/${id}` : `/jobs/${id}`;
+            await api.delete(endpoint);
+            setJobs(jobs.filter(job => job._id !== id));
+            closeDeleteModal();
+        } catch (error) {
+            console.error('Error deleting job:', error);
+            alert('Error deleting job. Please try again.');
         }
     };
 
@@ -182,6 +194,7 @@ function ManageJobs() {
                                         <th>Company</th>
                                         <th>Location</th>
                                         <th>Type</th>
+                                        <th>Status</th>
                                         <th>Posted</th>
                                         <th>Actions</th>
                                     </tr>
@@ -197,6 +210,20 @@ function ManageJobs() {
                                             <td>
                                                 <span className={`badge badge-${job.type}`}>
                                                     {getTypeLabel(job.type)}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    className="badge"
+                                                    style={{
+                                                        background: job.status === 'draft' ? '#e0e0e0' : 'var(--accent-green)',
+                                                        color: job.status === 'draft' ? '#333' : '#fff',
+                                                        padding: '4px 8px',
+                                                        borderRadius: '4px',
+                                                        fontSize: '12px'
+                                                    }}
+                                                >
+                                                    {job.status === 'draft' ? 'Draft' : 'Published'}
                                                 </span>
                                             </td>
                                             <td>{formatDate(job.createdAt)}</td>
@@ -217,7 +244,7 @@ function ManageJobs() {
                                                     </Link>
                                                     <button
                                                         className="table-btn table-btn-delete"
-                                                        onClick={() => handleDelete(job._id, job.type)}
+                                                        onClick={() => openDeleteModal(job._id, job.type)}
                                                     >
                                                         <Trash2 size={14} />
                                                     </button>
@@ -235,6 +262,62 @@ function ManageJobs() {
                     )}
                 </div>
             </div>
+            {/* Delete Confirmation Modal */}
+            {deleteModal.show && (
+                <div className="modal-overlay" style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                }}>
+                    <div className="modal-content" style={{
+                        backgroundColor: 'white',
+                        padding: '24px',
+                        borderRadius: '8px',
+                        width: '100%',
+                        maxWidth: '400px',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                    }}>
+                        <h3 style={{ marginTop: 0, marginBottom: '16px' }}>Confirm Delete</h3>
+                        <p style={{ marginBottom: '24px', color: '#666' }}>
+                            Are you sure you want to delete this job listing? This action cannot be undone.
+                        </p>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                            <button
+                                onClick={closeDeleteModal}
+                                style={{
+                                    padding: '8px 16px',
+                                    border: '1px solid #ddd',
+                                    borderRadius: '4px',
+                                    background: 'white',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                style={{
+                                    padding: '8px 16px',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    background: '#ef4444',
+                                    color: 'white',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

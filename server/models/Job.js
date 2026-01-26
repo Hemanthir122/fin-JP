@@ -56,6 +56,11 @@ const jobSchema = new mongoose.Schema({
     },
     endDate: {
         type: Date
+    },
+    status: {
+        type: String,
+        enum: ['draft', 'published'],
+        default: 'published'
     }
 }, {
     timestamps: true

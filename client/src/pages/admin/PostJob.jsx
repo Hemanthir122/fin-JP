@@ -172,7 +172,7 @@ function PostJob() {
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e, status) => {
         e.preventDefault();
         setLoading(true);
 
@@ -180,10 +180,11 @@ function PostJob() {
             if (formData.type === 'walkin') {
                 await api.post('/walkins', {
                     company: formData.company,
-                    description: formData.description
+                    description: formData.description,
+                    status
                 });
             } else {
-                const payload = { ...formData };
+                const payload = { ...formData, status };
                 if (!payload.endDate) {
                     payload.endDate = null;
                 }
@@ -594,10 +595,25 @@ function PostJob() {
 
                         {/* Submit */}
                         <div className="form-actions">
-                            <button type="submit" className="btn btn-primary" disabled={loading}>
-                                {loading ? 'Posting...' : formData.type === 'walkin' ? 'Post Walk-in/Email' : 'Post Job'}
-                            </button>
-                            <Link to="/admin" className="btn btn-secondary">
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button
+                                    type="button"
+                                    onClick={(e) => handleSubmit(e, 'draft')}
+                                    className="btn btn-secondary"
+                                    disabled={loading}
+                                >
+                                    Save as Draft
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={(e) => handleSubmit(e, 'published')}
+                                    className="btn btn-primary"
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Publishing...' : formData.type === 'walkin' ? 'Publish Walk-in' : 'Publish Job'}
+                                </button>
+                            </div>
+                            <Link to="/admin" className="btn btn-secondary" style={{ marginLeft: 'auto' }}>
                                 Cancel
                             </Link>
                         </div>

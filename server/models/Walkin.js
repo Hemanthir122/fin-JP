@@ -13,6 +13,11 @@ const walkinSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true
+    },
+    status: {
+        type: String,
+        enum: ['draft', 'published'],
+        default: 'published'
     }
 }, {
     timestamps: true

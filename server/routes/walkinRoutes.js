@@ -10,6 +10,24 @@ router.get('/', async (req, res) => {
 
         let query = { isActive: true };
 
+        // Filter by status (default to 'published' unless 'all' or specific status requested)
+        // Also handle backward compatibility for missing status field
+        if (req.query.status && req.query.status !== 'all') {
+            query.status = req.query.status;
+        } else if (req.query.status !== 'all') {
+            query.$or = [
+                { status: 'published' },
+                { status: { $exists: false } }
+            ];
+        }
+
+        // Add cache control to reduce re-fetching, but disable for admin (status=all)
+        if (req.query.status === 'all') {
+            res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+        } else {
+            res.set('Cache-Control', 'public, max-age=300'); // 5 minutes
+        }
+
         // Search filter
         if (search) {
             query.$or = [
@@ -46,7 +64,13 @@ router.get('/', async (req, res) => {
 // Get latest walkins for homepage
 router.get('/latest', async (req, res) => {
     try {
-        const walkins = await Walkin.find({ isActive: true })
+        const walkins = await Walkin.find({
+            isActive: true,
+            $or: [
+                { status: 'published' },
+                { status: { $exists: false } }
+            ]
+        })
             .sort({ createdAt: -1 })
             .limit(9);
 
@@ -76,7 +100,8 @@ router.post('/', async (req, res) => {
     try {
         const walkin = new Walkin({
             company: req.body.company,
-            description: req.body.description
+            description: req.body.description,
+            status: req.body.status || 'draft'
         });
         const savedWalkin = await walkin.save();
 
@@ -106,7 +131,8 @@ router.put('/:id', async (req, res) => {
             req.params.id,
             {
                 company: req.body.company,
-                description: req.body.description
+                description: req.body.description,
+                status: req.body.status
             },
             { new: true, runValidators: true }
         );

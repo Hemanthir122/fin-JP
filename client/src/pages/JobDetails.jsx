@@ -102,15 +102,26 @@ function JobDetails() {
     };
 
     const handleShare = async () => {
+        const shareText = `Company : ${job.company}
+Role : ${job.title || 'N/A'}
+Location: ${job.location || 'N/A'}
+Package: ${job.package || 'N/A'}
+Experience: ${job.experience || 'N/A'}
+Apply link : ${window.location.href}`;
+
         try {
-            await navigator.share({
-                title: `${job.title} at ${job.company}`,
-                text: `Check out this job opportunity: ${job.title} at ${job.company}`,
-                url: window.location.href
-            });
+            if (navigator.share) {
+                await navigator.share({
+                    title: `${job.title} at ${job.company}`,
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                throw new Error('Web Share API not supported');
+            }
         } catch (error) {
-            navigator.clipboard.writeText(window.location.href);
-            alert('Link copied to clipboard!');
+            navigator.clipboard.writeText(shareText);
+            alert('Job details copied to clipboard!');
         }
     };
 
