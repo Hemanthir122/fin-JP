@@ -22,6 +22,7 @@ function PostJob() {
         location: '',
         package: '',
         experience: '',
+        batch: '',
         type: 'job',
         description: '',
         skills: [],
@@ -424,6 +425,17 @@ function PostJob() {
                                             <option value="More than 2 years">More than 2 years</option>
                                             <option value="Above 3 years">Above 3 years</option>
                                         </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="label">Batch (Optional)</label>
+                                        <input
+                                            type="text"
+                                            name="batch"
+                                            value={formData.batch}
+                                            onChange={handleChange}
+                                            className="input"
+                                            placeholder="e.g., 2024, 2025, 2026"
+                                        />
                                     </div>
                                 </div>
 

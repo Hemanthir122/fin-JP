@@ -16,11 +16,36 @@ function JobCard({ job }) {
         e.preventDefault();
         e.stopPropagation();
 
+        // Use external apply link if available, otherwise fallback to details page
+        const applyLink = job.applyLink || `${window.location.origin}/job/${job._id}`;
+
+        const shareText = `Company: ${job.company}
+Role : ${job.title || 'N/A'}
+Experience : ${job.experience || 'N/A'}
+Package : ${job.package || 'N/A'}
+
+Apply link
+
+${applyLink}`;
+
         try {
-            await navigator.clipboard.writeText(`${window.location.origin}/job/${job._id}`);
-            alert('Job link copied to clipboard!');
+            if (navigator.share) {
+                await navigator.share({
+                    title: `${job.title} at ${job.company}`,
+                    text: shareText
+                    // Removed separate URL parameter to ensure text format is shared
+                });
+            } else {
+                await navigator.clipboard.writeText(shareText);
+                alert('Job details copied to clipboard!');
+            }
         } catch (err) {
-            console.error('Failed to copy link:', err);
+            console.error('Failed to share:', err);
+            // Fallback to clipboard on error (e.g. if user cancels share)
+            if (err.name !== 'AbortError') {
+                navigator.clipboard.writeText(shareText);
+                alert('Job details copied to clipboard!');
+            }
         }
         setShowMenu(false);
     };

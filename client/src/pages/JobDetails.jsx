@@ -102,26 +102,35 @@ function JobDetails() {
     };
 
     const handleShare = async () => {
-        const shareText = `Company : ${job.company}
+        // Use external apply link if available, otherwise fallback to current page URL
+        const applyLink = job.applyLink || window.location.href;
+
+        const shareText = `Company: ${job.company}
 Role : ${job.title || 'N/A'}
-Location: ${job.location || 'N/A'}
-Package: ${job.package || 'N/A'}
-Experience: ${job.experience || 'N/A'}
-Apply link : ${window.location.href}`;
+Experience : ${job.experience || 'N/A'}
+Package : ${job.package || 'N/A'}
+
+Apply link
+
+${applyLink}`;
 
         try {
             if (navigator.share) {
                 await navigator.share({
                     title: `${job.title} at ${job.company}`,
-                    text: shareText,
-                    url: window.location.href
+                    text: shareText
+                    // Removed separate URL parameter to ensure text format is shared
                 });
             } else {
-                throw new Error('Web Share API not supported');
+                navigator.clipboard.writeText(shareText);
+                alert('Job details copied to clipboard!');
             }
         } catch (error) {
-            navigator.clipboard.writeText(shareText);
-            alert('Job details copied to clipboard!');
+            console.error('Failed to share:', error);
+            if (error.name !== 'AbortError') {
+                navigator.clipboard.writeText(shareText);
+                alert('Job details copied to clipboard!');
+            }
         }
     };
 
@@ -327,6 +336,12 @@ Apply link : ${window.location.href}`;
                                             <span className="overview-value">
                                                 {job.experience}
                                             </span>
+                                        </div>
+                                    )}
+                                    {job.batch && (
+                                        <div className="overview-item">
+                                            <span className="overview-label">Batch</span>
+                                            <span className="overview-value">{job.batch}</span>
                                         </div>
                                     )}
                                     {job.package && (

@@ -28,6 +28,10 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    batch: {
+        type: String,
+        default: ''
+    },
     type: {
         type: String,
         enum: ['job', 'internship', 'walkin'],

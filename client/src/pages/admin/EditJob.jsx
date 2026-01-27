@@ -24,6 +24,7 @@ function EditJob() {
         location: '',
         package: '',
         experience: '',
+        batch: '',
         type: 'job',
         description: '',
         skills: [],
@@ -426,6 +427,17 @@ function EditJob() {
                                         className="input"
                                         placeholder="e.g., 2-4 years"
                                         required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="label">Batch (Optional)</label>
+                                    <input
+                                        type="text"
+                                        name="batch"
+                                        value={formData.batch}
+                                        onChange={handleChange}
+                                        className="input"
+                                        placeholder="e.g., 2024, 2025, 2026"
                                     />
                                 </div>
                             </div>
