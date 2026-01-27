@@ -16,8 +16,7 @@ function JobCard({ job }) {
         e.preventDefault();
         e.stopPropagation();
 
-        // Use external apply link if available, otherwise fallback to details page
-        const applyLink = job.applyLink || `${window.location.origin}/job/${job._id}`;
+        const platformLink = `${window.location.origin}/job/${job._id}`;
 
         const shareText = `Company: ${job.company}
 Role : ${job.title || 'N/A'}
@@ -26,7 +25,7 @@ Package : ${job.package || 'N/A'}
 
 Apply link
 
-${applyLink}`;
+${platformLink}`;
 
         try {
             if (navigator.share) {

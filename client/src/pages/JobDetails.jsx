@@ -102,8 +102,7 @@ function JobDetails() {
     };
 
     const handleShare = async () => {
-        // Use external apply link if available, otherwise fallback to current page URL
-        const applyLink = job.applyLink || window.location.href;
+        const platformLink = window.location.href.split('?')[0]; // Remove query params like ?type=job
 
         const shareText = `Company: ${job.company}
 Role : ${job.title || 'N/A'}
@@ -112,7 +111,7 @@ Package : ${job.package || 'N/A'}
 
 Apply link
 
-${applyLink}`;
+${platformLink}`;
 
         try {
             if (navigator.share) {
