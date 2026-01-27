@@ -22,9 +22,7 @@ function JobCard({ job }) {
 Role : ${job.title || 'N/A'}
 Experience : ${job.experience || 'N/A'}
 Package : ${job.package || 'N/A'}
-
 Apply link
-
 ${platformLink}`;
 
         try {
