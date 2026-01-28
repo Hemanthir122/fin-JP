@@ -18,6 +18,9 @@ const walkinSchema = new mongoose.Schema({
         type: String,
         enum: ['draft', 'published'],
         default: 'published'
+    },
+    publishedAt: {
+        type: Date
     }
 }, {
     timestamps: true

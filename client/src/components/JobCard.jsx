@@ -61,8 +61,8 @@ ${platformLink}`;
 
     const getTimeAgo = (date) => {
         const now = new Date();
-        const posted = new Date(date);
-        const diffMs = now - posted;
+        const displayDate = job.publishedAt ? new Date(job.publishedAt) : new Date(date);
+        const diffMs = now - displayDate;
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
         const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
         const diffMinutes = Math.floor(diffMs / (1000 * 60));

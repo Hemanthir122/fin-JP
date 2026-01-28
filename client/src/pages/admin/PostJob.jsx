@@ -608,14 +608,16 @@ function PostJob() {
                         {/* Submit */}
                         <div className="form-actions">
                             <div style={{ display: 'flex', gap: '12px' }}>
-                                <button
-                                    type="button"
-                                    onClick={(e) => handleSubmit(e, 'draft')}
-                                    className="btn btn-secondary"
-                                    disabled={loading}
-                                >
-                                    Save as Draft
-                                </button>
+                                {formData.type !== 'walkin' && (
+                                    <button
+                                        type="button"
+                                        onClick={(e) => handleSubmit(e, 'draft')}
+                                        className="btn btn-secondary"
+                                        disabled={loading}
+                                    >
+                                        Save as Draft
+                                    </button>
+                                )}
                                 <button
                                     type="button"
                                     onClick={(e) => handleSubmit(e, 'published')}

@@ -21,7 +21,7 @@ function ManageJobs() {
         try {
             const [jobsRes, walkinsRes] = await Promise.all([
                 api.get('/jobs', { params: { limit: 100, status: 'all' } }),
-                api.get('/walkins', { params: { limit: 100 } })
+                api.get('/walkins', { params: { limit: 100, status: 'all' } })
             ]);
 
             const jobsList = jobsRes.data.jobs.map(j => ({ ...j, model: 'job' }));

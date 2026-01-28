@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
         if (req.query.status === 'all') {
             res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
         } else {
-            res.set('Cache-Control', 'public, max-age=300'); // 5 minutes
+            res.set('Cache-Control', 'public, max-age=10'); // 10 seconds for quick updates
         }
 
         // Search filter
@@ -216,25 +216,14 @@ router.get('/:id', async (req, res) => {
 // Create new job
 router.post('/', async (req, res) => {
     try {
-        const job = new Job(req.body);
-        const savedJob = await job.save();
-
-        // Save/update company for autocomplete feature
-        const existingCompany = await Company.findOne({
-            name: { $regex: `^${req.body.company}$`, $options: 'i' }
-        });
-
-        if (!existingCompany) {
-            const newCompany = new Company({
-                name: req.body.company,
-                logo: req.body.companyLogo || ''
-            });
-            await newCompany.save();
-        } else if (req.body.companyLogo && !existingCompany.logo) {
-            existingCompany.logo = req.body.companyLogo;
-            await existingCompany.save();
+        const jobData = { ...req.body };
+        // If posting directly as published, set publishedAt
+        if (jobData.status === 'published') {
+            jobData.publishedAt = new Date();
         }
 
+        const job = new Job(jobData);
+        const savedJob = await job.save();
         res.status(201).json(savedJob);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -244,17 +233,28 @@ router.post('/', async (req, res) => {
 // Update job
 router.put('/:id', async (req, res) => {
     try {
-        const job = await Job.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true, runValidators: true }
-        );
-
+        const job = await Job.findById(req.params.id);
         if (!job) {
             return res.status(404).json({ message: 'Job not found' });
         }
 
-        res.json(job);
+        // Check if we are moving from a non-published state to published
+        const isCurrentlyPublished = job.status === 'published';
+        const willBePublished = req.body.status === 'published';
+
+        if (!isCurrentlyPublished && willBePublished) {
+            job.publishedAt = new Date();
+            // Also reset createdAt just in case, but publishedAt will be the source of truth
+            job.createdAt = new Date();
+            job.markModified('createdAt');
+            job.markModified('publishedAt');
+        }
+
+        // Update other fields from req.body
+        Object.assign(job, req.body);
+
+        const savedJob = await job.save({ timestamps: false });
+        res.json(savedJob);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

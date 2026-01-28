@@ -25,20 +25,31 @@ router.get('/', async (req, res) => {
         if (req.query.status === 'all') {
             res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
         } else {
-            res.set('Cache-Control', 'public, max-age=300'); // 5 minutes
+            res.set('Cache-Control', 'public, max-age=10'); // 10 seconds
         }
 
         // Search filter
         if (search) {
-            query.$or = [
-                { company: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } }
-            ];
+            query = {
+                $and: [
+                    query,
+                    {
+                        $or: [
+                            { company: { $regex: search, $options: 'i' } },
+                            { description: { $regex: search, $options: 'i' } }
+                        ]
+                    }
+                ]
+            };
         }
 
         // Company filter
         if (company) {
-            query.company = { $regex: company, $options: 'i' };
+            if (query.$and) {
+                query.$and.push({ company: { $regex: company, $options: 'i' } });
+            } else {
+                query.company = { $regex: company, $options: 'i' };
+            }
         }
 
         const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -98,11 +109,17 @@ router.get('/:id', async (req, res) => {
 // Create new walkin
 router.post('/', async (req, res) => {
     try {
-        const walkin = new Walkin({
+        const walkinData = {
             company: req.body.company,
             description: req.body.description,
-            status: req.body.status || 'draft'
-        });
+            status: req.body.status || 'published' // Walkins are usually published directly
+        };
+
+        if (walkinData.status === 'published') {
+            walkinData.publishedAt = new Date();
+        }
+
+        const walkin = new Walkin(walkinData);
         const savedWalkin = await walkin.save();
 
         // Save/update company for autocomplete feature
@@ -127,21 +144,29 @@ router.post('/', async (req, res) => {
 // Update walkin
 router.put('/:id', async (req, res) => {
     try {
-        const walkin = await Walkin.findByIdAndUpdate(
-            req.params.id,
-            {
-                company: req.body.company,
-                description: req.body.description,
-                status: req.body.status
-            },
-            { new: true, runValidators: true }
-        );
-
+        const walkin = await Walkin.findById(req.params.id);
         if (!walkin) {
             return res.status(404).json({ message: 'Walkin not found' });
         }
 
-        res.json(walkin);
+        // Check if we are moving from a non-published state to published
+        const isCurrentlyPublished = walkin.status === 'published';
+        const willBePublished = req.body.status === 'published';
+
+        if (!isCurrentlyPublished && willBePublished) {
+            walkin.publishedAt = new Date();
+            walkin.createdAt = new Date();
+            walkin.markModified('createdAt');
+            walkin.markModified('publishedAt');
+        }
+
+        // Update fields
+        walkin.company = req.body.company;
+        walkin.description = req.body.description;
+        walkin.status = req.body.status;
+
+        const savedWalkin = await walkin.save({ timestamps: false });
+        res.json(savedWalkin);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

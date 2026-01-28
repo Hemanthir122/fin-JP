@@ -228,7 +228,7 @@ ${platformLink}`;
                             )}
                             <div className="meta-chip">
                                 <Clock size={16} />
-                                Posted {formatDate(job.createdAt)}
+                                Posted {formatDate(job.publishedAt || job.createdAt)}
                             </div>
                         </div>
                     </div>
@@ -351,7 +351,7 @@ ${platformLink}`;
                                     )}
                                     <div className="overview-item">
                                         <span className="overview-label">Posted On</span>
-                                        <span className="overview-value">{formatDate(job.createdAt)}</span>
+                                        <span className="overview-value">{formatDate(job.publishedAt || job.createdAt)}</span>
                                     </div>
                                 </div>
                             </div>

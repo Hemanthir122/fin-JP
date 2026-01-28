@@ -610,14 +610,16 @@ function EditJob() {
                         {/* Submit */}
                         <div className="form-actions">
                             <div style={{ display: 'flex', gap: '12px' }}>
-                                <button
-                                    type="button"
-                                    onClick={(e) => handleSubmit(e, 'draft')}
-                                    className="btn btn-secondary"
-                                    disabled={saving}
-                                >
-                                    {saving ? 'Saving...' : 'Save as Draft'}
-                                </button>
+                                {formData.type !== 'walkin' && (
+                                    <button
+                                        type="button"
+                                        onClick={(e) => handleSubmit(e, 'draft')}
+                                        className="btn btn-secondary"
+                                        disabled={saving}
+                                    >
+                                        {saving ? 'Saving...' : 'Save as Draft'}
+                                    </button>
+                                )}
                                 <button
                                     type="button"
                                     onClick={(e) => handleSubmit(e, 'published')}
