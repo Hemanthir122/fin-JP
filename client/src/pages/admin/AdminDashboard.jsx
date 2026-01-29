@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Briefcase, Users, Calendar, Plus, List, TrendingUp, Clock, Menu } from 'lucide-react';
+import { Briefcase, Users, Calendar, Plus, List, TrendingUp, Clock, Menu, ThumbsUp } from 'lucide-react';
 
 import api from '../../utils/api';
 import './Admin.css';
@@ -89,6 +89,9 @@ function AdminDashboard() {
                     </Link>
                     <Link to="/admin/manage-jobs" className="nav-item">
                         Manage Jobs
+                    </Link>
+                    <Link to="/admin/feedback-stats" className="nav-item">
+                        Feedback Stats
                     </Link>
                 </nav>
                 <div className="admin-sidebar-footer">
@@ -201,6 +204,10 @@ function AdminDashboard() {
                                     <Link to="/jobs" target="_blank" className="quick-action">
                                         <Briefcase size={20} />
                                         <span>View public job page</span>
+                                    </Link>
+                                    <Link to="/admin/feedback-stats" className="quick-action">
+                                        <ThumbsUp size={20} />
+                                        <span>View feedback statistics</span>
                                     </Link>
                                 </div>
                             </div>

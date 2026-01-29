@@ -300,4 +300,57 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// Submit feedback (useful/not useful)
+router.post('/:id/feedback', async (req, res) => {
+    try {
+        const { type } = req.body; // 'useful' or 'notUseful'
+
+        if (!type || !['useful', 'notUseful'].includes(type)) {
+            return res.status(400).json({ message: 'Invalid feedback type' });
+        }
+
+        const job = await Job.findById(req.params.id);
+        if (!job) {
+            return res.status(404).json({ message: 'Job not found' });
+        }
+
+        // Increment the appropriate counter
+        if (type === 'useful') {
+            job.usefulCount = (job.usefulCount || 0) + 1;
+        } else {
+            job.notUsefulCount = (job.notUsefulCount || 0) + 1;
+        }
+
+        await job.save();
+        res.json({ message: 'Feedback submitted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Get feedback stats for admin
+router.get('/admin/feedback-stats', async (req, res) => {
+    try {
+        const { type, sortBy = 'usefulCount', order = 'desc' } = req.query;
+
+        let query = { isActive: true };
+        if (type) {
+            query.type = type;
+        }
+
+        const sortOrder = order === 'asc' ? 1 : -1;
+        const sortField = sortBy === 'notUsefulCount' ? 'notUsefulCount' : 'usefulCount';
+
+        const jobs = await Job.find(query)
+            .select('title company type usefulCount notUsefulCount createdAt')
+            .sort({ [sortField]: sortOrder })
+            .limit(100);
+
+        res.json(jobs);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;
+

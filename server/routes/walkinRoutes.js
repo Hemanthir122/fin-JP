@@ -187,4 +187,33 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// Submit feedback (useful/not useful)
+router.post('/:id/feedback', async (req, res) => {
+    try {
+        const { type } = req.body; // 'useful' or 'notUseful'
+
+        if (!type || !['useful', 'notUseful'].includes(type)) {
+            return res.status(400).json({ message: 'Invalid feedback type' });
+        }
+
+        const walkin = await Walkin.findById(req.params.id);
+        if (!walkin) {
+            return res.status(404).json({ message: 'Walkin not found' });
+        }
+
+        // Increment the appropriate counter
+        if (type === 'useful') {
+            walkin.usefulCount = (walkin.usefulCount || 0) + 1;
+        } else {
+            walkin.notUsefulCount = (walkin.notUsefulCount || 0) + 1;
+        }
+
+        await walkin.save();
+        res.json({ message: 'Feedback submitted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;
+

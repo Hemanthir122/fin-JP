@@ -1,12 +1,72 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
     MapPin, Briefcase, Clock, Building2,
-    CheckCircle, ArrowLeft, ExternalLink, Share2
+    CheckCircle, ArrowLeft, ExternalLink, Share2,
+    ThumbsUp, ThumbsDown
 } from 'lucide-react';
 import { useJobDetails, useCompanyJobs, useWalkinDetails } from '../hooks/useJobs';
+import api from '../utils/api';
 import './JobDetails.css';
+
+// Feedback Section Component
+function FeedbackSection({ jobId, isWalkin }) {
+    const [feedback, setFeedback] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Load saved feedback from localStorage
+    useEffect(() => {
+        const savedFeedback = localStorage.getItem(`job_feedback_${jobId}`);
+        if (savedFeedback) {
+            setFeedback(savedFeedback);
+        }
+    }, [jobId]);
+
+    const handleFeedback = async (type) => {
+        if (feedback || isSubmitting) return; // Already voted
+
+        setIsSubmitting(true);
+        try {
+            const endpoint = isWalkin ? `/walkins/${jobId}/feedback` : `/jobs/${jobId}/feedback`;
+            await api.post(endpoint, { type });
+            localStorage.setItem(`job_feedback_${jobId}`, type);
+            setFeedback(type);
+        } catch (error) {
+            console.error('Failed to submit feedback:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    return (
+        <section className="feedback-section">
+            <h3 className="feedback-title">Was this job posting helpful?</h3>
+            <p className="feedback-subtitle">Your feedback helps us improve job listings</p>
+            <div className="feedback-buttons">
+                <button
+                    className={`feedback-btn feedback-useful ${feedback === 'useful' ? 'active' : ''}`}
+                    onClick={() => handleFeedback('useful')}
+                    disabled={feedback !== null || isSubmitting}
+                >
+                    <ThumbsUp size={20} />
+                    <span>Useful</span>
+                </button>
+                <button
+                    className={`feedback-btn feedback-not-useful ${feedback === 'notUseful' ? 'active' : ''}`}
+                    onClick={() => handleFeedback('notUseful')}
+                    disabled={feedback !== null || isSubmitting}
+                >
+                    <ThumbsDown size={20} />
+                    <span>Not Useful</span>
+                </button>
+            </div>
+            {feedback && (
+                <p className="feedback-thanks">Thanks for your feedback!</p>
+            )}
+        </section>
+    );
+}
 
 function JobDetails() {
     const { id } = useParams();
@@ -312,6 +372,9 @@ ${platformLink}`;
                                     )}
                                 </div>
                             )}
+
+                            {/* Feedback Section - Hidden for Walkins */}
+                            {!isWalkin && <FeedbackSection jobId={id} isWalkin={isWalkin} />}
                         </div>
 
                         {/* Sidebar */}

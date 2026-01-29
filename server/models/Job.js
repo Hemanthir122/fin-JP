@@ -68,6 +68,14 @@ const jobSchema = new mongoose.Schema({
     },
     publishedAt: {
         type: Date
+    },
+    usefulCount: {
+        type: Number,
+        default: 0
+    },
+    notUsefulCount: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true

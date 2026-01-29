@@ -18,6 +18,7 @@ const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const PostJob = lazy(() => import('./pages/admin/PostJob'));
 const ManageJobs = lazy(() => import('./pages/admin/ManageJobs'));
 const EditJob = lazy(() => import('./pages/admin/EditJob'));
+const FeedbackStats = lazy(() => import('./pages/admin/FeedbackStats'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 import './App.css';
@@ -70,6 +71,11 @@ function App() {
               <Route path="/admin/edit-job/:id" element={
                 <ProtectedRoute>
                   <EditJob />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/feedback-stats" element={
+                <ProtectedRoute>
+                  <FeedbackStats />
                 </ProtectedRoute>
               } />
 
