@@ -1,0 +1,35 @@
+/* Native Ad Component Styles */
+.native-ad-container {
+    /* padding: 16px 0;
+    margin: 24px 0; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* Ensure it spans full width in grid if needed or handles flow correctly */
+    grid-column: 1 / -1;
+}
+
+.ad-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    opacity: 0.6;
+}
+
+.ad-content-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    min-height: 60px;
+}
+
+@media (max-width: 768px) {
+    .native-ad-container {
+        margin: -22px 0;
+        padding: 0px 0;
+    }
+}

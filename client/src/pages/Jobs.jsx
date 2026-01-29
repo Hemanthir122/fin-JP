@@ -6,7 +6,9 @@ import WalkinCard from '../components/WalkinCard';
 import Pagination from '../components/Pagination';
 import JobFilter from '../components/JobFilter';
 import { useJobs, useCompanies, useLocations, useWalkins } from '../hooks/useJobs';
+import NativeAd from '../components/NativeAd';
 import './Jobs.css';
+import '../components/NativeAd.css';
 
 function Jobs({ type: propType }) {
     const [searchParams] = useSearchParams();
@@ -102,11 +104,17 @@ function Jobs({ type: propType }) {
                     <>
                         <div className="jobs-grid grid grid-3">
                             {jobs.map((job, index) => (
-                                <div key={job._id} className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
-                                    {isWalkin || job.type === 'walkin' ? (
-                                        <WalkinCard job={job} />
-                                    ) : (
-                                        <JobCard job={job} />
+                                <div key={job._id} className="job-wrapper" style={{ display: 'contents' }}>
+                                    <div className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
+                                        {isWalkin || job.type === 'walkin' ? (
+                                            <WalkinCard job={job} />
+                                        ) : (
+                                            <JobCard job={job} />
+                                        )}
+                                    </div>
+                                    {/* Insert Native Ad after every 3rd job */}
+                                    {(index + 1) % 3 === 0 && index !== jobs.length - 1 && (
+                                        <NativeAd />
                                     )}
                                 </div>
                             ))}
