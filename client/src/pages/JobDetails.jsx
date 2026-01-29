@@ -223,7 +223,7 @@ ${platformLink}`;
                             {job.package && (
                                 <div className="meta-chip">
                                     <span className="meta-chip-label">Package:</span>
-                                    {job.package}
+                                    {job.package} LPA
                                 </div>
                             )}
                             <div className="meta-chip">
@@ -346,7 +346,7 @@ ${platformLink}`;
                                     {job.package && (
                                         <div className="overview-item">
                                             <span className="overview-label">Package</span>
-                                            <span className="overview-value highlight">{job.package}</span>
+                                            <span className="overview-value highlight">{job.package} LPA</span>
                                         </div>
                                     )}
                                     <div className="overview-item">

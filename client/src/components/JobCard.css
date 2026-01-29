@@ -150,6 +150,31 @@
     gap: 5px;
     color: var(--text-muted);
     font-size: 12px;
+    padding: 4px 10px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 20px;
+}
+
+.job-time-new {
+    background: linear-gradient(135deg, rgba(255, 140, 0, 0.1), rgba(255, 69, 0, 0.1));
+    color: #e65100;
+}
+
+.fire-icon {
+    font-size: 14px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
 }
 
 .btn-sm {

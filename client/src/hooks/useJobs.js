@@ -152,9 +152,9 @@ export function useLatestJobs() {
             const { data } = await api.get('/jobs/latest');
             return data;
         },
-        staleTime: 10 * 60 * 1000, // 10 minutes (Home page)
+        staleTime: 10 * 1000, // 10 seconds for quick updates after publish
         gcTime: 60 * 60 * 1000,
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: true
     });
 }
 

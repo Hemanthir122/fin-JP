@@ -85,6 +85,14 @@ ${platformLink}`;
     // Check for expiration
     const isExpired = job.endDate && new Date(job.endDate) < new Date();
 
+    // Check if job is new (within 24 hours)
+    const isNew = (() => {
+        const date = new Date(job.publishedAt || job.createdAt);
+        const now = new Date();
+        const diffHours = (now - date) / (1000 * 60 * 60);
+        return diffHours < 24;
+    })();
+
     // Get only first 4 skills
     const displaySkills = job.skills ? job.skills.slice(0, 4) : [];
 
@@ -158,9 +166,10 @@ ${platformLink}`;
 
             {/* Footer */}
             <div className="job-card-footer">
-                <div className="job-time">
+                <div className={`job-time ${isNew ? 'job-time-new' : ''}`}>
                     <Clock size={14} />
                     <span>{getTimeAgo(job.createdAt)}</span>
+                    {isNew && <span className="fire-icon">🔥</span>}
                 </div>
                 <Link to={`/job/${job._id}`} className="btn btn-primary btn-sm">
                     {isExpired ? 'Expired' : 'Apply Now'}

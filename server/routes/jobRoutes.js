@@ -8,16 +8,16 @@ router.get('/', async (req, res) => {
     try {
         const { search, location, type, company, page = 1, limit = 12 } = req.query;
 
-        // Show all active jobs, including expired/closed ones for archival view
-        let query = {
+        // Build match query
+        let matchQuery = {
             isActive: true
         };
 
         // Filter by status (default to 'published' unless 'all' or specific status requested)
         if (req.query.status && req.query.status !== 'all') {
-            query.status = req.query.status;
+            matchQuery.status = req.query.status;
         } else if (req.query.status !== 'all') {
-            query.$or = [
+            matchQuery.$or = [
                 { status: 'published' },
                 { status: { $exists: false } }
             ];
@@ -32,43 +32,48 @@ router.get('/', async (req, res) => {
 
         // Search filter
         if (search) {
-            query = {
-                $and: [
-                    query,
-                    {
-                        $or: [
-                            { title: { $regex: search, $options: 'i' } },
-                            { company: { $regex: search, $options: 'i' } },
-                            { location: { $regex: search, $options: 'i' } }
-                        ]
-                    }
-                ]
-            };
+            matchQuery.$and = [
+                {
+                    $or: [
+                        { title: { $regex: search, $options: 'i' } },
+                        { company: { $regex: search, $options: 'i' } },
+                        { location: { $regex: search, $options: 'i' } }
+                    ]
+                }
+            ];
         }
 
         // Location filter
         if (location) {
-            query.location = { $regex: location, $options: 'i' };
+            matchQuery.location = { $regex: location, $options: 'i' };
         }
 
         // Type filter (job, internship, walkin)
         if (type) {
-            query.type = type;
+            matchQuery.type = type;
         }
 
         // Company filter
         if (company) {
-            query.company = { $regex: company, $options: 'i' };
+            matchQuery.company = { $regex: company, $options: 'i' };
         }
 
         const skip = (parseInt(page) - 1) * parseInt(limit);
 
-        const jobs = await Job.find(query)
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(parseInt(limit));
+        // Use aggregation to sort by publishedAt with fallback to createdAt
+        const jobs = await Job.aggregate([
+            { $match: matchQuery },
+            {
+                $addFields: {
+                    sortDate: { $ifNull: ['$publishedAt', '$createdAt'] }
+                }
+            },
+            { $sort: { sortDate: -1 } },
+            { $skip: skip },
+            { $limit: parseInt(limit) }
+        ]);
 
-        const total = await Job.countDocuments(query);
+        const total = await Job.countDocuments(matchQuery);
 
         res.json({
             jobs,
@@ -84,25 +89,35 @@ router.get('/', async (req, res) => {
 // Get latest 9 jobs for homepage
 router.get('/latest', async (req, res) => {
     try {
-        const jobs = await Job.find({
-            isActive: true,
-            $or: [
-                { status: 'published' },
-                { status: { $exists: false } }
-            ],
-            $and: [
-                {
+        // Use aggregation to sort by publishedAt with fallback to createdAt
+        const jobs = await Job.aggregate([
+            {
+                $match: {
+                    isActive: true,
+                    $or: [
+                        { status: 'published' },
+                        { status: { $exists: false } }
+                    ],
                     $or: [
                         { endDate: { $exists: false } },
                         { endDate: null },
                         { endDate: { $gte: new Date() } }
                     ]
                 }
-            ]
-        })
-
-            .sort({ createdAt: -1 })
-            .limit(9);
+            },
+            {
+                // Create a sortDate field: use publishedAt if exists, otherwise createdAt
+                $addFields: {
+                    sortDate: { $ifNull: ['$publishedAt', '$createdAt'] }
+                }
+            },
+            {
+                $sort: { sortDate: -1 }
+            },
+            {
+                $limit: 9
+            }
+        ]);
 
         res.json(jobs);
     } catch (error) {
@@ -242,18 +257,28 @@ router.put('/:id', async (req, res) => {
         const isCurrentlyPublished = job.status === 'published';
         const willBePublished = req.body.status === 'published';
 
+        // If publishing a draft, use direct update to force createdAt change
         if (!isCurrentlyPublished && willBePublished) {
-            job.publishedAt = new Date();
-            // Also reset createdAt just in case, but publishedAt will be the source of truth
-            job.createdAt = new Date();
-            job.markModified('createdAt');
-            job.markModified('publishedAt');
+            const now = new Date();
+            const updateData = {
+                ...req.body,
+                status: 'published',
+                publishedAt: now,
+                createdAt: now
+            };
+
+            // Use findOneAndUpdate to bypass Mongoose's protection of createdAt
+            const updatedJob = await Job.findOneAndUpdate(
+                { _id: req.params.id },
+                { $set: updateData },
+                { new: true, timestamps: false }
+            );
+            return res.json(updatedJob);
         }
 
-        // Update other fields from req.body
+        // For other updates, use normal save
         Object.assign(job, req.body);
-
-        const savedJob = await job.save({ timestamps: false });
+        const savedJob = await job.save();
         res.json(savedJob);
     } catch (error) {
         res.status(400).json({ message: error.message });
