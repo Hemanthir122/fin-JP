@@ -11,14 +11,11 @@ router.get('/', async (req, res) => {
         let query = { isActive: true };
 
         // Filter by status (default to 'published' unless 'all' or specific status requested)
-        // Also handle backward compatibility for missing status field
         if (req.query.status && req.query.status !== 'all') {
             query.status = req.query.status;
         } else if (req.query.status !== 'all') {
-            query.$or = [
-                { status: 'published' },
-                { status: { $exists: false } }
-            ];
+            // For public: ONLY show explicitly published walkins (strict filtering)
+            query.status = 'published';
         }
 
         // Add cache control to reduce re-fetching, but disable for admin (status=all)
@@ -75,16 +72,16 @@ router.get('/', async (req, res) => {
 // Get latest walkins for homepage
 router.get('/latest', async (req, res) => {
     try {
+        console.log('GET /walkins/latest - Fetching published walkins only');
+        
         const walkins = await Walkin.find({
             isActive: true,
-            $or: [
-                { status: 'published' },
-                { status: { $exists: false } }
-            ]
+            status: 'published'  // MUST be explicitly published
         })
             .sort({ createdAt: -1 })
             .limit(9);
 
+        console.log(`GET /walkins/latest - Returning ${walkins.length} published walkins`);
         res.json(walkins);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -100,6 +97,17 @@ router.get('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Walkin not found' });
         }
 
+        const isAdminView = req.query.view === 'admin';
+
+        if (!isAdminView) {
+            // Only treat explicit 'published' as published; draft should NOT be public
+            const isPublished = walkin.status === 'published';
+
+            if (!walkin.isActive || !isPublished) {
+                return res.status(404).json({ message: 'Walkin not found or not published' });
+            }
+        }
+
         res.json(walkin);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -109,10 +117,16 @@ router.get('/:id', async (req, res) => {
 // Create new walkin
 router.post('/', async (req, res) => {
     try {
+        // Default to draft unless an explicit valid status is provided
+        let status = req.body.status || 'draft';
+        if (!['draft', 'published'].includes(status)) {
+            status = 'draft';
+        }
+
         const walkinData = {
             company: req.body.company,
             description: req.body.description,
-            status: req.body.status || 'published' // Walkins are usually published directly
+            status
         };
 
         if (walkinData.status === 'published') {
@@ -149,9 +163,15 @@ router.put('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Walkin not found' });
         }
 
+        // Ensure incoming status is valid; preserve existing if omitted
+        let newStatus = req.body.status || walkin.status;
+        if (!['draft', 'published'].includes(newStatus)) {
+            newStatus = 'draft';
+        }
+
         // Check if we are moving from a non-published state to published
         const isCurrentlyPublished = walkin.status === 'published';
-        const willBePublished = req.body.status === 'published';
+        const willBePublished = newStatus === 'published';
 
         if (!isCurrentlyPublished && willBePublished) {
             walkin.publishedAt = new Date();
@@ -163,7 +183,7 @@ router.put('/:id', async (req, res) => {
         // Update fields
         walkin.company = req.body.company;
         walkin.description = req.body.description;
-        walkin.status = req.body.status;
+        walkin.status = newStatus;
 
         const savedWalkin = await walkin.save({ timestamps: false });
         res.json(savedWalkin);

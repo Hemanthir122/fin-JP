@@ -21,6 +21,10 @@ function Home() {
     // Client-side filtering on already fetched data
     const filteredJobs = useMemo(() => {
         let result = [...jobs];
+        
+        // Safety filter: Remove any draft jobs (should be filtered by backend, but this ensures it)
+        result = result.filter(job => job.status === 'published' || !job.status);
+        
         const { search, location, type, company } = filters;
 
         if (search) {

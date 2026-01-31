@@ -50,7 +50,7 @@ function EditJob() {
 
     const fetchData = async () => {
         try {
-            const apiEndpoint = typeParam === 'walkin' ? `/walkins/${id}` : `/jobs/${id}`;
+            const apiEndpoint = typeParam === 'walkin' ? `/walkins/${id}` : `/jobs/${id}?view=admin`;
             const [jobRes, companiesRes] = await Promise.all([
                 api.get(apiEndpoint),
                 api.get('/companies')
@@ -610,16 +610,14 @@ function EditJob() {
                         {/* Submit */}
                         <div className="form-actions">
                             <div style={{ display: 'flex', gap: '12px' }}>
-                                {formData.type !== 'walkin' && (
-                                    <button
-                                        type="button"
-                                        onClick={(e) => handleSubmit(e, 'draft')}
-                                        className="btn btn-secondary"
-                                        disabled={saving}
-                                    >
-                                        {saving ? 'Saving...' : 'Save as Draft'}
-                                    </button>
-                                )}
+                                <button
+                                    type="button"
+                                    onClick={(e) => handleSubmit(e, 'draft')}
+                                    className="btn btn-secondary"
+                                    disabled={saving}
+                                >
+                                    {saving ? 'Saving...' : 'Save as Draft'}
+                                </button>
                                 <button
                                     type="button"
                                     onClick={(e) => handleSubmit(e, 'published')}

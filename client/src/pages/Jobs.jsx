@@ -41,7 +41,11 @@ function Jobs({ type: propType }) {
     const data = isWalkin ? walkinsData : jobsData;
     const isLoading = isWalkin ? isLoadingWalkins : isLoadingJobs;
 
-    const jobs = isWalkin ? (data?.walkins || []) : (data?.jobs || []);
+    let jobs = isWalkin ? (data?.walkins || []) : (data?.jobs || []);
+    
+    // Safety filter: Remove any draft jobs (should be filtered by backend)
+    jobs = jobs.filter(job => job.status === 'published' || !job.status);
+    
     const totalPages = data?.totalPages || 1;
     const total = data?.total || 0;
 

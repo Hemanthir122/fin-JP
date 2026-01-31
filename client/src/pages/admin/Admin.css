@@ -686,3 +686,24 @@
     font-size: 13px;
     font-weight: 600;
 }
+
+@media (max-width: 768px) {
+    /* Reduce padding and font sizes in feedback table for mobile */
+    .feedback-table th {
+        padding: 12px 10px;
+        font-size: 12px;
+    }
+    .feedback-table td {
+        padding: 14px 10px;
+        font-size: 13px;
+    }
+    .job-title-text {
+        font-size: 14px;
+    }
+    .job-company-text {
+        font-size: 12px;
+    }
+    .feedback-meter-container {
+        max-width: 160px;
+    }
+}

@@ -64,7 +64,7 @@ const jobSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['draft', 'published'],
-        default: 'published'
+        default: 'draft'
     },
     publishedAt: {
         type: Date

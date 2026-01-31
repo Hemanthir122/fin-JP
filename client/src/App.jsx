@@ -20,6 +20,7 @@ const ManageJobs = lazy(() => import('./pages/admin/ManageJobs'));
 const EditJob = lazy(() => import('./pages/admin/EditJob'));
 const FeedbackStats = lazy(() => import('./pages/admin/FeedbackStats'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const ResumeBuilder = lazy(() => import('./pages/ResumeBuilder'));
 
 import './App.css';
 
@@ -95,6 +96,7 @@ function App() {
                       <Route path="/terms" element={<Terms />} />
                       <Route path="/privacy" element={<Privacy />} />
                       <Route path="/about" element={<About />} />
+                      <Route path="/resume-builder" element={<ResumeBuilder />} />
                       <Route path="*" element={<NotFound />} />
                     </Routes>
                   </main>

@@ -25,6 +25,7 @@ function Navbar() {
         { path: '/jobs', label: 'Jobs' },
         { path: '/internships', label: 'Internships' },
         { path: '/walkins', label: 'Walk-in/Email' },
+        { path: '/resume-builder', label: 'Resume Builder' },
     ];
 
     return (

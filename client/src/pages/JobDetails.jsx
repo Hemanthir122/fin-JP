@@ -73,16 +73,12 @@ function JobDetails() {
 
     const queryParams = new URLSearchParams(window.location.search);
     const typeParam = queryParams.get('type');
+    const viewParam = queryParams.get('view');
 
     // Check if we need to fetch from jobs or walkins
     const isWalkin = typeParam === 'walkin';
 
-    // React Query hooks - cached
-    // We need useJobDetails or useWalkinDetails based on type
-    // Since hooks shouldn't be conditional, we can use useQuery directly or import both hooks
-    // But useWalkinDetails is not imported yet. Let's fix imports first.
-    // For now, assuming imports are fixed
-    const { data: jobData, isLoading: isLoadingJob } = useJobDetails(id);
+    const { data: jobData, isLoading: isLoadingJob } = useJobDetails(id, { view: viewParam });
     const { data: walkinData, isLoading: isLoadingWalkin } = useWalkinDetails(id);
 
     const job = isWalkin ? walkinData : jobData;
@@ -352,6 +348,9 @@ ${platformLink}`;
                                 </section>
                             )}
 
+                            
+                            {/* Feedback Section - Hidden for Walkins */}
+                            {!isWalkin && <FeedbackSection jobId={id} isWalkin={isWalkin} />}
                             {/* Apply Button - In Page - Hidden for Walkins */}
                             {!isWalkin && (
                                 <div className="apply-section">
@@ -373,8 +372,7 @@ ${platformLink}`;
                                 </div>
                             )}
 
-                            {/* Feedback Section - Hidden for Walkins */}
-                            {!isWalkin && <FeedbackSection jobId={id} isWalkin={isWalkin} />}
+                           
                         </div>
 
                         {/* Sidebar */}

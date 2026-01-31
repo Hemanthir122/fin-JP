@@ -10,17 +10,28 @@ router.get('/', async (req, res) => {
 
         // Build match query
         let matchQuery = {
-            isActive: true
+            isActive: true,
+            $and: []
         };
 
         // Filter by status (default to 'published' unless 'all' or specific status requested)
         if (req.query.status && req.query.status !== 'all') {
-            matchQuery.status = req.query.status;
+            matchQuery.$and.push({ status: req.query.status });
         } else if (req.query.status !== 'all') {
-            matchQuery.$or = [
-                { status: 'published' },
-                { status: { $exists: false } }
-            ];
+            // For public: ONLY show explicitly published jobs (strict filtering)
+            matchQuery.$and.push({
+                status: 'published'
+            });
+            // Exclude expired jobs for public listing (treat endDate as inclusive of the day)
+            const todayStart = new Date();
+            todayStart.setHours(0, 0, 0, 0);
+            matchQuery.$and.push({
+                $or: [
+                    { endDate: { $exists: false } },
+                    { endDate: null },
+                    { endDate: { $gte: todayStart } }
+                ]
+            });
         }
 
         // Add cache control to reduce re-fetching, but disable for admin (status=all)
@@ -32,15 +43,13 @@ router.get('/', async (req, res) => {
 
         // Search filter
         if (search) {
-            matchQuery.$and = [
-                {
-                    $or: [
-                        { title: { $regex: search, $options: 'i' } },
-                        { company: { $regex: search, $options: 'i' } },
-                        { location: { $regex: search, $options: 'i' } }
-                    ]
-                }
-            ];
+            matchQuery.$and.push({
+                $or: [
+                    { title: { $regex: search, $options: 'i' } },
+                    { company: { $regex: search, $options: 'i' } },
+                    { location: { $regex: search, $options: 'i' } }
+                ]
+            });
         }
 
         // Location filter
@@ -56,6 +65,11 @@ router.get('/', async (req, res) => {
         // Company filter
         if (company) {
             matchQuery.company = { $regex: company, $options: 'i' };
+        }
+
+        // Clean up empty $and to avoid unintended behavior
+        if (Array.isArray(matchQuery.$and) && matchQuery.$and.length === 0) {
+            delete matchQuery.$and;
         }
 
         const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -89,24 +103,25 @@ router.get('/', async (req, res) => {
 // Get latest 9 jobs for homepage
 router.get('/latest', async (req, res) => {
     try {
-        // Use aggregation to sort by publishedAt with fallback to createdAt
+        console.log('GET /jobs/latest - Fetching published jobs only');
+        
+        // Treat endDate as inclusive of the entire day
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
         const jobs = await Job.aggregate([
             {
                 $match: {
                     isActive: true,
-                    $or: [
-                        { status: 'published' },
-                        { status: { $exists: false } }
-                    ],
+                    status: 'published',  // MUST be explicitly published
                     $or: [
                         { endDate: { $exists: false } },
                         { endDate: null },
-                        { endDate: { $gte: new Date() } }
+                        { endDate: { $gte: todayStart } }
                     ]
                 }
             },
             {
-                // Create a sortDate field: use publishedAt if exists, otherwise createdAt
+                // Create a sortDate field: use publishedAt with fallback to createdAt
                 $addFields: {
                     sortDate: { $ifNull: ['$publishedAt', '$createdAt'] }
                 }
@@ -119,6 +134,7 @@ router.get('/latest', async (req, res) => {
             }
         ]);
 
+        console.log(`GET /jobs/latest - Returning ${jobs.length} published jobs`);
         res.json(jobs);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -128,20 +144,15 @@ router.get('/latest', async (req, res) => {
 // Get unique locations for filter
 router.get('/locations', async (req, res) => {
     try {
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
         const locations = await Job.distinct('location', {
             isActive: true,
+            status: 'published',
             $or: [
-                { status: 'published' },
-                { status: { $exists: false } }
-            ],
-            $and: [
-                {
-                    $or: [
-                        { endDate: { $exists: false } },
-                        { endDate: null },
-                        { endDate: { $gte: new Date() } }
-                    ]
-                }
+                { endDate: { $exists: false } },
+                { endDate: null },
+                { endDate: { $gte: todayStart } }
             ]
         });
 
@@ -154,20 +165,15 @@ router.get('/locations', async (req, res) => {
 // Get unique job titles/roles for filter
 router.get('/roles', async (req, res) => {
     try {
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
         const roles = await Job.distinct('title', {
             isActive: true,
+            status: 'published',
             $or: [
-                { status: 'published' },
-                { status: { $exists: false } }
-            ],
-            $and: [
-                {
-                    $or: [
-                        { endDate: { $exists: false } },
-                        { endDate: null },
-                        { endDate: { $gte: new Date() } }
-                    ]
-                }
+                { endDate: { $exists: false } },
+                { endDate: null },
+                { endDate: { $gte: todayStart } }
             ]
         });
 
@@ -222,6 +228,20 @@ router.get('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Job not found' });
         }
 
+        const isAdminView = req.query.view === 'admin';
+
+        if (!isAdminView) {
+            // Treat endDate as inclusive of the day
+            const todayStart = new Date();
+            todayStart.setHours(0, 0, 0, 0);
+            const isExpired = job.endDate && new Date(job.endDate) < todayStart;
+            const isPublished = job.status === 'published';
+
+            if (!job.isActive || !isPublished || isExpired) {
+                return res.status(404).json({ message: 'Job not found' });
+            }
+        }
+
         res.json(job);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -235,6 +255,9 @@ router.post('/', async (req, res) => {
         // If posting directly as published, set publishedAt
         if (jobData.status === 'published') {
             jobData.publishedAt = new Date();
+        } else {
+            // Ensure drafts are saved explicitly as draft if status is missing or not 'published'
+            jobData.status = 'draft';
         }
 
         const job = new Job(jobData);

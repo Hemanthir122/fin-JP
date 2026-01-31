@@ -230,7 +230,7 @@ function ManageJobs() {
                                             <td>
                                                 <div className="table-actions">
                                                     <Link
-                                                        to={`/job/${job._id}?type=${job.type}`}
+                                                        to={`/job/${job._id}?type=${job.type}&view=admin`}
                                                         target="_blank"
                                                         className="table-btn table-btn-edit"
                                                     >

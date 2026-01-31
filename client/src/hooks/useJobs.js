@@ -43,11 +43,12 @@ export function useJobs(params = {}) {
 }
 
 // Hook to fetch a single job by ID
-export function useJobDetails(id) {
+export function useJobDetails(id, { view } = {}) {
     return useQuery({
-        queryKey: jobKeys.detail(id),
+        queryKey: jobKeys.detail([id, view || null]),
         queryFn: async () => {
-            const { data } = await api.get(`/jobs/${id}`);
+            const suffix = view ? `?view=${view}` : '';
+            const { data } = await api.get(`/jobs/${id}${suffix}`);
             return data;
         },
         enabled: !!id,
@@ -149,7 +150,9 @@ export function useLatestJobs() {
     return useQuery({
         queryKey: jobKeys.list({ latest: true }),
         queryFn: async () => {
+            console.log('Fetching /jobs/latest');
             const { data } = await api.get('/jobs/latest');
+            console.log('Latest jobs received:', data);
             return data;
         },
         staleTime: 10 * 1000, // 10 seconds for quick updates after publish

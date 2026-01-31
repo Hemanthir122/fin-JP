@@ -1,0 +1,852 @@
+/* Resume Builder Page Styles */
+
+.resume-builder-page {
+    min-height: 100vh;
+}
+
+/* Hero Section */
+.rb-hero {
+    background: var(--gradient-hero);
+    padding: 80px 0 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.rb-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.rb-hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.rb-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    border-radius: 50px;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.rb-hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.rb-hero-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 24px;
+    line-height: 1.7;
+}
+
+.rb-hero-features {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.rb-feature-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.rb-feature-chip svg {
+    color: var(--accent-green);
+}
+
+/* Main Grid Layout */
+.rb-main {
+    background: var(--bg-dark);
+}
+
+.rb-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+/* Input Panel */
+.rb-input-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Cards */
+.rb-card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+}
+
+.rb-card:hover {
+    border-color: rgba(249, 115, 22, 0.2);
+}
+
+.rb-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.03) 0%, transparent 100%);
+}
+
+.rb-card-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-primary);
+    border-radius: 12px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.rb-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.rb-card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.rb-card-body {
+    padding: 24px;
+}
+
+.rb-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.resume-textarea {
+    min-height: 280px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.rb-word-count {
+    text-align: right;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+/* Actions */
+.rb-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.rb-analyze-btn {
+    padding: 16px 48px;
+    font-size: 16px;
+    gap: 10px;
+}
+
+.rb-analyze-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Results Panel */
+.rb-results-panel {
+    position: sticky;
+    top: 100px;
+}
+
+/* Placeholder State */
+.rb-placeholder {
+    background: var(--bg-card);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 60px 40px;
+    text-align: center;
+}
+
+.rb-placeholder-icon {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%);
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    color: var(--primary);
+}
+
+.rb-placeholder h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.rb-placeholder p {
+    color: var(--text-secondary);
+    max-width: 350px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+}
+
+.rb-placeholder-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.rb-placeholder-feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(249, 115, 22, 0.05);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.rb-placeholder-feature svg {
+    color: var(--accent-green);
+    flex-shrink: 0;
+}
+
+/* Analysis Results */
+.rb-analysis-results {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Score Card */
+.rb-score-card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    overflow: hidden;
+}
+
+.rb-score-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.rb-score-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.rb-match-badge {
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rb-match-badge.high {
+    background: rgba(34, 197, 94, 0.15);
+    color: #16a34a;
+}
+
+.rb-match-badge.medium {
+    background: rgba(249, 115, 22, 0.15);
+    color: var(--primary-dark);
+}
+
+.rb-match-badge.low {
+    background: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+}
+
+.rb-score-main {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.rb-score-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.rb-score-circle::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: inherit;
+    opacity: 0.3;
+    filter: blur(12px);
+    z-index: -1;
+}
+
+.rb-score-value {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.rb-score-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    margin-top: 4px;
+}
+
+.rb-score-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.rb-score-item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.rb-score-item-header span:first-child {
+    color: var(--text-secondary);
+}
+
+.rb-progress-bar {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.rb-progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s ease;
+}
+
+.rb-progress-fill.score-high {
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.rb-progress-fill.score-medium {
+    background: linear-gradient(90deg, #f97316, #ea580c);
+}
+
+.rb-progress-fill.score-low {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.score-high {
+    color: #16a34a;
+}
+
+.score-medium {
+    color: var(--primary-dark);
+}
+
+.score-low {
+    color: #dc2626;
+}
+
+/* Analysis Sections */
+.rb-analysis-section {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.rb-section-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.rb-section-toggle:hover {
+    background: rgba(249, 115, 22, 0.03);
+}
+
+.rb-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.rb-section-title svg {
+    color: var(--primary);
+}
+
+.rb-section-toggle > svg {
+    color: var(--text-muted);
+}
+
+.rb-section-content {
+    padding: 0 20px 20px;
+}
+
+/* Skill Groups */
+.rb-skill-group {
+    margin-bottom: 20px;
+}
+
+.rb-skill-group:last-child {
+    margin-bottom: 0;
+}
+
+.rb-skill-group-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.rb-skill-group-title.matched {
+    color: #16a34a;
+}
+
+.rb-skill-group-title.missing {
+    color: #dc2626;
+}
+
+.rb-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.rb-tag {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.rb-tag.matched {
+    background: rgba(34, 197, 94, 0.12);
+    color: #16a34a;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.rb-tag.missing {
+    background: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.rb-tag.keyword {
+    background: rgba(249, 115, 22, 0.08);
+    color: var(--primary-dark);
+    border: 1px solid rgba(249, 115, 22, 0.15);
+}
+
+.rb-skill-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(249, 115, 22, 0.05);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.rb-skill-note svg {
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+/* Keyword Stats */
+.rb-keyword-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.rb-keyword-stat {
+    text-align: center;
+    padding: 16px 12px;
+    background: rgba(249, 115, 22, 0.04);
+    border-radius: 10px;
+}
+
+.rb-keyword-stat-value {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.rb-keyword-stat-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 6px;
+}
+
+.rb-missing-keywords h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+/* Suggestions */
+.rb-suggestions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rb-suggestion {
+    padding: 14px 16px;
+    border-radius: 10px;
+    border-left: 3px solid;
+}
+
+.rb-suggestion.warning {
+    background: rgba(249, 115, 22, 0.06);
+    border-color: var(--primary);
+}
+
+.rb-suggestion.info {
+    background: rgba(59, 130, 246, 0.06);
+    border-color: #3b82f6;
+}
+
+.rb-suggestion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.rb-suggestion-section {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+}
+
+.rb-suggestion-priority {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.rb-suggestion-priority.high {
+    background: rgba(239, 68, 68, 0.12);
+    color: #dc2626;
+}
+
+.rb-suggestion-priority.medium {
+    background: rgba(249, 115, 22, 0.12);
+    color: var(--primary-dark);
+}
+
+.rb-suggestion-priority.low {
+    background: rgba(107, 114, 128, 0.12);
+    color: #6b7280;
+}
+
+.rb-suggestion-message {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.rb-no-suggestions {
+    text-align: center;
+    padding: 24px;
+    color: #16a34a;
+}
+
+.rb-no-suggestions p {
+    margin-top: 8px;
+    color: var(--text-secondary);
+}
+
+/* Section Checklist */
+.rb-section-checklist {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+}
+
+.rb-section-checklist h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.rb-checklist-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.rb-checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.rb-checklist-item.present {
+    background: rgba(34, 197, 94, 0.08);
+    color: #16a34a;
+}
+
+.rb-checklist-item.missing {
+    background: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+}
+
+/* Ethical Statement */
+.rb-ethical-statement {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.06) 0%, rgba(16, 163, 74, 0.06) 100%);
+    border: 1px solid rgba(34, 197, 94, 0.15);
+    border-radius: var(--border-radius);
+}
+
+.rb-ethical-statement svg {
+    color: #16a34a;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.rb-ethical-statement p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Tips Section */
+.rb-tips {
+    background: var(--gradient-hero);
+}
+
+.rb-tips-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.rb-tip-card {
+    background: var(--bg-dark);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 28px 24px;
+    text-align: center;
+    transition: all var(--transition-normal);
+}
+
+.rb-tip-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(249, 115, 22, 0.2);
+}
+
+.rb-tip-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%);
+    border-radius: 14px;
+    margin: 0 auto 20px;
+    color: var(--primary);
+}
+
+.rb-tip-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.rb-tip-card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .rb-tips-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .rb-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rb-results-panel {
+        position: static;
+    }
+    
+    .rb-hero-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .rb-hero {
+        padding: 60px 0 40px;
+    }
+    
+    .rb-hero-title {
+        font-size: 2rem;
+    }
+    
+    .rb-hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .rb-form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .rb-tips-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rb-keyword-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .rb-checklist-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .rb-placeholder-features {
+        grid-template-columns: 1fr;
+    }
+    
+    .rb-score-circle {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .rb-score-value {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .rb-hero-features {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .rb-checklist-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rb-card-header {
+        padding: 16px;
+    }
+    
+    .rb-card-body {
+        padding: 16px;
+    }
+}
