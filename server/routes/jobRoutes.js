@@ -232,6 +232,12 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const jobData = { ...req.body };
+        
+        // Default to 'draft' if status is not specified, otherwise use provided status
+        if (!jobData.status) {
+            jobData.status = 'draft';
+        }
+        
         // If posting directly as published, set publishedAt
         if (jobData.status === 'published') {
             jobData.publishedAt = new Date();
