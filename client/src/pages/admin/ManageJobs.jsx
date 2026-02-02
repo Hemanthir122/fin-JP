@@ -11,6 +11,9 @@ function ManageJobs() {
     const [search, setSearch] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    // Add selection and bulk loading state
+    const [selectedKeys, setSelectedKeys] = useState(new Set());
+    const [bulkLoading, setBulkLoading] = useState(false);
 
 
     useEffect(() => {
@@ -37,6 +40,69 @@ function ManageJobs() {
             console.error('Error fetching jobs:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    // Helpers for selection
+    const keyFor = (item) => `${item.model}:${item._id}`;
+    const isSelected = (item) => selectedKeys.has(keyFor(item));
+    const toggleSelect = (item) => {
+        setSelectedKeys(prev => {
+            const next = new Set(prev);
+            const key = keyFor(item);
+            if (next.has(key)) {
+                next.delete(key);
+            } else {
+                next.add(key);
+            }
+            return next;
+        });
+    };
+
+    const clearSelection = () => setSelectedKeys(new Set());
+
+    // Bulk actions
+    const performBulkStatusUpdate = async (newStatus) => {
+        const items = jobs.filter(j => selectedKeys.has(keyFor(j)));
+        if (items.length === 0) return;
+        setBulkLoading(true);
+        try {
+            await Promise.all(items.map(item => {
+                const endpoint = item.model === 'walkin' ? `/walkins/${item._id}` : `/jobs/${item._id}`;
+                return api.put(endpoint, { status: newStatus });
+            }));
+            await fetchJobs();
+            clearSelection();
+            alert(`${newStatus === 'published' ? 'Published' : 'Moved to draft'} ${items.length} item(s)`);
+        } catch (e) {
+            console.error('Bulk status update error:', e);
+            alert('Error performing bulk status update. Some items may not be updated.');
+        } finally {
+            setBulkLoading(false);
+        }
+    };
+
+    const bulkPublish = () => performBulkStatusUpdate('published');
+    const bulkDraft = () => performBulkStatusUpdate('draft');
+
+    const bulkDelete = async () => {
+        const items = jobs.filter(j => selectedKeys.has(keyFor(j)));
+        if (items.length === 0) return;
+        if (!window.confirm(`Delete ${items.length} selected item(s)? This action cannot be undone.`)) return;
+        setBulkLoading(true);
+        try {
+            await Promise.all(items.map(item => {
+                const endpoint = item.model === 'walkin' ? `/walkins/${item._id}` : `/jobs/${item._id}`;
+                return api.delete(endpoint);
+            }));
+            await fetchJobs();
+            clearSelection();
+            alert(`Deleted ${items.length} item(s)`);
+        } catch (e) {
+            console.error('Bulk delete error:', e);
+            alert('Error deleting selected items. Some items may not be deleted.');
+        } finally {
+            setBulkLoading(false);
         }
     };
 
@@ -91,6 +157,8 @@ function ManageJobs() {
         const matchesType = !typeFilter || job.type === typeFilter;
         return matchesSearch && matchesType;
     });
+
+    const allSelected = filteredJobs.length > 0 && filteredJobs.every(isSelected);
 
     return (
         <div className="admin-page">
@@ -181,6 +249,39 @@ function ManageJobs() {
                         </div>
                     </div>
 
+                    {/* Bulk Actions Bar */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderTop: '1px solid #eee' }}>
+                        <div style={{ color: 'var(--text-muted)' }}>
+                            Selected: {selectedKeys.size}
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <button
+                                className="btn"
+                                disabled={selectedKeys.size === 0 || bulkLoading}
+                                onClick={bulkPublish}
+                                style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ddd', background: '#fff', cursor: selectedKeys.size === 0 || bulkLoading ? 'not-allowed' : 'pointer' }}
+                            >
+                                Publish
+                            </button>
+                            <button
+                                className="btn"
+                                disabled={selectedKeys.size === 0 || bulkLoading}
+                                onClick={bulkDraft}
+                                style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ddd', background: '#fff', cursor: selectedKeys.size === 0 || bulkLoading ? 'not-allowed' : 'pointer' }}
+                            >
+                                Move to Draft
+                            </button>
+                            <button
+                                className="btn"
+                                disabled={selectedKeys.size === 0 || bulkLoading}
+                                onClick={bulkDelete}
+                                style={{ padding: '8px 12px', borderRadius: '6px', border: 'none', background: '#ef4444', color: '#fff', cursor: selectedKeys.size === 0 || bulkLoading ? 'not-allowed' : 'pointer' }}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+
                     {loading ? (
                         <div className="loading-container">
                             <div className="spinner"></div>
@@ -190,6 +291,24 @@ function ManageJobs() {
                             <table className="jobs-table">
                                 <thead>
                                     <tr>
+                                        <th style={{ width: '40px' }}>
+                                            <input
+                                                type="checkbox"
+                                                checked={allSelected}
+                                                onChange={(e) => {
+                                                    const checked = e.target.checked;
+                                                    setSelectedKeys(prev => {
+                                                        const next = new Set(prev);
+                                                        if (checked) {
+                                                            filteredJobs.forEach(item => next.add(keyFor(item)));
+                                                        } else {
+                                                            filteredJobs.forEach(item => next.delete(keyFor(item)));
+                                                        }
+                                                        return next;
+                                                    });
+                                                }}
+                                            />
+                                        </th>
                                         <th>Job Title</th>
                                         <th>Company</th>
                                         <th>Location</th>
@@ -202,6 +321,13 @@ function ManageJobs() {
                                 <tbody>
                                     {filteredJobs.map((job) => (
                                         <tr key={job._id}>
+                                            <td>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={isSelected(job)}
+                                                    onChange={() => toggleSelect(job)}
+                                                />
+                                            </td>
                                             <td>
                                                 <strong>{job.type === 'walkin' ? (job.title || job.company) : job.title}</strong>
                                             </td>
