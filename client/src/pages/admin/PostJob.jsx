@@ -19,6 +19,7 @@ function PostJob() {
         title: '',
         company: '',
         companyLogo: '',
+        aboutCompany: '',
         location: '',
         package: '',
         experience: '',
@@ -27,7 +28,6 @@ function PostJob() {
         description: '',
         skills: [],
         responsibilities: [],
-        qualifications: [],
         qualifications: [],
         applyLink: '',
         endDate: '' // Initialize as empty string
@@ -141,9 +141,15 @@ function PostJob() {
 
     const addResponsibility = () => {
         if (responsibilityInput.trim()) {
+            // Split by newlines, periods, or bullet points and clean up
+            const points = responsibilityInput
+                .split(/[\n.•\-]+/)
+                .map(point => point.trim())
+                .filter(point => point.length > 10); // Filter out very short fragments
+            
             setFormData(prev => ({
                 ...prev,
-                responsibilities: [...prev.responsibilities, responsibilityInput.trim()]
+                responsibilities: [...prev.responsibilities, ...points]
             }));
             setResponsibilityInput('');
         }
@@ -158,9 +164,15 @@ function PostJob() {
 
     const addQualification = () => {
         if (qualificationInput.trim()) {
+            // Split by newlines, periods, or bullet points and clean up
+            const points = qualificationInput
+                .split(/[\n.•\-]+/)
+                .map(point => point.trim())
+                .filter(point => point.length > 10); // Filter out very short fragments
+            
             setFormData(prev => ({
                 ...prev,
-                qualifications: [...prev.qualifications, qualificationInput.trim()]
+                qualifications: [...prev.qualifications, ...points]
             }));
             setQualificationInput('');
         }
@@ -343,9 +355,49 @@ function PostJob() {
                                             className="input"
                                             placeholder="https://example.com/logo.png"
                                         />
+                                        {formData.companyLogo && (
+                                            <div style={{ marginTop: '12px', padding: '12px', border: '1px solid var(--border-color)', borderRadius: '8px', backgroundColor: 'var(--bg-secondary)' }}>
+                                                <small style={{ color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>Logo Preview:</small>
+                                                <img 
+                                                    src={formData.companyLogo} 
+                                                    alt="Company Logo Preview" 
+                                                    style={{ 
+                                                        maxWidth: '120px', 
+                                                        maxHeight: '120px', 
+                                                        objectFit: 'contain',
+                                                        border: '1px solid var(--border-color)',
+                                                        borderRadius: '4px',
+                                                        padding: '8px',
+                                                        backgroundColor: 'white'
+                                                    }}
+                                                    onError={(e) => {
+                                                        e.target.style.display = 'none';
+                                                        e.target.nextSibling.style.display = 'block';
+                                                    }}
+                                                />
+                                                <small style={{ color: '#e74c3c', display: 'none', marginTop: '8px' }}>
+                                                    Invalid image URL or failed to load
+                                                </small>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
+
+                            {/* About Company Section */}
+                            {formData.type !== 'walkin' && (
+                                <div className="form-group">
+                                    <label className="label">About Company</label>
+                                    <textarea
+                                        name="aboutCompany"
+                                        value={formData.aboutCompany}
+                                        onChange={handleChange}
+                                        className="textarea"
+                                        placeholder="Tell us about your company, culture, mission, and what makes it unique..."
+                                        rows="4"
+                                    ></textarea>
+                                </div>
+                            )}
                         </div>
 
                         {/* Job Information - Only for non-walkin types */}
@@ -397,14 +449,16 @@ function PostJob() {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label className="label">Package/Salary *</label>
+                                        <label className="label">
+                                            {formData.type === 'internship' ? 'Stipend *' : 'Package/Salary *'}
+                                        </label>
                                         <input
                                             type="text"
                                             name="package"
                                             value={formData.package}
                                             onChange={handleChange}
                                             className="input"
-                                            placeholder="e.g., 8-12 LPA"
+                                            placeholder={formData.type === 'internship' ? 'e.g., 10,000-15,000' : 'e.g., 8-12 LPA'}
                                             required
                                         />
                                     </div>
@@ -526,20 +580,28 @@ function PostJob() {
                             <div className="form-card">
                                 <h2>Roles & Responsibilities</h2>
                                 <div className="form-group">
-                                    <label className="label">Add Responsibility</label>
+                                    <label className="label">Add Responsibilities</label>
+                                    <small style={{ color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>
+                                        Paste a paragraph or list - it will be automatically split into bullet points
+                                    </small>
                                     <div className="flex gap-2">
-                                        <input
-                                            type="text"
+                                        <textarea
                                             value={responsibilityInput}
                                             onChange={(e) => setResponsibilityInput(e.target.value)}
-                                            className="input"
-                                            placeholder="Enter responsibility..."
+                                            className="textarea"
+                                            rows="5"
+                                            placeholder="Paste paragraph or enter responsibilities (separated by lines or periods)..."
                                             style={{ flex: 1 }}
                                         />
-                                        <button type="button" className="btn btn-secondary" onClick={addResponsibility}>
-                                            <Plus size={18} />
-                                        </button>
                                     </div>
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-secondary" 
+                                        onClick={addResponsibility}
+                                        style={{ marginTop: '8px' }}
+                                    >
+                                        <Plus size={18} /> Add Points
+                                    </button>
                                 </div>
                                 {formData.responsibilities.length > 0 && (
                                     <ul className="responsibilities-list" style={{ marginTop: '16px' }}>
@@ -568,20 +630,28 @@ function PostJob() {
                             <div className="form-card">
                                 <h2>Qualifications</h2>
                                 <div className="form-group">
-                                    <label className="label">Add Qualification</label>
+                                    <label className="label">Add Qualifications</label>
+                                    <small style={{ color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>
+                                        Paste a paragraph or list - it will be automatically split into bullet points
+                                    </small>
                                     <div className="flex gap-2">
-                                        <input
-                                            type="text"
+                                        <textarea
                                             value={qualificationInput}
                                             onChange={(e) => setQualificationInput(e.target.value)}
-                                            className="input"
-                                            placeholder="Enter qualification..."
+                                            className="textarea"
+                                            rows="5"
+                                            placeholder="Paste paragraph or enter qualifications (separated by lines or periods)..."
                                             style={{ flex: 1 }}
                                         />
-                                        <button type="button" className="btn btn-secondary" onClick={addQualification}>
-                                            <Plus size={18} />
-                                        </button>
                                     </div>
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-secondary" 
+                                        onClick={addQualification}
+                                        style={{ marginTop: '8px' }}
+                                    >
+                                        <Plus size={18} /> Add Points
+                                    </button>
                                 </div>
                                 {formData.qualifications.length > 0 && (
                                     <ul className="responsibilities-list" style={{ marginTop: '16px' }}>

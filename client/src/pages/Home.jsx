@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import JobCard from '../components/JobCard';
 import JobFilter from '../components/JobFilter';
+import NativeAd from '../components/NativeAd';
 import { useLatestJobs, useCompanies, useLocations } from '../hooks/useJobs';
 import './Home.css';
 
@@ -149,8 +150,14 @@ function Home() {
                         <>
                             <div className="jobs-grid grid grid-3">
                                 {filteredJobs.map((job, index) => (
-                                    <div key={job._id} className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
-                                        <JobCard job={job} />
+                                    <div key={job._id} className="job-wrapper" style={{ display: 'contents' }}>
+                                        <div className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
+                                            <JobCard job={job} />
+                                        </div>
+                                        {/* Insert Native Ad after every 3rd job */}
+                                        {(index + 1) % 3 === 0 && index !== filteredJobs.length - 1 && (
+                                            <NativeAd />
+                                        )}
                                     </div>
                                 ))}
                             </div>

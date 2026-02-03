@@ -153,8 +153,8 @@ ${platformLink}`;
                     <span>{job.location}</span>
                 </div>
                 <div className="meta-item">
-                    <span className="meta-label">Package:</span>
-                    <span className="meta-value">{job.package} LPA</span>
+                    <span className="meta-label">{job.type === 'internship' ? 'Stipend:' : 'Package:'}</span>
+                    <span className="meta-value">{job.package} {job.type === 'internship' ? '/month' : 'LPA'}</span>
                 </div>
                 <div className="meta-item">
                     <span className="meta-label">Exp:</span>

@@ -248,11 +248,24 @@ ${platformLink}`;
                                     <Building2 size={40} />
                                 )}
                             </div>
-                            <div className="job-header-info">
+                            {/* <div className="job-header-info">
                                 <span className={`badge badge-${isWalkin ? 'walkin' : job.type}`}>
                                     {isWalkin ? 'Walk-in / Email' : getTypeLabel(job.type)}
                                 </span>
                                 <h1 className="job-title-lg">{job.title || job.company}</h1>
+                            </div> */}
+                            <div className="job-header-info">
+                                <span className={`badge badge-${isWalkin ? 'walkin' : job.type}`}>
+                                    {isWalkin ? 'Walk-in / Email' : getTypeLabel(job.type)}
+                                </span>
+                                 <p className="job-company-name">
+                                    {job.company}
+                                </p>
+                                <h1 className="job-title-lg">
+                                    {job.title}
+                                </h1>
+
+                               
                             </div>
 
                             <div className="job-header-right">
@@ -278,8 +291,8 @@ ${platformLink}`;
                             )}
                             {job.package && (
                                 <div className="meta-chip">
-                                    <span className="meta-chip-label">Package:</span>
-                                    {job.package} LPA
+                                    <span className="meta-chip-label">{job.type === 'internship' ? 'Stipend:' : 'Package:'}</span>
+                                    {job.package} {job.type === 'internship' ? '/month' : 'LPA'}
                                 </div>
                             )}
                             <div className="meta-chip">
@@ -303,6 +316,16 @@ ${platformLink}`;
                                     {job.description}
                                 </div>
                             </section>
+
+                            {/* About Company */}
+                            {job.aboutCompany && (
+                                <section className="job-section">
+                                    <h2 className="section-heading">About {job.company}</h2>
+                                    <div className="company-about">
+                                        {job.aboutCompany}
+                                    </div>
+                                </section>
+                            )}
 
                             {/* Skills */}
                             {job.skills && job.skills.length > 0 && (
@@ -377,6 +400,21 @@ ${platformLink}`;
 
                         {/* Sidebar */}
                         <div className="job-sidebar">
+                            {/* Company Card */}
+                            {/* <div className="sidebar-card card">
+                                <h3>Company Info</h3>
+                                <div className="company-info">
+                                    <div className="company-logo-small">
+                                        {job.companyLogo ? (
+                                            <img src={job.companyLogo} alt={job.company} loading="lazy" decoding="async" />
+                                        ) : (
+                                            <Building2 size={40} />
+                                        )}
+                                    </div>
+                                    <h4 className="company-name">{job.company}</h4>
+                                </div>
+                            </div> */}
+
                             <div className="sidebar-card card">
                                 <h3>Job Overview</h3>
                                 <div className="overview-list">
@@ -406,8 +444,8 @@ ${platformLink}`;
                                     )}
                                     {job.package && (
                                         <div className="overview-item">
-                                            <span className="overview-label">Package</span>
-                                            <span className="overview-value highlight">{job.package} LPA</span>
+                                            <span className="overview-label">{job.type === 'internship' ? 'Stipend' : 'Package'}</span>
+                                            <span className="overview-value highlight">{job.package} {job.type === 'internship' ? '/month' : 'LPA'}</span>
                                         </div>
                                     )}
                                     <div className="overview-item">
