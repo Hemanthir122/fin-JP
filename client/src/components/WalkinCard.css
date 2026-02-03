@@ -1,10 +1,22 @@
 .walkin-card {
     padding: 24px;
-    transition: all var(--transition-normal);
+    transition: all 0.3s ease;
     border-top: 4px solid var(--primary);
-    /* Top accent */
     position: relative;
     background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    height: 420px;
+    overflow: hidden;
+}
+
+.walkin-card.collapsed {
+    height: 420px;
+}
+
+.walkin-card.expanded {
+    height: auto;
+    min-height: 420px;
 }
 
 .walkin-card:hover {
@@ -16,13 +28,11 @@
 .walkin-card-header {
     display: flex;
     align-items: center;
-    /* Center vertically */
     gap: 16px;
     margin-bottom: 20px;
-    /* More spacing */
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border-color);
-    /* Separator */
+    flex-shrink: 0;
 }
 
 .walkin-company-logo {
@@ -51,14 +61,27 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-width: 0;
+}
+
+.walkin-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
 }
 
 .walkin-company-name {
     font-size: 1.2rem;
-    /* Larger title */
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.02em;
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .walkin-time {
@@ -71,14 +94,36 @@
     background: rgba(0, 0, 0, 0.03);
     padding: 4px 10px;
     border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Content Wrapper - Fixed height with overflow */
+.walkin-content-wrapper {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.walkin-content-wrapper.has-more.collapsed {
+    max-height: 180px;
+    overflow: hidden;
+}
+
+.walkin-content-wrapper.expanded {
+    overflow: visible;
 }
 
 .walkin-description {
-    margin-bottom: 0;
     background: linear-gradient(135deg, rgba(249, 115, 22, 0.03) 0%, rgba(255, 140, 0, 0.08) 100%);
     padding: 16px;
     border-radius: 12px;
     border: 1px solid rgba(249, 115, 22, 0.1);
+    margin-bottom: 12px;
+    flex-shrink: 0;
 }
 
 .walkin-full-description {
@@ -86,6 +131,8 @@
     font-size: 0.95rem;
     line-height: 1.7;
     white-space: pre-line;
+    word-wrap: break-word;
+    margin: 0;
 }
 
 .walkin-email-link {
@@ -100,18 +147,167 @@
     color: var(--primary-dark);
 }
 
-/* Mobile responsive */
+.walkin-url-link {
+    color: var(--primary);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    word-break: break-all;
+    background: rgba(249, 115, 22, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.walkin-url-link:hover {
+    text-decoration: underline;
+    color: var(--primary-dark);
+    background: rgba(249, 115, 22, 0.2);
+    border-bottom-color: var(--primary-dark);
+}
+
+/* Sections - Qualifications & Responsibilities */
+.walkin-section {
+    margin-bottom: 12px;
+    flex-shrink: 0;
+}
+
+.walkin-section-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+}
+
+.walkin-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.walkin-list-item {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.walkin-list-item:before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Gradient Fade Effect */
+.walkin-fade-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.5) 70%, 
+        rgba(255, 255, 255, 1) 100%);
+    pointer-events: none;
+}
+
+/* Show More/Less Button */
+.walkin-show-more-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(255, 140, 0, 0.05) 100%);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    border-radius: 8px;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.walkin-show-more-btn:hover {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(255, 140, 0, 0.1) 100%);
+    border-color: rgba(249, 115, 22, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
+}
+
+.walkin-show-more-btn:active {
+    transform: translateY(0);
+}
+
+.walkin-btn-text {
+    letter-spacing: 0.3px;
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
     .walkin-card {
-        padding: 20px;
+        height: auto;
+        min-height: 380px;
+    }
+
+    .walkin-card.collapsed {
+        height: 380px;
     }
 
     .walkin-card-header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+    }
+
+    .walkin-header-top {
         flex-wrap: wrap;
+        width: 100%;
     }
 
     .walkin-time {
         width: 100%;
         margin-top: 8px;
+        justify-content: flex-start;
+    }
+
+    .walkin-company-name {
+        font-size: 1.1rem;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+    }
+
+    .walkin-description {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+
+    .walkin-full-description {
+        font-size: 0.9rem;
+    }
+
+    .walkin-show-more-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .walkin-section-title {
+        font-size: 0.85rem;
+    }
+
+    .walkin-list-item {
+        font-size: 0.85rem;
+        margin-bottom: 4px;
     }
 }

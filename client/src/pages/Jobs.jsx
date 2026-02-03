@@ -27,13 +27,12 @@ function Jobs({ type: propType }) {
     // Use the appropriate hook based on the type
     const isWalkin = propType === 'walkin';
 
-    const { data: jobsData, isLoading: isLoadingJobs } = useJobs(
-        !isWalkin ? queryParams : { ...queryParams, enabled: false }
-    );
+    // Only pass query params to the enabled hook, don't pass 'enabled' flag in queryParams
+    const jobsQueryParams = !isWalkin ? queryParams : undefined;
+    const walkinsQueryParams = isWalkin ? queryParams : undefined;
 
-    const { data: walkinsData, isLoading: isLoadingWalkins } = useWalkins(
-        isWalkin ? queryParams : { ...queryParams, enabled: false }
-    );
+    const { data: jobsData, isLoading: isLoadingJobs } = useJobs(jobsQueryParams || {});
+    const { data: walkinsData, isLoading: isLoadingWalkins } = useWalkins(walkinsQueryParams || {});
 
     const { data: companies = [] } = useCompanies();
     const { data: locations = [] } = useLocations();

@@ -23,17 +23,22 @@ const defaultQueryOptions = {
 // Hook to fetch all jobs with filters
 export function useJobs(params = {}) {
     const queryParams = new URLSearchParams();
+    let filteredParams = {};
 
     Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== '') {
             queryParams.append(key, value);
+            filteredParams[key] = value;
         }
     });
 
     const queryString = queryParams.toString();
+    
+    // Create a stable query key from filtered params only
+    const stableKey = JSON.stringify(filteredParams);
 
     return useQuery({
-        queryKey: jobKeys.list(params),
+        queryKey: [jobKeys.all, 'list', stableKey],
         queryFn: async () => {
             const { data } = await api.get(`/jobs${queryString ? `?${queryString}` : ''}`);
             return data;
@@ -148,7 +153,7 @@ export function useLocations() {
 // Hook to fetch latest jobs for Home page
 export function useLatestJobs() {
     return useQuery({
-        queryKey: jobKeys.list({ latest: true }),
+        queryKey: ['jobs', 'latest'],
         queryFn: async () => {
             console.log('Fetching /jobs/latest');
             const { data } = await api.get('/jobs/latest');
@@ -157,7 +162,7 @@ export function useLatestJobs() {
         },
         staleTime: 10 * 1000, // 10 seconds for quick updates after publish
         gcTime: 60 * 60 * 1000,
-        refetchOnWindowFocus: true
+        refetchOnWindowFocus: false // FIXED: Removed auto-refetch
     });
 }
 
@@ -191,17 +196,22 @@ export const walkinKeys = {
 // Hook to fetch all walkins with filters
 export function useWalkins(params = {}) {
     const queryParams = new URLSearchParams();
+    let filteredParams = {};
 
     Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== '') {
             queryParams.append(key, value);
+            filteredParams[key] = value;
         }
     });
 
     const queryString = queryParams.toString();
+    
+    // Create a stable query key from filtered params only
+    const stableKey = JSON.stringify(filteredParams);
 
     return useQuery({
-        queryKey: walkinKeys.list(params),
+        queryKey: [walkinKeys.all, 'list', stableKey],
         queryFn: async () => {
             const { data } = await api.get(`/walkins${queryString ? `?${queryString}` : ''}`);
             return data;
@@ -213,13 +223,17 @@ export function useWalkins(params = {}) {
 // Hook to fetch a single walkin by ID
 export function useWalkinDetails(id) {
     return useQuery({
-        queryKey: walkinKeys.detail(id),
+        queryKey: [walkinKeys.all, 'detail', id],
         queryFn: async () => {
             const { data } = await api.get(`/walkins/${id}`);
             return data;
         },
         enabled: !!id,
-        ...defaultQueryOptions,
+        staleTime: 30 * 60 * 1000, // 30 minutes
+        gcTime: 60 * 60 * 1000,    // 60 minutes
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        retry: 1, // Only retry once on 404
     });
 }
 

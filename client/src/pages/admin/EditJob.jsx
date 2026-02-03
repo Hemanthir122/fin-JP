@@ -21,6 +21,7 @@ function EditJob() {
         title: '',
         company: '',
         companyLogo: '',
+        aboutCompany: '',
         location: '',
         package: '',
         experience: '',
@@ -358,6 +359,21 @@ function EditJob() {
                                         placeholder="https://example.com/logo.png"
                                     />
                                 </div>
+
+                                {/* About Company Section */}
+                                {formData.type !== 'walkin' && (
+                                    <div className="form-group">
+                                        <label className="label">About Company</label>
+                                        <textarea
+                                            name="aboutCompany"
+                                            value={formData.aboutCompany}
+                                            onChange={handleChange}
+                                            className="textarea"
+                                            placeholder="Tell us about your company, culture, mission, and what makes it unique..."
+                                            rows="4"
+                                        ></textarea>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -406,14 +422,16 @@ function EditJob() {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label className="label">Package/Salary *</label>
+                                    <label className="label">
+                                        {formData.type === 'internship' ? 'Stipend *' : 'Package/Salary *'}
+                                    </label>
                                     <input
                                         type="text"
                                         name="package"
                                         value={formData.package}
                                         onChange={handleChange}
                                         className="input"
-                                        placeholder="e.g., 8-12 LPA"
+                                        placeholder={formData.type === 'internship' ? 'e.g., 10,000-15,000' : 'e.g., 8-12 LPA'}
                                         required
                                     />
                                 </div>
