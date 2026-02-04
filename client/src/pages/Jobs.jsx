@@ -117,7 +117,8 @@ function Jobs({ type: propType }) {
                                     </div>
                                     {/* Insert Native Ad after every 3rd job */}
                                     {(index + 1) % 3 === 0 && index !== jobs.length - 1 && (
-                                        <NativeAd />
+                                        ""
+                                       // <NativeAd />
                                     )}
                                 </div>
                             ))}

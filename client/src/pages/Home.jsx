@@ -156,7 +156,8 @@ function Home() {
                                         </div>
                                         {/* Insert Native Ad after every 3rd job */}
                                         {(index + 1) % 3 === 0 && index !== filteredJobs.length - 1 && (
-                                            <NativeAd />
+                                            ""
+                                           // <NativeAd />
                                         )}
                                     </div>
                                 ))}
