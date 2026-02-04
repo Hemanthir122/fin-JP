@@ -5,6 +5,7 @@ import JobCard from '../components/JobCard';
 import WalkinCard from '../components/WalkinCard';
 import Pagination from '../components/Pagination';
 import JobFilter from '../components/JobFilter';
+import GoogleAdSense from '../components/GoogleAdSense';
 import { useJobs, useCompanies, useLocations, useWalkins } from '../hooks/useJobs';
 import NativeAd from '../components/NativeAd';
 import './Jobs.css';
@@ -14,6 +15,7 @@ function Jobs({ type: propType }) {
     const [searchParams] = useSearchParams();
     const [currentPage, setCurrentPage] = useState(1);
     const [filters, setFilters] = useState({});
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     // Build query params for the API
     const queryParams = useMemo(() => ({
@@ -36,6 +38,15 @@ function Jobs({ type: propType }) {
 
     const { data: companies = [] } = useCompanies();
     const { data: locations = [] } = useLocations();
+
+    // Handle resize for responsive ad placement
+    useState(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const data = isWalkin ? walkinsData : jobsData;
     const isLoading = isWalkin ? isLoadingWalkins : isLoadingJobs;
@@ -106,22 +117,23 @@ function Jobs({ type: propType }) {
                 ) : jobs.length > 0 ? (
                     <>
                         <div className="jobs-grid grid grid-3">
-                            {jobs.map((job, index) => (
-                                <div key={job._id} className="job-wrapper" style={{ display: 'contents' }}>
-                                    <div className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
-                                        {isWalkin || job.type === 'walkin' ? (
-                                            <WalkinCard job={job} />
-                                        ) : (
-                                            <JobCard job={job} />
-                                        )}
+                            {jobs.map((job, index) => {
+                                const adInterval = isMobile ? 2 : 3;
+                                const showAd = (index + 1) % adInterval === 0 && index !== jobs.length - 1;
+                                
+                                return (
+                                    <div key={job._id}>
+                                        <div className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
+                                            {isWalkin || job.type === 'walkin' ? (
+                                                <WalkinCard job={job} />
+                                            ) : (
+                                                <JobCard job={job} />
+                                            )}
+                                        </div>
+                                        {showAd && <GoogleAdSense />}
                                     </div>
-                                    {/* Insert Native Ad after every 3rd job */}
-                                    {(index + 1) % 3 === 0 && index !== jobs.length - 1 && (
-                                        ""
-                                       // <NativeAd />
-                                    )}
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
 
                         {totalPages > 1 && (

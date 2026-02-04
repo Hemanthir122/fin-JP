@@ -6,11 +6,13 @@ import Hero from '../components/Hero';
 import JobCard from '../components/JobCard';
 import JobFilter from '../components/JobFilter';
 import NativeAd from '../components/NativeAd';
+import GoogleAdSense from '../components/GoogleAdSense';
 import { useLatestJobs, useCompanies, useLocations } from '../hooks/useJobs';
 import './Home.css';
 
 function Home() {
     const [filters, setFilters] = useState({});
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     // React Query hooks - cached and deduplicated
     const { data: jobs = [], isLoading: jobsLoading } = useLatestJobs();
@@ -18,6 +20,15 @@ function Home() {
     const { data: locations = [] } = useLocations();
 
     const loading = jobsLoading;
+
+    // Handle resize for responsive ad placement
+    useState(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Client-side filtering on already fetched data
     const filteredJobs = useMemo(() => {
@@ -149,18 +160,19 @@ function Home() {
                     ) : filteredJobs.length > 0 ? (
                         <>
                             <div className="jobs-grid grid grid-3">
-                                {filteredJobs.map((job, index) => (
-                                    <div key={job._id} className="job-wrapper" style={{ display: 'contents' }}>
-                                        <div className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
-                                            <JobCard job={job} />
+                                {filteredJobs.map((job, index) => {
+                                    const adInterval = isMobile ? 2 : 3;
+                                    const showAd = (index + 1) % adInterval === 0 && index !== filteredJobs.length - 1;
+                                    
+                                    return (
+                                        <div key={job._id}>
+                                            <div className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
+                                                <JobCard job={job} />
+                                            </div>
+                                            {showAd && <GoogleAdSense />}
                                         </div>
-                                        {/* Insert Native Ad after every 3rd job */}
-                                        {(index + 1) % 3 === 0 && index !== filteredJobs.length - 1 && (
-                                            ""
-                                           // <NativeAd />
-                                        )}
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
 
                             <div className="view-all-container">
