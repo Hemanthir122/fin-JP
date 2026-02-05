@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const Job = require('./models/Job');
 
 // Route imports
 const jobRoutes = require('./routes/jobRoutes');
@@ -22,6 +23,33 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// Auto-delete jobs with expired endDate
+async function cleanupExpiredJobs() {
+    try {
+        const now = new Date();
+        const result = await Job.updateMany(
+            {
+                endDate: { $lt: now },
+                isActive: true
+            },
+            {
+                $set: { isActive: false }
+            }
+        );
+        if (result.modifiedCount > 0) {
+            console.log(`[Job Cleanup] Marked ${result.modifiedCount} expired jobs as inactive`);
+        }
+    } catch (error) {
+        console.error('[Job Cleanup] Error:', error.message);
+    }
+}
+
+// Run cleanup on server start
+cleanupExpiredJobs();
+
+// Run cleanup every 5 minutes (300000 ms)
+setInterval(cleanupExpiredJobs, 300000);
 
 // Routes
 app.use('/api/jobs', jobRoutes);

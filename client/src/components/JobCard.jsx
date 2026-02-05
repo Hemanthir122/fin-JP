@@ -82,6 +82,23 @@ ${platformLink}`;
         }
     };
 
+    const formatEndDate = (endDate) => {
+        if (!endDate) return null;
+        const date = new Date(endDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const daysLeft = Math.ceil((date - today) / (1000 * 60 * 60 * 24));
+        
+        if (daysLeft < 0) return null; // Expired
+        if (daysLeft === 0) return 'Today';
+        if (daysLeft === 1) return 'Tomorrow';
+        if (daysLeft <= 7) return `${daysLeft} days left`;
+        
+        const options = { month: 'short', day: 'numeric' };
+        return `Apply by ${date.toLocaleDateString('en-US', options)}`;
+    };
+
     // Check for expiration
     const isExpired = job.endDate && new Date(job.endDate) < new Date();
 
@@ -162,6 +179,14 @@ ${platformLink}`;
                         {job.experience}
                     </span>
                 </div>
+                {formatEndDate(job.endDate) && (
+                    <div className="meta-item" style={{ color: 'var(--accent-orange)' }}>
+                        <span className="meta-label">⏰</span>
+                        <span className="meta-value" style={{ color: 'var(--accent-orange)' }}>
+                            {formatEndDate(job.endDate)}
+                        </span>
+                    </div>
+                )}
             </div>
 
             {/* Footer */}

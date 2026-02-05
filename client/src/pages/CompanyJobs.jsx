@@ -35,6 +35,11 @@ function CompanyJobs() {
                             <p className="company-jobs-count">
                                 {jobs.length} {jobs.length === 1 ? 'opening' : 'openings'} available
                             </p>
+                            {company?.aboutCompany && (
+                                <p className="company-about" style={{ marginTop: '12px', color: 'var(--text-muted)', fontSize: '14px', lineHeight: '1.5' }}>
+                                    {company.aboutCompany}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>

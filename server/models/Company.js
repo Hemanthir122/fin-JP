@@ -10,6 +10,10 @@ const companySchema = new mongoose.Schema({
     logo: {
         type: String,
         default: ''
+    },
+    aboutCompany: {
+        type: String,
+        default: ''
     }
 }, {
     timestamps: true
