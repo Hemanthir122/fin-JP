@@ -163,30 +163,30 @@ ${platformLink}`;
                 </div>
             )}
 
-            {/* Meta: Location, Package, Experience */}
+            {/* Meta: Location and Package in one row */}
             <div className="job-meta">
-                <div className="meta-item">
-                    <MapPin size={15} />
-                    <span>{job.location}</span>
-                </div>
-                <div className="meta-item">
-                    <span className="meta-label">{job.type === 'internship' ? 'Stipend:' : 'Package:'}</span>
-                    <span className="meta-value">{job.package} {job.type === 'internship' ? '/month' : 'LPA'}</span>
-                </div>
-                <div className="meta-item">
-                    <span className="meta-label">Exp:</span>
-                    <span className="meta-value">
-                        {job.experience}
-                    </span>
-                </div>
-                {formatEndDate(job.endDate) && (
-                    <div className="meta-item" style={{ color: 'var(--accent-orange)' }}>
-                        <span className="meta-label">⏰</span>
-                        <span className="meta-value" style={{ color: 'var(--accent-orange)' }}>
-                            {formatEndDate(job.endDate)}
-                        </span>
+                <div className="meta-row">
+                    <div className="meta-item location">
+                        <MapPin size={13} />
+                        <span>{job.location}</span>
                     </div>
-                )}
+                    <div className="meta-item package">
+                        <span className="meta-label">{job.type === 'internship' ? 'Stipend:' : 'Package:'}</span>
+                        <span className="meta-value">{job.package} {job.type === 'internship' ? '/mo' : 'LPA'}</span>
+                    </div>
+                </div>
+                <div className="meta-row">
+                    <div className="meta-item experience">
+                        <span className="meta-label">Experience:</span>
+                        <span className="meta-value">{job.experience}</span>
+                    </div>
+                    {formatEndDate(job.endDate) && (
+                        <div className="meta-item deadline">
+                            <span className="meta-label">⏰</span>
+                            <span className="meta-value deadline-text">{formatEndDate(job.endDate)}</span>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Footer */}
