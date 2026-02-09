@@ -68,6 +68,19 @@
     box-sizing: border-box;
 }
 
+/* Ad Slot Styling */
+.ad-slot {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin: 16px 0;
+}
+
+@media (max-width: 768px) {
+    .ad-slot {
+        margin: 12px 0;
+    }
+}
+
 .pagination {
     display: flex;
     align-items: center;

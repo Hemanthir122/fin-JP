@@ -1,0 +1,50 @@
+.adsterra-native-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.02) 0%, rgba(251, 146, 60, 0.05) 100%);
+    border: 1px dashed rgba(249, 115, 22, 0.2);
+    border-radius: 12px;
+    box-sizing: border-box;
+    min-height: 320px;
+}
+
+.sponsored-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 4px 8px;
+    background: rgba(156, 163, 175, 0.1);
+    border-radius: 4px;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.adsterra-native-container {
+    width: 100%;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .adsterra-native-wrapper {
+        padding: 12px;
+        min-height: 280px;
+    }
+
+    .sponsored-label {
+        font-size: 9px;
+    }
+
+    .adsterra-native-container {
+        min-height: 250px;
+    }
+}

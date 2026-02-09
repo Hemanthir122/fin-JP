@@ -7,6 +7,7 @@ import JobCard from '../components/JobCard';
 import JobFilter from '../components/JobFilter';
 import NativeAd from '../components/NativeAd';
 import GoogleAdSense from '../components/GoogleAdSense';
+import AdsterraNativeBanner from '../components/AdsterraNativeBanner';
 import { useLatestJobs, useCompanies, useLocations } from '../hooks/useJobs';
 import './Home.css';
 
@@ -161,15 +162,19 @@ function Home() {
                         <>
                             <div className="jobs-grid grid grid-3">
                                 {filteredJobs.map((job, index) => {
-                                    const adInterval = isMobile ? 2 : 3;
-                                    const showAd = (index + 1) % adInterval === 0 && index !== filteredJobs.length - 1;
+                                    // Insert Adsterra Native Banner after every 2 job cards
+                                    const showAd = (index + 1) % 2 === 0 && index !== filteredJobs.length - 1;
                                     
                                     return (
                                         <div key={job._id}>
                                             <div className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
                                                 <JobCard job={job} />
                                             </div>
-                                            {showAd && <GoogleAdSense />}
+                                            {showAd && (
+                                                <div className="ad-slot">
+                                                    <AdsterraNativeBanner index={index} />
+                                                </div>
+                                            )}
                                         </div>
                                     );
                                 })}

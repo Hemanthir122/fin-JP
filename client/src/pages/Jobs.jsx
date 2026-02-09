@@ -6,6 +6,7 @@ import WalkinCard from '../components/WalkinCard';
 import Pagination from '../components/Pagination';
 import JobFilter from '../components/JobFilter';
 import GoogleAdSense from '../components/GoogleAdSense';
+import AdsterraNativeBanner from '../components/AdsterraNativeBanner';
 import { useJobs, useCompanies, useLocations, useWalkins } from '../hooks/useJobs';
 import NativeAd from '../components/NativeAd';
 import './Jobs.css';
@@ -118,8 +119,8 @@ function Jobs({ type: propType }) {
                     <>
                         <div className="jobs-grid grid grid-3">
                             {jobs.map((job, index) => {
-                                const adInterval = isMobile ? 2 : 3;
-                                const showAd = (index + 1) % adInterval === 0 && index !== jobs.length - 1;
+                                // Insert Adsterra Native Banner after every 2 job cards
+                                const showAd = (index + 1) % 2 === 0 && index !== jobs.length - 1;
                                 
                                 return (
                                     <div key={job._id}>
@@ -130,7 +131,11 @@ function Jobs({ type: propType }) {
                                                 <JobCard job={job} />
                                             )}
                                         </div>
-                                        {showAd && <GoogleAdSense />}
+                                        {showAd && (
+                                            <div className="ad-slot">
+                                                <AdsterraNativeBanner index={index} />
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
