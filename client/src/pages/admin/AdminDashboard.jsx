@@ -90,6 +90,9 @@ function AdminDashboard() {
                     <Link to="/admin/manage-jobs" className="nav-item">
                         Manage Jobs
                     </Link>
+                    <Link to="/admin/update-company-logo" className="nav-item">
+                        Update Company Logo
+                    </Link>
                     <Link to="/admin/feedback-stats" className="nav-item">
                         Feedback Stats
                     </Link>

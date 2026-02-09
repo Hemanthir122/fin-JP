@@ -271,6 +271,15 @@ body {
 .grid {
   display: grid;
   gap: 24px;
+  align-items: stretch;
+  width: 100%;
+}
+
+.grid > * {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .grid-2 {

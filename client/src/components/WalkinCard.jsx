@@ -1,9 +1,31 @@
-import { Building2, Clock, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import { Building2, Clock, Lock, Eye } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import './WalkinCard.css';
 
 function WalkinCard({ job }) {
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isContactRevealed, setIsContactRevealed] = useState(false);
+    const [isAdLoading, setIsAdLoading] = useState(false);
+    const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+    const contentRef = useRef(null);
+
+    // Scroll to bottom on mount
+    useEffect(() => {
+        if (contentRef.current) {
+            contentRef.current.scrollTop = contentRef.current.scrollHeight;
+        }
+    }, []);
+
+    // Handle scroll to hide indicator
+    const handleScroll = () => {
+        if (contentRef.current) {
+            const { scrollTop } = contentRef.current;
+            if (scrollTop < 50) {
+                setShowScrollIndicator(false);
+            } else {
+                setShowScrollIndicator(true);
+            }
+        }
+    };
 
     const getTimeAgo = (date) => {
         const now = new Date();
@@ -28,21 +50,46 @@ function WalkinCard({ job }) {
         }
     };
 
-    // Check if content needs "Show More" button
-    const shouldShowMore = () => {
-        const descLength = job.description?.length || 0;
-        const qualsCount = job.qualifications?.length || 0;
-        const respCount = job.responsibilities?.length || 0;
+    // Handle contact reveal with ad
+    const handleRevealContact = () => {
+        if (isContactRevealed) return;
         
-        return descLength > 300 || qualsCount > 3 || respCount > 3;
+        // TODO: Integrate advertisement here before revealing contacts
+        // Uncomment below code when ad integration is ready
+        
+        /*
+        setIsAdLoading(true);
+        
+        // Trigger Google AdSense or your ad network here
+        // Example: Show interstitial ad
+        console.log('Showing advertisement...');
+        
+        // Simulate ad completion
+        setTimeout(() => {
+            // Only reveal if ad was completed successfully
+            // In production, this should be triggered by ad completion callback
+            setIsContactRevealed(true);
+            setIsAdLoading(false);
+            console.log('Ad completed - Contact revealed');
+        }, 3000);
+        
+        // If you're using Google AdSense, you would do something like:
+        // window.adsbygoogle = window.adsbygoogle || [];
+        // window.adsbygoogle.push({});
+        */
+        
+        // For now, reveal contacts immediately without ad
+        setIsContactRevealed(true);
+        console.log('Contact revealed (ad integration disabled)');
     };
 
     const renderDescription = () => {
         if (!job.description) return '';
 
-        // Combined regex for both URLs and emails
+        // Combined regex for URLs, emails, and phone numbers
         const urlRegex = /(https?:\/\/[^\s]+)/gi;
         const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
+        const phoneRegex = /(\+?\d{1,4}[\s-]?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,9})/g;
 
         // First, split by URLs
         const urlParts = job.description.split(urlRegex);
@@ -50,6 +97,18 @@ function WalkinCard({ job }) {
         return urlParts.map((part, index) => {
             // Check if part is a URL
             if (part && part.match(/^https?:\/\//i)) {
+                if (!isContactRevealed) {
+                    return (
+                        <span
+                            key={index}
+                            className="walkin-url-link blurred"
+                            onClick={handleRevealContact}
+                        >
+                            <Lock size={14} className="lock-icon" />
+                            <span className="blur-text">Click to reveal</span>
+                        </span>
+                    );
+                }
                 return (
                     <a
                         key={index}
@@ -64,12 +123,24 @@ function WalkinCard({ job }) {
                 );
             }
 
-            // Then check for emails in remaining text
+            // Then check for emails and phone numbers in remaining text
             if (!part) return null;
 
             const emailParts = part.split(emailRegex);
             return emailParts.map((emailPart, emailIndex) => {
                 if (emailPart && emailPart.match(emailRegex)) {
+                    if (!isContactRevealed) {
+                        return (
+                            <span
+                                key={`${index}-${emailIndex}`}
+                                className="walkin-email-link blurred"
+                                onClick={handleRevealContact}
+                            >
+                                <Lock size={14} className="lock-icon" />
+                                <span className="blur-text">Click to reveal email</span>
+                            </span>
+                        );
+                    }
                     return (
                         <a
                             key={`${index}-${emailIndex}`}
@@ -81,15 +152,53 @@ function WalkinCard({ job }) {
                         </a>
                     );
                 }
-                return emailPart;
+
+                // Check for phone numbers in remaining text
+                const phoneParts = emailPart.split(phoneRegex);
+                return phoneParts.map((phonePart, phoneIndex) => {
+                    if (phonePart && phonePart.match(phoneRegex) && phonePart.replace(/[\s-()]/g, '').length >= 10) {
+                        if (!isContactRevealed) {
+                            return (
+                                <span
+                                    key={`${index}-${emailIndex}-${phoneIndex}`}
+                                    className="walkin-phone-link blurred"
+                                    onClick={handleRevealContact}
+                                >
+                                    <Lock size={14} className="lock-icon" />
+                                    <span className="blur-text">Click to reveal phone</span>
+                                </span>
+                            );
+                        }
+                        return (
+                            <a
+                                key={`${index}-${emailIndex}-${phoneIndex}`}
+                                href={`tel:${phonePart.replace(/[\s-()]/g, '')}`}
+                                className="walkin-phone-link"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {phonePart}
+                            </a>
+                        );
+                    }
+                    return phonePart;
+                });
             });
         });
     };
 
-    const hasMore = shouldShowMore();
-
     return (
-        <div className={`walkin-card card ${isExpanded ? 'expanded' : 'collapsed'}`}>
+        <div className="walkin-card card">
+            {/* Ad Loading Overlay */}
+            {isAdLoading && (
+                <div className="ad-loading-overlay">
+                    <div className="ad-loading-content">
+                        <div className="spinner-large"></div>
+                        <p>Loading advertisement...</p>
+                        <small>Please wait to reveal contact details</small>
+                    </div>
+                </div>
+            )}
+
             <div className="walkin-card-header">
                 {/* Company Logo */}
                 <div className="walkin-company-logo">
@@ -112,8 +221,26 @@ function WalkinCard({ job }) {
                 </div>
             </div>
 
-            {/* Content Container with Fixed Height */}
-            <div className={`walkin-content-wrapper ${hasMore ? 'has-more' : ''}`}>
+            {/* Contact Reveal Badge */}
+            {!isContactRevealed && (
+                <div className="contact-reveal-badge">
+                    <Eye size={14} />
+                    <span>Click on blurred contacts to reveal</span>
+                </div>
+            )}
+
+            {/* Scrollable Content Container */}
+            <div 
+                className="walkin-content-wrapper scrollable" 
+                ref={contentRef}
+                onScroll={handleScroll}
+            >
+                {/* Scroll Up Indicator */}
+                {showScrollIndicator && (
+                    <div className="scroll-indicator">
+                        <span>↑ Scroll up for more details</span>
+                    </div>
+                )}
                 {/* Description */}
                 <div className="walkin-description">
                     <p className="walkin-full-description">
@@ -144,28 +271,7 @@ function WalkinCard({ job }) {
                         </ul>
                     </div>
                 )}
-
-                {/* Gradient Fade - Only shown when collapsed and has more content */}
-                {!isExpanded && hasMore && <div className="walkin-fade-gradient"></div>}
             </div>
-
-            {/* Show More/Less Button */}
-            {hasMore && (
-                <button
-                    className="walkin-show-more-btn"
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    aria-expanded={isExpanded}
-                >
-                    <span className="walkin-btn-text">
-                        {isExpanded ? 'Show Less' : 'Show More'}
-                    </span>
-                    {isExpanded ? (
-                        <ChevronUp size={18} />
-                    ) : (
-                        <ChevronDown size={18} />
-                    )}
-                </button>
-            )}
         </div>
     );
 }

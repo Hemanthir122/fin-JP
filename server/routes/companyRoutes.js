@@ -42,4 +42,69 @@ router.get('/search/:query', async (req, res) => {
     }
 });
 
+// Update company logo by name
+router.put('/:name', async (req, res) => {
+    try {
+        const { logo } = req.body;
+
+        if (!logo || logo.trim() === '') {
+            return res.status(400).json({ message: 'Logo URL is required' });
+        }
+
+        const company = await Company.findOneAndUpdate(
+            { name: { $regex: `^${req.params.name}$`, $options: 'i' } },
+            { logo: logo.trim() },
+            { new: true, runValidators: true }
+        );
+
+        if (!company) {
+            return res.status(404).json({ message: 'Company not found' });
+        }
+
+        res.json({
+            message: 'Company logo updated successfully',
+            company: company
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Update company about section and other details
+router.patch('/:name', async (req, res) => {
+    try {
+        const { logo, aboutCompany } = req.body;
+        const updateData = {};
+
+        if (logo && logo.trim() !== '') {
+            updateData.logo = logo.trim();
+        }
+
+        if (aboutCompany && aboutCompany.trim() !== '') {
+            updateData.aboutCompany = aboutCompany.trim();
+        }
+
+        if (Object.keys(updateData).length === 0) {
+            return res.status(400).json({ message: 'No valid fields to update' });
+        }
+
+        const company = await Company.findOneAndUpdate(
+            { name: { $regex: `^${req.params.name}$`, $options: 'i' } },
+            updateData,
+            { new: true, runValidators: true }
+        );
+
+        if (!company) {
+            return res.status(404).json({ message: 'Company not found' });
+        }
+
+        res.json({
+            message: 'Company updated successfully',
+            company: company
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;
