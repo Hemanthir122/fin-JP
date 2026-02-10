@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Briefcase, Users, Calendar, Plus, List, TrendingUp, Clock, Menu, ThumbsUp } from 'lucide-react';
 
 import api from '../../utils/api';
+import AdminThemeToggle from '../../components/AdminThemeToggle';
 import './Admin.css';
 
 function AdminDashboard() {
@@ -98,6 +99,7 @@ function AdminDashboard() {
                     </Link>
                 </nav>
                 <div className="admin-sidebar-footer">
+                    <AdminThemeToggle />
                     <Link to="/" className="nav-item back-link">
                         ← Back to Site
                     </Link>
@@ -128,10 +130,13 @@ function AdminDashboard() {
                         </div>
                     </div>
 
-                    <Link to="/admin/post-job" className="btn btn-primary">
-                        <Plus size={18} />
-                        Post New Job
-                    </Link>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <AdminThemeToggle />
+                        <Link to="/admin/post-job" className="btn btn-primary">
+                            <Plus size={18} />
+                            Post New Job
+                        </Link>
+                    </div>
                 </div>
 
                 {loading ? (

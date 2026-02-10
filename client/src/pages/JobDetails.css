@@ -163,10 +163,10 @@
 
 .skill-tag {
     padding: 8px 16px;
-    background: rgba(249, 115, 22, 0.15);
-    border: 1px solid rgba(249, 115, 22, 0.3);
+    background: rgba(77, 163, 255, 0.12);
+    border: 1px solid rgba(77, 163, 255, 0.3);
     border-radius: 50px;
-    color: var(--primary-dark);
+    color: var(--primary-light);
     font-size: 14px;
     font-weight: 500;
 }
@@ -273,8 +273,9 @@
 }
 
 .related-job-item:hover {
-    background: rgba(249, 115, 22, 0.1);
+    background: rgba(77, 163, 255, 0.1);
     border-color: var(--primary);
+    box-shadow: var(--shadow-glow-hover);
 }
 
 .related-job-title {

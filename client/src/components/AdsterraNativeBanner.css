@@ -4,8 +4,8 @@
     flex-direction: column;
     gap: 8px;
     padding: 16px;
-    background: linear-gradient(135deg, rgba(249, 115, 22, 0.02) 0%, rgba(251, 146, 60, 0.05) 100%);
-    border: 1px dashed rgba(249, 115, 22, 0.2);
+    background: linear-gradient(135deg, rgba(77, 163, 255, 0.05) 0%, rgba(59, 143, 232, 0.08) 100%);
+    border: 1px dashed rgba(77, 163, 255, 0.2);
     border-radius: 12px;
     box-sizing: border-box;
     min-height: 320px;
@@ -31,6 +31,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
 }
 
 .ad-iframe {

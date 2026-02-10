@@ -35,8 +35,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(249, 115, 22, 0.15);
-    border: 1px solid rgba(249, 115, 22, 0.3);
+    background: rgba(77, 163, 255, 0.12);
+    border: 1px solid rgba(77, 163, 255, 0.3);
     border-radius: 16px;
     color: var(--primary-light);
 }
@@ -98,6 +98,7 @@
     width: 100%;
     margin-top: 5px;
     margin-bottom: 16px;
+    display: none; /* Hide on desktop by default */
 }
 
 .view-all-container {
@@ -166,6 +167,7 @@
     }
 
     .ad-slot {
+        display: block; /* Show only on mobile */
         margin-top: 5px;
         margin-bottom: 12px;
     }

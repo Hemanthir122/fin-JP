@@ -67,6 +67,14 @@
 .admin-sidebar-footer {
     padding-top: 20px;
     border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-sidebar-footer .admin-theme-toggle {
+    width: 100%;
+    justify-content: center;
 }
 
 .back-link {

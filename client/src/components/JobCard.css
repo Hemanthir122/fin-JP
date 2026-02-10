@@ -3,13 +3,16 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    background: var(--bg-card);
+    background: var(--gradient-card);
     position: relative;
     overflow: hidden;
     height: 265px;
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    transition: all var(--transition-normal);
 }
 
 .job-card::before {
@@ -22,6 +25,13 @@
     background: var(--gradient-primary);
     opacity: 0;
     transition: opacity var(--transition-fast);
+}
+
+.job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow-hover);
+    border-color: rgba(77, 163, 255, 0.4);
+    background: var(--bg-card-hover);
 }
 
 .job-card:hover::before {
@@ -39,7 +49,7 @@
     width: 40px;
     height: 40px;
     border-radius: 8px;
-    background: rgba(0, 0, 0, 0.03);
+    background: rgba(77, 163, 255, 0.05);
     border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
@@ -77,7 +87,7 @@
 }
 
 .job-company {
-    color: var(--accent-teal);
+    color: var(--primary);
     text-decoration: none;
     font-size: 12px;
     font-weight: 500;
@@ -85,7 +95,8 @@
 }
 
 .job-company:hover {
-    color: var(--accent-orange);
+    color: var(--primary-light);
+    text-shadow: 0 0 8px rgba(77, 163, 255, 0.5);
 }
 
 .job-card-top .badge {
@@ -103,8 +114,8 @@
 
 .skill-chip {
     padding: 2px 7px;
-    background: rgba(0, 0, 0, 0.03);
-    border: 1px solid var(--border-color);
+    background: rgba(77, 163, 255, 0.08);
+    border: 1px solid rgba(77, 163, 255, 0.2);
     border-radius: 20px;
     color: var(--text-secondary);
     font-size: 12px;
@@ -160,7 +171,7 @@
 }
 
 .meta-item svg {
-    color: var(--accent-teal);
+    color: var(--primary);
     flex-shrink: 0;
 }
 
@@ -194,13 +205,15 @@
     color: var(--text-muted);
     font-size: 10px;
     padding: 2px 7px;
-    background: rgba(0, 0, 0, 0.03);
+    background: rgba(77, 163, 255, 0.08);
     border-radius: 20px;
+    border: 1px solid rgba(77, 163, 255, 0.15);
 }
 
 .job-time-new {
-    background: linear-gradient(135deg, rgba(255, 140, 0, 0.1), rgba(255, 69, 0, 0.1));
-    color: #e65100;
+    background: linear-gradient(135deg, rgba(77, 163, 255, 0.15), rgba(59, 143, 232, 0.15));
+    color: var(--primary-light);
+    border-color: rgba(77, 163, 255, 0.3);
 }
 
 .fire-icon {
@@ -272,7 +285,7 @@
 }
 
 .btn-icon-more:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(77, 163, 255, 0.15);
     color: var(--text-primary);
 }
 
@@ -306,7 +319,7 @@
 }
 
 .menu-item:hover {
-    background: rgba(0, 0, 0, 0.03);
+    background: rgba(77, 163, 255, 0.15);
     color: var(--primary);
 }
 

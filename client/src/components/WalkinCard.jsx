@@ -11,15 +11,22 @@ function WalkinCard({ job }) {
     // Scroll to bottom on mount
     useEffect(() => {
         if (contentRef.current) {
-            contentRef.current.scrollTop = contentRef.current.scrollHeight;
+            // Scroll to bottom after a short delay to ensure content is rendered
+            setTimeout(() => {
+                if (contentRef.current) {
+                    contentRef.current.scrollTop = contentRef.current.scrollHeight;
+                }
+            }, 100);
         }
     }, []);
 
-    // Handle scroll to hide indicator
+    // Handle scroll to show/hide indicator
     const handleScroll = () => {
         if (contentRef.current) {
-            const { scrollTop } = contentRef.current;
-            if (scrollTop < 50) {
+            const { scrollTop, scrollHeight, clientHeight } = contentRef.current;
+            // Show indicator when not at the top (scrolled down)
+            // Hide indicator when scrolled to top
+            if (scrollTop < 20) {
                 setShowScrollIndicator(false);
             } else {
                 setShowScrollIndicator(true);

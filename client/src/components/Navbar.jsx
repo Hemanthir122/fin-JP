@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 import './Navbar.css';
 
 function Navbar() {
@@ -69,6 +70,7 @@ function Navbar() {
                             <path d="M3 21l1.65-3.8C3.3 15.4 2.8 13.2 2.8 11c0-5 4-9 9-9s9 4 9 9-4 9-9 9c-2.1 0-4.1-.6-5.8-1.7L3 21z" />
                         </svg>
                     </a>
+                    <ThemeToggle />
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -113,6 +115,10 @@ function Navbar() {
                             </svg>
                             WhatsApp Channel
                         </a>
+                        <div style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <span style={{ color: 'var(--text-secondary)', fontSize: '14px', fontWeight: '500' }}>Theme</span>
+                            <ThemeToggle />
+                        </div>
                     </div>
                 </div>
             </div>

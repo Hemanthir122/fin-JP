@@ -2,8 +2,8 @@
     width: 100%;
     margin: 20px 0;
     padding: 12px;
-    background: linear-gradient(135deg, rgba(249, 115, 22, 0.02) 0%, rgba(251, 146, 60, 0.04) 100%);
-    border: 1px solid rgba(249, 115, 22, 0.1);
+    background: linear-gradient(135deg, rgba(77, 163, 255, 0.05) 0%, rgba(59, 143, 232, 0.08) 100%);
+    border: 1px solid rgba(77, 163, 255, 0.15);
     border-radius: 10px;
     box-sizing: border-box;
     min-height: 96px;
@@ -29,9 +29,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
+    background: var(--bg-card);
     border-radius: 6px;
     overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
 .ad-banner-iframe {

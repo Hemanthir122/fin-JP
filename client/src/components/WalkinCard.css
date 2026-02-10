@@ -3,20 +3,25 @@
     transition: all 0.3s ease;
     border-top: 4px solid var(--primary);
     position: relative;
-    background: var(--bg-card);
+    background: var(--gradient-card);
     display: flex;
     flex-direction: column;
-    height: 420px;
-    overflow: hidden;
+    height: 420px !important;
+    max-height: 420px !important;
+    overflow: hidden !important;
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
 }
 
 .walkin-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
-    border-top-color: var(--primary-dark);
+    box-shadow: var(--shadow-glow-hover);
+    border-top-color: var(--primary-light);
+    border-color: rgba(77, 163, 255, 0.4);
+    background: var(--bg-card-hover);
 }
 
 .walkin-card-header {
@@ -26,15 +31,16 @@
     margin-bottom: 16px;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--border-color);
-    flex-shrink: 0;
+    flex-shrink: 0 !important;
     min-height: 72px;
+    max-height: 72px;
 }
 
 .walkin-company-logo {
     width: 48px;
     height: 48px;
     border-radius: 12px;
-    background: #fff;
+    background: rgba(77, 163, 255, 0.08);
     border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
@@ -69,7 +75,7 @@
 .walkin-company-name {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #1f2937;
+    color: var(--text-primary);
     letter-spacing: -0.02em;
     margin: 0;
     flex: 1;
@@ -83,33 +89,35 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 0.85rem;
     font-weight: 500;
-    background: rgba(0, 0, 0, 0.03);
+    background: rgba(77, 163, 255, 0.08);
     padding: 4px 10px;
     border-radius: 20px;
     white-space: nowrap;
     flex-shrink: 0;
+    border: 1px solid rgba(77, 163, 255, 0.15);
 }
 
 /* Content Wrapper - Scrollable */
 .walkin-content-wrapper {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
+    flex: 1 1 auto;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
     display: flex;
     flex-direction: column;
     position: relative;
     margin-bottom: 0;
-    min-height: 0;
+    min-height: 0 !important;
+    max-height: 100% !important;
     padding-right: 4px;
     scroll-behavior: smooth;
 }
 
 .walkin-content-wrapper.scrollable {
     scrollbar-width: thin;
-    scrollbar-color: rgba(249, 115, 22, 0.3) rgba(0, 0, 0, 0.05);
+    scrollbar-color: rgba(77, 163, 255, 0.3) rgba(77, 163, 255, 0.05);
 }
 
 /* Scroll Up Indicator */
@@ -118,7 +126,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(180deg, rgba(249, 115, 22, 0.95) 0%, rgba(251, 146, 60, 0.95) 100%);
+    background: linear-gradient(180deg, rgba(77, 163, 255, 0.95) 0%, rgba(59, 143, 232, 0.95) 100%);
     color: white;
     text-align: center;
     padding: 8px 12px;
@@ -127,7 +135,7 @@
     z-index: 5;
     border-radius: 8px;
     margin-bottom: 10px;
-    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+    box-shadow: 0 4px 12px rgba(77, 163, 255, 0.4);
     animation: bounce 2s ease-in-out infinite;
 }
 
@@ -153,31 +161,31 @@
 }
 
 .walkin-content-wrapper.scrollable::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(77, 163, 255, 0.05);
     border-radius: 10px;
 }
 
 .walkin-content-wrapper.scrollable::-webkit-scrollbar-thumb {
-    background: rgba(249, 115, 22, 0.3);
+    background: rgba(77, 163, 255, 0.3);
     border-radius: 10px;
     transition: background 0.3s ease;
 }
 
 .walkin-content-wrapper.scrollable::-webkit-scrollbar-thumb:hover {
-    background: rgba(249, 115, 22, 0.5);
+    background: rgba(77, 163, 255, 0.5);
 }
 
 .walkin-description {
-    background: linear-gradient(135deg, rgba(249, 115, 22, 0.03) 0%, rgba(255, 140, 0, 0.08) 100%);
+    background: linear-gradient(135deg, rgba(77, 163, 255, 0.05) 0%, rgba(59, 143, 232, 0.08) 100%);
     padding: 12px;
     border-radius: 10px;
-    border: 1px solid rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(77, 163, 255, 0.15);
     margin-bottom: 10px;
-    flex-shrink: 0;
+    flex-shrink: 0 !important;
 }
 
 .walkin-full-description {
-    color: #374151;
+    color: var(--text-secondary);
     font-size: 0.9rem;
     line-height: 1.6;
     white-space: pre-line;
@@ -257,17 +265,17 @@
 /* Sections - Qualifications & Responsibilities */
 .walkin-section {
     margin-bottom: 10px;
-    flex-shrink: 0;
+    flex-shrink: 0 !important;
 }
 
 .walkin-section-title {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--text-primary);
     margin: 0 0 6px 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .walkin-list {
@@ -278,7 +286,7 @@
 
 .walkin-list-item {
     font-size: 0.85rem;
-    color: #4b5563;
+    color: var(--text-secondary);
     margin-bottom: 4px;
     padding-left: 14px;
     position: relative;
@@ -299,13 +307,15 @@
 @media (max-width: 768px) {
     .walkin-card {
         padding: 16px;
-        height: 380px;
+        height: 380px !important;
+        max-height: 380px !important;
     }
 
     .walkin-card-header {
         margin-bottom: 12px;
         padding-bottom: 10px;
         min-height: 64px;
+        max-height: 64px;
         gap: 10px;
     }
 
@@ -513,7 +523,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--bg-card);
     backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
@@ -540,19 +550,19 @@
     margin: 16px 0 8px;
     font-size: 1rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--text-primary);
 }
 
 .ad-loading-content small {
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 0.85rem;
 }
 
 .spinner-large {
     width: 50px;
     height: 50px;
-    border: 4px solid rgba(249, 115, 22, 0.2);
-    border-top-color: #f97316;
+    border: 4px solid rgba(77, 163, 255, 0.2);
+    border-top-color: var(--primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto;

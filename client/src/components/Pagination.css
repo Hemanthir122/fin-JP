@@ -40,7 +40,7 @@
 .nav-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(77, 163, 255, 0.05);
 }
 
 .number-btn {
@@ -52,7 +52,7 @@
 }
 
 .number-btn:hover:not(.active) {
-    background: rgba(249, 115, 22, 0.1);
+    background: rgba(77, 163, 255, 0.15);
     border-color: var(--primary);
     color: var(--primary);
 }
@@ -62,7 +62,7 @@
     color: white;
     border-color: var(--primary);
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+    box-shadow: 0 4px 12px rgba(77, 163, 255, 0.4);
 }
 
 .pagination-ellipsis {
