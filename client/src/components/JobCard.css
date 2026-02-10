@@ -6,7 +6,7 @@
     background: var(--bg-card);
     position: relative;
     overflow: hidden;
-    height: 245px;
+    height: 265px;
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
@@ -107,7 +107,7 @@
     border: 1px solid var(--border-color);
     border-radius: 20px;
     color: var(--text-secondary);
-    font-size: 9px;
+    font-size: 12px;
     font-weight: 500;
 }
 
@@ -228,18 +228,24 @@
 @media (max-width: 480px) {
     .job-card {
         padding: 12px;
-        height: 245px;
+        height: 270px;
     }
 
-    .meta-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
+    .job-title {
+        font-size: 1rem;
     }
 
-    .meta-item.package,
-    .meta-item.deadline {
-        align-self: flex-start;
+    .job-company {
+        font-size: 11px;
+    }
+
+    .meta-item {
+        font-size: 12px;
+    }
+
+    .skill-chip {
+        font-size: 10px;
+        padding: 2px 6px;
     }
 }
 

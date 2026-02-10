@@ -33,6 +33,13 @@
     justify-content: center;
 }
 
+.ad-iframe {
+    width: 100%;
+    min-height: 300px;
+    border: none;
+    background: transparent;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .adsterra-native-wrapper {
@@ -45,6 +52,10 @@
     }
 
     .adsterra-native-container {
+        min-height: 250px;
+    }
+
+    .ad-iframe {
         min-height: 250px;
     }
 }

@@ -196,7 +196,7 @@ ${platformLink}`;
                     <span>{getTimeAgo(job.createdAt)}</span>
                     {isNew && <span className="fire-icon">🔥</span>}
                 </div>
-                <Link to={`/job/${job._id}`} className="btn btn-primary btn-sm">
+                <Link to={`/job/${job._id}`} className="btn btn-primary btn-md">
                     {isExpired ? 'Expired' : 'Apply Now'}
                 </Link>
             </div>

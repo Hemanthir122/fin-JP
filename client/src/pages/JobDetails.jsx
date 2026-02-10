@@ -8,6 +8,9 @@ import {
 } from 'lucide-react';
 import { useJobDetails, useCompanyJobs, useWalkinDetails } from '../hooks/useJobs';
 import api from '../utils/api';
+import AdsterraNativeBannerJobDetail from '../components/ads/AdsterraNativeBannerJobDetail';
+import AdsterraSmartLink from '../components/ads/AdsterraSmartLink';
+import AdsterraBannerMobile from '../components/ads/AdsterraBannerMobile';
 import './JobDetails.css';
 
 // Feedback Section Component
@@ -309,6 +312,9 @@ ${platformLink}`;
                 <div className="container">
                     <div className="job-content-grid">
                         <div className="job-main">
+                            {/* Ad Placement 1: Native Banner - After header, before description */}
+                            <AdsterraNativeBannerJobDetail />
+
                             {/* Description */}
                             <section className="job-section">
                                 <h2 className="section-heading">Job Description</h2>
@@ -316,6 +322,9 @@ ${platformLink}`;
                                     {job.description}
                                 </div>
                             </section>
+
+                            {/* Ad Placement 2: Smart Link - Between description and about company */}
+                            <AdsterraSmartLink />
 
                             {/* About Company */}
                             {job.aboutCompany && (
@@ -340,6 +349,9 @@ ${platformLink}`;
                                     </div>
                                 </section>
                             )}
+
+                            {/* Ad Placement 3: Banner Mobile - After required skills */}
+                            <AdsterraBannerMobile />
 
                             {/* Responsibilities */}
                             {job.responsibilities && job.responsibilities.length > 0 && (
@@ -371,6 +383,8 @@ ${platformLink}`;
                                 </section>
                             )}
 
+                            {/* Ad Placement 4: Banner Mobile - Before Feedback/Apply section */}
+                            <AdsterraBannerMobile />
                             
                             {/* Feedback Section - Hidden for Walkins */}
                             {!isWalkin && <FeedbackSection jobId={id} isWalkin={isWalkin} />}

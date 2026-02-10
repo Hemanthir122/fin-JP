@@ -222,12 +222,12 @@ function WalkinCard({ job }) {
             </div>
 
             {/* Contact Reveal Badge */}
-            {!isContactRevealed && (
+            {/* {!isContactRevealed && (
                 <div className="contact-reveal-badge">
                     <Eye size={14} />
                     <span>Click on blurred contacts to reveal</span>
                 </div>
-            )}
+            )} */}
 
             {/* Scrollable Content Container */}
             <div 

@@ -1,0 +1,79 @@
+.ad-native-banner-wrapper {
+    width: 100%;
+    margin: 24px 0;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.02) 0%, rgba(251, 146, 60, 0.04) 100%);
+    border: 1px solid rgba(249, 115, 22, 0.1);
+    border-radius: 12px;
+    box-sizing: border-box;
+    min-height: 220px;
+}
+
+.ad-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-align: center;
+    padding: 4px 10px;
+    background: rgba(156, 163, 175, 0.1);
+    border-radius: 4px;
+    width: fit-content;
+    margin: 0 auto 12px;
+}
+
+.ad-native-banner-container {
+    width: 100%;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.ad-native-iframe {
+    width: 100%;
+    min-height: 200px;
+    border: none;
+    background: transparent;
+}
+
+/* Prevent layout shift */
+.ad-native-banner-container:not(.loaded) {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .ad-native-banner-wrapper {
+        margin: 20px 0;
+        padding: 12px;
+        min-height: 180px;
+    }
+
+    .ad-label {
+        font-size: 9px;
+    }
+
+    .ad-native-banner-container {
+        min-height: 160px;
+    }
+
+    .ad-native-iframe {
+        min-height: 160px;
+    }
+}

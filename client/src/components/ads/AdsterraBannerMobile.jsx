@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import './AdsterraNativeBanner.css';
+import './AdsterraBannerMobile.css';
 
-function AdsterraNativeBanner({ index = 0 }) {
+/**
+ * Adsterra Banner Ad Component (Mobile Only)
+ * Placement: After Required Skills section
+ * Size: 468x60
+ * Visibility: Mobile only (hidden on tablet/desktop)
+ */
+function AdsterraBannerMobile() {
     const iframeRef = useRef(null);
-    const adKey = 'f8c22b2c177bf4ce773ab0085a6c25e9';
+    const adKey = 'a7d8e25874deba8b7a307fb936e0027d';
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     useEffect(() => {
@@ -16,7 +22,7 @@ function AdsterraNativeBanner({ index = 0 }) {
     }, []);
 
     useEffect(() => {
-        // Only show ads on mobile
+        // Only load on mobile
         if (!isMobile || !iframeRef.current) return;
 
         // Create iframe content with the ad code
@@ -26,6 +32,8 @@ function AdsterraNativeBanner({ index = 0 }) {
             <!DOCTYPE html>
             <html>
             <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <style>
                     body {
                         margin: 0;
@@ -33,8 +41,9 @@ function AdsterraNativeBanner({ index = 0 }) {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        min-height: 300px;
+                        min-height: 60px;
                         background: transparent;
+                        overflow: hidden;
                     }
                 </style>
             </head>
@@ -43,8 +52,8 @@ function AdsterraNativeBanner({ index = 0 }) {
                     atOptions = {
                         'key' : '${adKey}',
                         'format' : 'iframe',
-                        'height' : 300,
-                        'width' : 160,
+                        'height' : 60,
+                        'width' : 468,
                         'params' : {}
                     };
                 </script>
@@ -56,22 +65,21 @@ function AdsterraNativeBanner({ index = 0 }) {
         iframeDoc.open();
         iframeDoc.write(adHTML);
         iframeDoc.close();
-    }, [adKey, isMobile, index]);
+    }, [adKey, isMobile]);
 
-    // Don't render anything on desktop
-    // TODO: Enable ads on desktop when ready
+    // Don't render on desktop/tablet
     if (!isMobile) {
         return null;
     }
 
     return (
-        <div className="adsterra-native-wrapper">
-            <div className="sponsored-label">Sponsored</div>
-            <div className="adsterra-native-container">
+        <div className="ad-banner-mobile-wrapper">
+            <div className="ad-label-banner">Sponsored</div>
+            <div className="ad-banner-mobile-container">
                 <iframe
                     ref={iframeRef}
-                    className="ad-iframe"
-                    title={`Ad ${index}`}
+                    className="ad-banner-iframe"
+                    title="Sponsored Banner"
                     scrolling="no"
                     frameBorder="0"
                 />
@@ -80,4 +88,4 @@ function AdsterraNativeBanner({ index = 0 }) {
     );
 }
 
-export default AdsterraNativeBanner;
+export default AdsterraBannerMobile;

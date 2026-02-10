@@ -120,11 +120,12 @@ function Jobs({ type: propType }) {
                         <div className="jobs-grid grid grid-3">
                             {jobs.map((job, index) => {
                                 // Insert Adsterra Native Banner after every 2 job cards
-                                const showAd = (index + 1) % 2 === 0 && index !== jobs.length - 1;
+                                // Show ad after positions 1, 3, 5, 7, etc. (after 2nd, 4th, 6th, 8th job)
+                                const showAd = (index + 1) % 2 === 0;
                                 
                                 return (
-                                    <div key={job._id}>
-                                        <div className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
+                                    <>
+                                        <div key={job._id} className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
                                             {isWalkin || job.type === 'walkin' ? (
                                                 <WalkinCard job={job} />
                                             ) : (
@@ -132,11 +133,11 @@ function Jobs({ type: propType }) {
                                             )}
                                         </div>
                                         {showAd && (
-                                            <div className="ad-slot">
+                                            <div key={`ad-${index}`} className="ad-slot">
                                                 <AdsterraNativeBanner index={index} />
                                             </div>
                                         )}
-                                    </div>
+                                    </>
                                 );
                             })}
                         </div>
