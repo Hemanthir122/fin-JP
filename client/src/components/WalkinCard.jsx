@@ -89,37 +89,19 @@ ${platformLink}`;
         }
     };
 
-    // Handle contact reveal with ad
+    // Handle contact reveal with smartlink ad
     const handleRevealContact = () => {
         if (isContactRevealed) return;
         
-        // TODO: Integrate advertisement here before revealing contacts
-        // Uncomment below code when ad integration is ready
+        // Open Smartlink in new tab
+        const smartlink = 'https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085';
+        window.open(smartlink, '_blank');
         
-        /*
-        setIsAdLoading(true);
-        
-        // Trigger Google AdSense or your ad network here
-        // Example: Show interstitial ad
-        console.log('Showing advertisement...');
-        
-        // Simulate ad completion
+        // Small delay then reveal content
         setTimeout(() => {
-            // Only reveal if ad was completed successfully
-            // In production, this should be triggered by ad completion callback
             setIsContactRevealed(true);
-            setIsAdLoading(false);
-            console.log('Ad completed - Contact revealed');
-        }, 3000);
-        
-        // If you're using Google AdSense, you would do something like:
-        // window.adsbygoogle = window.adsbygoogle || [];
-        // window.adsbygoogle.push({});
-        */
-        
-        // For now, reveal contacts immediately without ad
-        setIsContactRevealed(true);
-        console.log('Contact revealed (ad integration disabled)');
+            console.log('Contact revealed after smartlink');
+        }, 500);
     };
 
     const renderDescription = () => {

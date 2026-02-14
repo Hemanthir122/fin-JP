@@ -1,0 +1,45 @@
+.native-ad-card {
+    padding: 20px;
+    background: var(--gradient-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    position: relative;
+    min-height: 265px;
+    display: flex;
+    flex-direction: column;
+    transition: all var(--transition-normal);
+}
+
+.native-ad-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.ad-label {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(77, 163, 255, 0.1);
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(77, 163, 255, 0.2);
+}
+
+/* Ensure ad content fills the card */
+.native-ad-card > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Desktop only */
+@media (max-width: 768px) {
+    .native-ad-card {
+        display: none;
+    }
+}

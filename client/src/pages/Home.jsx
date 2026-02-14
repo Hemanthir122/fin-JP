@@ -5,9 +5,9 @@ import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import JobCard from '../components/JobCard';
 import JobFilter from '../components/JobFilter';
-import NativeAd from '../components/NativeAd';
-import GoogleAdSense from '../components/GoogleAdSense';
-import AdsterraNativeBanner from '../components/AdsterraNativeBanner';
+import HorizontalNativeAd from '../components/ads/HorizontalNativeAd';
+import SocialBar from '../components/ads/SocialBar';
+import Popunder from '../components/ads/Popunder';
 import { useLatestJobs, useCompanies, useLocations } from '../hooks/useJobs';
 import './Home.css';
 
@@ -102,6 +102,11 @@ function Home() {
                 <meta name="description" content="Find the latest jobs, internships, and walk-in drive opportunities in India. Connect with top recruitng companies like TCS, Infosys, Wipro, and more." />
                 <link rel="canonical" href="https://jobconnects.online/" />
             </Helmet>
+
+            {/* Global Ads */}
+            <SocialBar />
+            <Popunder />
+
             <Hero />
 
             {/* About Section */}
@@ -160,26 +165,38 @@ function Home() {
                         </div>
                     ) : filteredJobs.length > 0 ? (
                         <>
-                            <div className="jobs-grid grid grid-3">
-                                {filteredJobs.map((job, index) => {
-                                    // Insert Adsterra Native Banner after every 2 job cards (mobile only)
-                                    // Show ad after positions 1, 3, 5, 7, etc. (after 2nd, 4th, 6th, 8th job)
-                                    const showAd = (index + 1) % 2 === 0 && window.innerWidth <= 768;
-                                    
-                                    return (
-                                        <>
-                                            <div key={job._id} className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
-                                                <JobCard job={job} />
-                                            </div>
-                                            {showAd && (
-                                                <div key={`ad-${index}`} className="ad-slot">
-                                                    <AdsterraNativeBanner index={index} />
-                                                </div>
-                                            )}
-                                        </>
-                                    );
-                                })}
-                            </div>
+                            <div className="jobs-grid-wrapper">
+
+    {Array.from({ length: Math.ceil(filteredJobs.length / 3) }).map((_, groupIndex) => {
+
+        const jobGroup = filteredJobs.slice(groupIndex * 3, groupIndex * 3 + 3);
+
+        return (
+            <div key={groupIndex} className="job-group">
+
+                {/* Job Cards Row */}
+                <div className="jobs-grid grid grid-3">
+                    {jobGroup.map((job, index) => (
+                        <div
+                            key={job._id}
+                            className={`animate-fadeIn stagger-${(index % 5) + 1}`}
+                        >
+                            <JobCard job={job} />
+                        </div>
+                    ))}
+                </div>
+
+                {/* Ad Row after every 3 jobs */}
+                {!isMobile && groupIndex < Math.ceil(filteredJobs.length / 3) - 1 && (
+                    <HorizontalNativeAd index={groupIndex} />
+                )}
+
+            </div>
+        );
+    })}
+
+</div>
+
 
                             <div className="view-all-container">
                                 <Link to="/jobs" className="btn btn-primary btn-lg">

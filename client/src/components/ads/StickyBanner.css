@@ -1,0 +1,102 @@
+.sticky-banner-container {
+    position: sticky;
+    top: 90px;
+    width: 160px;
+    margin-left: 24px;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+/* Custom scrollbar for sidebar */
+.sticky-banner-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sticky-banner-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sticky-banner-container::-webkit-scrollbar-thumb {
+    background: rgba(77, 163, 255, 0.2);
+    border-radius: 10px;
+}
+
+.sticky-banner-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(77, 163, 255, 0.3);
+}
+
+.sticky-banner-wrapper {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 12px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.ad-label-banner {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(77, 163, 255, 0.1);
+    color: var(--text-secondary);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(77, 163, 255, 0.2);
+    z-index: 10;
+}
+
+/* Desktop only */
+@media (max-width: 1200px) {
+    .sticky-banner-container {
+        display: none;
+    }
+}
+
+
+.ad-slot-banner {
+    min-height: 300px;
+    width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sticky-native {
+    min-height: 200px;
+}
+
+.ad-placeholder {
+    background: linear-gradient(135deg, rgba(77, 163, 255, 0.05) 0%, rgba(59, 143, 232, 0.08) 100%);
+    border: 2px dashed rgba(77, 163, 255, 0.2);
+    border-radius: 8px;
+}
+
+.placeholder-content {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 20px;
+}
+
+.placeholder-content p {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--primary);
+}
+
+.placeholder-content small {
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0.7;
+}

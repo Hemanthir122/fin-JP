@@ -5,12 +5,12 @@ import JobCard from '../components/JobCard';
 import WalkinCard from '../components/WalkinCard';
 import Pagination from '../components/Pagination';
 import JobFilter from '../components/JobFilter';
-import GoogleAdSense from '../components/GoogleAdSense';
-import AdsterraNativeBanner from '../components/AdsterraNativeBanner';
+import HorizontalNativeAd from '../components/ads/HorizontalNativeAd';
+import MobileNativeAd from '../components/ads/MobileNativeAd';
+import SocialBar from '../components/ads/SocialBar';
+import Popunder from '../components/ads/Popunder';
 import { useJobs, useCompanies, useLocations, useWalkins } from '../hooks/useJobs';
-import NativeAd from '../components/NativeAd';
 import './Jobs.css';
-import '../components/NativeAd.css';
 
 function Jobs({ type: propType }) {
     const [searchParams] = useSearchParams();
@@ -94,6 +94,11 @@ function Jobs({ type: propType }) {
                 <meta name="description" content={`${getPageDescription()}. Search and apply for the best opportunities on JobConnects.`} />
                 <link rel="canonical" href={`https://jobconnects.online${propType ? '/' + propType + 's' : '/jobs'}`} />
             </Helmet>
+
+            {/* Global Ads */}
+            <SocialBar />
+            <Popunder />
+
             <div className="jobs-page-header">
                 <div className="container">
                     <h1 className="page-title">{getPageTitle()}</h1>
@@ -119,9 +124,11 @@ function Jobs({ type: propType }) {
                     <>
                         <div className="jobs-grid grid grid-3">
                             {jobs.map((job, index) => {
-                                // Insert Adsterra Native Banner after every 2 job cards (mobile only)
-                                // Show ad after positions 1, 3, 5, 7, etc. (after 2nd, 4th, 6th, 8th job)
-                                const showAd = (index + 1) % 2 === 0 && window.innerWidth <= 768;
+                                // Desktop: Show Horizontal Ad Row ONLY after first 3 job cards (index 2)
+                                const showAdRow = (index + 1) % 3 === 0 && window.innerWidth > 768;
+                                
+                                // Mobile: Show Native Ad after every 2 walkin cards
+                                const showMobileAd = (index + 1) % 2 === 0 && window.innerWidth <= 768 && isWalkin;
                                 
                                 return (
                                     <>
@@ -132,10 +139,11 @@ function Jobs({ type: propType }) {
                                                 <JobCard job={job} />
                                             )}
                                         </div>
-                                        {showAd && (
-                                            <div key={`ad-${index}`} className="ad-slot">
-                                                <AdsterraNativeBanner index={index} />
-                                            </div>
+                                        {showAdRow && (
+                                            <HorizontalNativeAd key={`horizontal-ad-${index}`} index={index} />
+                                        )}
+                                        {showMobileAd && (
+                                            <MobileNativeAd key={`mobile-ad-${index}`} index={index} />
                                         )}
                                     </>
                                 );

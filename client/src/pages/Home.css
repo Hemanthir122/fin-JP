@@ -182,3 +182,27 @@
         justify-content: center;
     }
 }
+
+
+/* Jobs Content Wrapper - Grid + Sidebar Layout */
+.jobs-content-wrapper {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.jobs-content-wrapper .jobs-grid {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .jobs-content-wrapper {
+        flex-direction: column;
+    }
+    
+    .jobs-content-wrapper .jobs-grid {
+        width: 100%;
+    }
+}

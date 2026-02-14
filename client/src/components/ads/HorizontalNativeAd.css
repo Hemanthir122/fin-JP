@@ -1,0 +1,107 @@
+.horizontal-native-ad-container {
+    grid-column: 1 / -1;
+    width: 100%;
+    background: linear-gradient(135deg, rgba(77, 163, 255, 0.03) 0%, rgba(59, 143, 232, 0.05) 100%);
+    border: 1px solid rgba(77, 163, 255, 0.15);
+    border-radius: 16px;
+   
+    position: relative;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(11, 19, 43, 0.04);
+}
+
+.horizontal-native-ad-container:hover {
+    box-shadow: 0 4px 16px rgba(77, 163, 255, 0.1);
+    border-color: rgba(77, 163, 255, 0.25);
+}
+.horizontal-ads-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+.horizontal-ad-label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(77, 163, 255, 0.1);
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(77, 163, 255, 0.2);
+    z-index: 10;
+}
+
+.horizontal-ads-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.horizontal-ads-single {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.horizontal-ad-slot-single {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 468px;
+    min-height: 60px;
+    width: 468px;
+    height: 60px;
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .horizontal-native-ad-container {
+    background: linear-gradient(135deg, rgba(17, 27, 60, 0.4) 0%, rgba(11, 19, 43, 0.5) 100%);
+    border: 1px solid rgba(77, 163, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .horizontal-native-ad-container:hover {
+    box-shadow: 0 4px 16px rgba(77, 163, 255, 0.15);
+    border-color: rgba(77, 163, 255, 0.3);
+}
+
+/* Desktop only */
+@media (max-width: 768px) {
+    .horizontal-native-ad-container {
+        display: none;
+    }
+}
+
+/* Responsive for smaller desktops */
+@media (max-width: 1500px) {
+    .horizontal-ad-slot-single {
+        width: 468px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .horizontal-ad-slot-single {
+        width: 468px;
+        height: 60px;
+    }
+}

@@ -10,7 +10,7 @@
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    border: 1px solid var(--border-color);
+    border: 1.5px solid rgb(255, 164, 36);
     border-radius: var(--border-radius-lg);
     transition: all var(--transition-normal);
 }
@@ -195,7 +195,7 @@
     align-items: center;
     justify-content: space-between;
     margin-top: auto;
-    padding-top: 2px;
+    padding-top: 20px;
 }
 
 .job-time {
