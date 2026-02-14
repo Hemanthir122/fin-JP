@@ -253,23 +253,35 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const jobData = { ...req.body };
-        // If posting directly as published, set publishedAt
+        
+        // Handle different statuses
         if (jobData.status === 'published') {
             jobData.publishedAt = new Date();
+        } else if (jobData.status === 'scheduled') {
+            // Validate scheduledPublishAt is provided and in the future
+            if (!jobData.scheduledPublishAt) {
+                return res.status(400).json({ message: 'scheduledPublishAt is required for scheduled posts' });
+            }
+            const scheduledDate = new Date(jobData.scheduledPublishAt);
+            if (scheduledDate <= new Date()) {
+                return res.status(400).json({ message: 'Scheduled date must be in the future' });
+            }
         } else {
-            // Ensure drafts are saved explicitly as draft if status is missing or not 'published'
+            // Default to draft
             jobData.status = 'draft';
         }
 
         const job = new Job(jobData);
         const savedJob = await job.save();
         
-        // Send Telegram notification if job is published
+        // Send Telegram notification only if published immediately
         if (savedJob.status === 'published') {
             console.log('🔔 New job published, sending Telegram notification...');
             sendNewJobNotification(savedJob).catch(err => {
                 console.error('⚠️ Telegram notification failed (non-blocking):', err.message);
             });
+        } else if (savedJob.status === 'scheduled') {
+            console.log(`📅 Job scheduled for: ${savedJob.scheduledPublishAt}`);
         }
         
         res.status(201).json(savedJob);
@@ -286,12 +298,27 @@ router.put('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Job not found' });
         }
 
-        // Check if we are moving from a non-published state to published
-        const isCurrentlyPublished = job.status === 'published';
-        const willBePublished = req.body.status === 'published';
+        // Check status transitions
+        const currentStatus = job.status;
+        const newStatus = req.body.status;
 
-        // If publishing a draft, use direct update to force createdAt change
-        if (!isCurrentlyPublished && willBePublished) {
+        // Handle scheduled status
+        if (newStatus === 'scheduled') {
+            if (!req.body.scheduledPublishAt) {
+                return res.status(400).json({ message: 'scheduledPublishAt is required for scheduled posts' });
+            }
+            const scheduledDate = new Date(req.body.scheduledPublishAt);
+            if (scheduledDate <= new Date()) {
+                return res.status(400).json({ message: 'Scheduled date must be in the future' });
+            }
+        }
+
+        // Check if we are moving to published status
+        const willBePublished = newStatus === 'published';
+        const wasNotPublished = currentStatus !== 'published';
+
+        // If publishing (from draft or scheduled), update timestamps
+        if (wasNotPublished && willBePublished) {
             const now = new Date();
             const updateData = {
                 ...req.body,
@@ -300,15 +327,14 @@ router.put('/:id', async (req, res) => {
                 createdAt: now
             };
 
-            // Use findOneAndUpdate to bypass Mongoose's protection of createdAt
             const updatedJob = await Job.findOneAndUpdate(
                 { _id: req.params.id },
                 { $set: updateData },
                 { new: true, timestamps: false }
             );
             
-            // Send Telegram notification when publishing a draft
-            console.log('🔔 Draft job published, sending Telegram notification...');
+            // Send Telegram notification when publishing
+            console.log('🔔 Job published, sending Telegram notification...');
             sendNewJobNotification(updatedJob).catch(err => {
                 console.error('⚠️ Telegram notification failed (non-blocking):', err.message);
             });
@@ -319,6 +345,11 @@ router.put('/:id', async (req, res) => {
         // For other updates, use normal save
         Object.assign(job, req.body);
         const savedJob = await job.save();
+        
+        if (savedJob.status === 'scheduled') {
+            console.log(`📅 Job rescheduled for: ${savedJob.scheduledPublishAt}`);
+        }
+        
         res.json(savedJob);
     } catch (error) {
         res.status(400).json({ message: error.message });

@@ -126,9 +126,9 @@ router.get('/:id', async (req, res) => {
 // Create new walkin
 router.post('/', async (req, res) => {
     try {
-        // Default to draft unless an explicit valid status is provided
+        // Handle status
         let status = req.body.status || 'draft';
-        if (!['draft', 'published'].includes(status)) {
+        if (!['draft', 'published', 'scheduled'].includes(status)) {
             status = 'draft';
         }
 
@@ -138,7 +138,17 @@ router.post('/', async (req, res) => {
             status
         };
 
-        if (walkinData.status === 'published') {
+        // Handle scheduled posts
+        if (status === 'scheduled') {
+            if (!req.body.scheduledPublishAt) {
+                return res.status(400).json({ message: 'scheduledPublishAt is required for scheduled posts' });
+            }
+            const scheduledDate = new Date(req.body.scheduledPublishAt);
+            if (scheduledDate <= new Date()) {
+                return res.status(400).json({ message: 'Scheduled date must be in the future' });
+            }
+            walkinData.scheduledPublishAt = req.body.scheduledPublishAt;
+        } else if (status === 'published') {
             walkinData.publishedAt = new Date();
         }
 
@@ -158,12 +168,14 @@ router.post('/', async (req, res) => {
             await newCompany.save();
         }
 
-        // Send Telegram notification if walkin is published
+        // Send Telegram notification only if published immediately
         if (savedWalkin.status === 'published') {
             console.log('🔔 New walkin published, sending Telegram notification...');
             sendNewWalkinNotification(savedWalkin).catch(err => {
                 console.error('⚠️ Telegram notification failed (non-blocking):', err.message);
             });
+        } else if (savedWalkin.status === 'scheduled') {
+            console.log(`📅 Walkin scheduled for: ${savedWalkin.scheduledPublishAt}`);
         }
 
         res.status(201).json(savedWalkin);

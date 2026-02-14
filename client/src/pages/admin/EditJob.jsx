@@ -32,7 +32,9 @@ function EditJob() {
         responsibilities: [],
         qualifications: [],
         applyLink: '',
-        endDate: ''
+        endDate: '',
+        status: 'published',
+        scheduledPublishAt: ''
     });
 
 
@@ -61,6 +63,12 @@ function EditJob() {
             const jobData = jobRes.data;
             if (jobData.endDate) {
                 jobData.endDate = new Date(jobData.endDate).toISOString().split('T')[0];
+            }
+            
+            // Format scheduledPublishAt for datetime-local input
+            if (jobData.scheduledPublishAt) {
+                const date = new Date(jobData.scheduledPublishAt);
+                jobData.scheduledPublishAt = date.toISOString().slice(0, 16);
             }
 
             // Ensure type is set correctly for walkins
@@ -188,22 +196,50 @@ function EditJob() {
         }));
     };
 
-    const handleSubmit = async (e, status) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Validation for scheduled posts
+        if (formData.status === 'scheduled') {
+            if (!formData.scheduledPublishAt) {
+                alert('Please select a date and time for scheduled posting');
+                return;
+            }
+            
+            const scheduledDate = new Date(formData.scheduledPublishAt);
+            const now = new Date();
+            
+            if (scheduledDate <= now) {
+                alert('Scheduled date must be in the future');
+                return;
+            }
+        }
+        
         setSaving(true);
 
         try {
             if (formData.type === 'walkin') {
-                await api.put(`/walkins/${id}`, {
+                const payload = {
                     company: formData.company,
                     description: formData.description,
-                    status
-                });
+                    status: formData.status
+                };
+                
+                if (formData.status === 'scheduled' && formData.scheduledPublishAt) {
+                    payload.scheduledPublishAt = new Date(formData.scheduledPublishAt).toISOString();
+                }
+                
+                await api.put(`/walkins/${id}`, payload);
             } else {
-                const payload = { ...formData, status };
+                const payload = { ...formData };
                 if (!payload.endDate) {
                     payload.endDate = null;
                 }
+                
+                if (formData.status === 'scheduled' && formData.scheduledPublishAt) {
+                    payload.scheduledPublishAt = new Date(formData.scheduledPublishAt).toISOString();
+                }
+                
                 await api.put(`/jobs/${id}`, payload);
             }
 
@@ -213,7 +249,7 @@ function EditJob() {
             }, 2000);
         } catch (error) {
             console.error('Error updating job:', error);
-            alert('Error updating job. Please try again.');
+            alert(error.response?.data?.message || 'Error updating job. Please try again.');
         } finally {
             setSaving(false);
         }
@@ -511,6 +547,50 @@ function EditJob() {
                             </div>
                         </div>
 
+                        {/* Publishing Options */}
+                        <div className="form-card">
+                            <h2>Publishing Options</h2>
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label className="label">Status *</label>
+                                    <select
+                                        name="status"
+                                        value={formData.status}
+                                        onChange={handleChange}
+                                        className="select"
+                                        required
+                                    >
+                                        <option value="published">Publish Now</option>
+                                        <option value="scheduled">Schedule for Later</option>
+                                        <option value="draft">Save as Draft</option>
+                                    </select>
+                                    <small style={{ color: 'var(--text-muted)', marginTop: '8px', display: 'block' }}>
+                                        {formData.status === 'published' && 'Post will be visible immediately'}
+                                        {formData.status === 'scheduled' && 'Post will be published at the scheduled time'}
+                                        {formData.status === 'draft' && 'Post will be saved but not visible'}
+                                    </small>
+                                </div>
+                                
+                                {formData.status === 'scheduled' && (
+                                    <div className="form-group">
+                                        <label className="label">Schedule Date & Time *</label>
+                                        <input
+                                            type="datetime-local"
+                                            name="scheduledPublishAt"
+                                            value={formData.scheduledPublishAt}
+                                            onChange={handleChange}
+                                            className="input"
+                                            required
+                                            min={new Date().toISOString().slice(0, 16)}
+                                        />
+                                        <small style={{ color: 'var(--text-muted)', marginTop: '8px', display: 'block' }}>
+                                            Post will be automatically published at this time
+                                        </small>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
                         {/* Description */}
                         <div className="form-card">
                             <h2>Job Description</h2>
@@ -635,25 +715,18 @@ function EditJob() {
 
                         {/* Submit */}
                         <div className="form-actions">
-                            <div style={{ display: 'flex', gap: '12px' }}>
-                                <button
-                                    type="button"
-                                    onClick={(e) => handleSubmit(e, 'draft')}
-                                    className="btn btn-secondary"
-                                    disabled={saving}
-                                >
-                                    {saving ? 'Saving...' : 'Save as Draft'}
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={(e) => handleSubmit(e, 'published')}
-                                    className="btn btn-primary"
-                                    disabled={saving}
-                                >
-                                    {saving ? 'Publishing...' : 'Publish Job'}
-                                </button>
-                            </div>
-                            <Link to="/admin/manage-jobs" className="btn btn-secondary" style={{ marginLeft: 'auto' }}>
+                            <button
+                                type="submit"
+                                onClick={handleSubmit}
+                                className="btn btn-primary"
+                                disabled={saving}
+                            >
+                                {saving ? 'Saving...' : 
+                                 formData.status === 'published' ? 'Publish Job' :
+                                 formData.status === 'scheduled' ? 'Schedule Post' :
+                                 'Save as Draft'}
+                            </button>
+                            <Link to="/admin/manage-jobs" className="btn btn-secondary">
                                 Cancel
                             </Link>
                         </div>

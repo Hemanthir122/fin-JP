@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const Job = require('./models/Job');
+const { startScheduler } = require('./services/scheduler');
 
 // Route imports
 const jobRoutes = require('./routes/jobRoutes');
@@ -15,6 +16,9 @@ const app = express();
 
 // Connect to MongoDB
 connectDB();
+
+// Start the scheduler for scheduled posts
+startScheduler();
 
 // Middleware
 app.use(cors({
