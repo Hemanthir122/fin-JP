@@ -18,19 +18,41 @@ function JobCard({ job }) {
 
         const platformLink = `${window.location.origin}/job/${job._id}`;
 
-        const shareText = `Company: ${job.company}
-Role : ${job.title || 'N/A'}
-Experience : ${job.experience || 'N/A'}
-Package : ${job.package || 'N/A'}
-Apply link
-${platformLink}`;
+        // Determine opportunity line based on experience and type
+        let opportunityLine = '';
+        const exp = job.experience?.toLowerCase() || '';
+        
+        if (job.type === 'internship') {
+            opportunityLine = '✨ Great opportunity for Students & Aspiring Professionals!';
+        } else if (exp.includes('0') || exp.includes('fresher')) {
+            if (exp.includes('-') && !exp.includes('0-0')) {
+                // Range like 0-2, 0-3 means freshers + experienced
+                opportunityLine = '✨ Open for Freshers & Experienced Candidates!';
+            } else {
+                // Pure freshers
+                opportunityLine = '✨ Perfect for Freshers & Early Professionals!';
+            }
+        } else if (exp.match(/\d+/) && !exp.includes('0')) {
+            // Only experienced (e.g., "2-5 years", "3+ years")
+            opportunityLine = '✨ Calling all Experienced Professionals!';
+        }
+
+        const shareText = `🚀 Hiring Alert!
+
+🏢 Company: ${job.company}
+💼 Role: ${job.title}
+🎓 Experience: ${job.experience || 'Not specified'}
+💰 ${job.type === 'internship' ? 'Stipend' : 'Package'}: ${job.package}${job.type === 'internship' ? '/mo' : ' LPA'}
+
+${opportunityLine}
+
+🔗 Apply Here: 👉 ${platformLink}`;
 
         try {
             if (navigator.share) {
                 await navigator.share({
                     title: `${job.title} at ${job.company}`,
                     text: shareText
-                    // Removed separate URL parameter to ensure text format is shared
                 });
             } else {
                 await navigator.clipboard.writeText(shareText);
@@ -38,7 +60,6 @@ ${platformLink}`;
             }
         } catch (err) {
             console.error('Failed to share:', err);
-            // Fallback to clipboard on error (e.g. if user cancels share)
             if (err.name !== 'AbortError') {
                 navigator.clipboard.writeText(shareText);
                 alert('Job details copied to clipboard!');

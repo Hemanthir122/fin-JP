@@ -36,6 +36,7 @@ function WalkinCard({ job }) {
 
     const getTimeAgo = (date) => {
         const now = new Date();
+        // Use publishedAt if available, otherwise fall back to createdAt
         const displayDate = job.publishedAt ? new Date(job.publishedAt) : new Date(date);
         const diffMs = now - displayDate;
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -253,7 +254,7 @@ ${platformLink}`;
                     <div className="walkin-header-bottom">
                         <div className="walkin-time">
                             <Clock size={14} />
-                            <span>{getTimeAgo(job.createdAt)}</span>
+                            <span>{getTimeAgo(job.publishedAt || job.createdAt)}</span>
                         </div>
                         <button 
                             className="walkin-share-btn" 

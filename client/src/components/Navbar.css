@@ -72,7 +72,7 @@
 
 .navbar-link.active {
     color: var(--text-primary);
-    background: rgba(77, 163, 255, 0.15);
+    background: rgba(255, 139, 77, 0.15);
 }
 
 .navbar-link.active::after {

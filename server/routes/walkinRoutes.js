@@ -51,10 +51,18 @@ router.get('/', async (req, res) => {
 
         const skip = (parseInt(page) - 1) * parseInt(limit);
 
-        const walkins = await Walkin.find(query)
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(parseInt(limit));
+        // Use aggregation to sort by publishedAt with fallback to createdAt
+        const walkins = await Walkin.aggregate([
+            { $match: query },
+            {
+                $addFields: {
+                    sortDate: { $ifNull: ['$publishedAt', '$createdAt'] }
+                }
+            },
+            { $sort: { sortDate: -1 } },
+            { $skip: skip },
+            { $limit: parseInt(limit) }
+        ]);
 
         const total = await Walkin.countDocuments(query);
 
@@ -78,7 +86,7 @@ router.get('/latest', async (req, res) => {
             isActive: true,
             status: 'published'  // MUST be explicitly published
         })
-            .sort({ createdAt: -1 })
+            .sort({ publishedAt: -1, createdAt: -1 })
             .limit(9);
 
         console.log(`GET /walkins/latest - Returning ${walkins.length} published walkins`);
@@ -174,9 +182,8 @@ router.put('/:id', async (req, res) => {
         const willBePublished = newStatus === 'published';
 
         if (!isCurrentlyPublished && willBePublished) {
+            // Only set publishedAt when first publishing, don't modify createdAt
             walkin.publishedAt = new Date();
-            walkin.createdAt = new Date();
-            walkin.markModified('createdAt');
             walkin.markModified('publishedAt');
         }
 
