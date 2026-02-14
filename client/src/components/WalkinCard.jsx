@@ -1,4 +1,4 @@
-import { Building2, Clock, Lock, Eye } from 'lucide-react';
+import { Building2, Clock, Lock, Eye, Share2 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import './WalkinCard.css';
 
@@ -54,6 +54,37 @@ function WalkinCard({ job }) {
             return `${Math.floor(diffDays / 7)}w ago`;
         } else {
             return `${Math.floor(diffDays / 30)}mo ago`;
+        }
+    };
+
+    const handleShare = async () => {
+        const platformLink = `${window.location.origin}/job/${job._id}?type=walkin`;
+
+        const shareText = `🏢 Company: ${job.company}
+💼 Walk-in / Email Opportunity
+📍 ${job.location || 'Location not specified'}
+${job.experience ? `👔 Experience: ${job.experience}` : ''}
+${job.package ? `💰 Package: ${job.package}` : ''}
+Apply now and grab this opportunity! 🚀
+🔗 Apply Link:
+${platformLink}`;
+
+        try {
+            if (navigator.share) {
+                await navigator.share({
+                    title: `Walk-in Opportunity at ${job.company}`,
+                    text: shareText
+                });
+            } else {
+                navigator.clipboard.writeText(shareText);
+                alert('Walk-in details copied to clipboard!');
+            }
+        } catch (error) {
+            console.error('Failed to share:', error);
+            if (error.name !== 'AbortError') {
+                navigator.clipboard.writeText(shareText);
+                alert('Walk-in details copied to clipboard!');
+            }
         }
     };
 
@@ -226,6 +257,15 @@ function WalkinCard({ job }) {
                         </div>
                     </div>
                 </div>
+
+                {/* Share Button */}
+                <button 
+                    className="walkin-share-btn" 
+                    onClick={handleShare}
+                    title="Share this opportunity"
+                >
+                    <Share2 size={16} />
+                </button>
             </div>
 
             {/* Contact Reveal Badge */}

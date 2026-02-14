@@ -51,7 +51,9 @@ function EditJob() {
 
     const fetchData = async () => {
         try {
-            const apiEndpoint = typeParam === 'walkin' ? `/walkins/${id}` : `/jobs/${id}?view=admin`;
+            const apiEndpoint = typeParam === 'walkin' 
+                ? `/walkins/${id}?view=admin` 
+                : `/jobs/${id}?view=admin`;
             const [jobRes, companiesRes] = await Promise.all([
                 api.get(apiEndpoint),
                 api.get('/companies')

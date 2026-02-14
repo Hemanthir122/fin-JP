@@ -119,9 +119,9 @@ function Jobs({ type: propType }) {
                     <>
                         <div className="jobs-grid grid grid-3">
                             {jobs.map((job, index) => {
-                                // Insert Adsterra Native Banner after every 2 job cards
+                                // Insert Adsterra Native Banner after every 2 job cards (mobile only)
                                 // Show ad after positions 1, 3, 5, 7, etc. (after 2nd, 4th, 6th, 8th job)
-                                const showAd = (index + 1) % 2 === 0;
+                                const showAd = (index + 1) % 2 === 0 && window.innerWidth <= 768;
                                 
                                 return (
                                     <>

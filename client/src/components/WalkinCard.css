@@ -34,6 +34,7 @@
     flex-shrink: 0 !important;
     min-height: 72px;
     max-height: 72px;
+    position: relative;
 }
 
 .walkin-company-logo {
@@ -70,6 +71,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 12px;
+    width: 100%;
 }
 
 .walkin-company-name {
@@ -98,6 +100,52 @@
     white-space: nowrap;
     flex-shrink: 0;
     border: 1px solid rgba(77, 163, 255, 0.15);
+}
+
+/* Share Button */
+.walkin-share-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(77, 163, 255, 0.1);
+    border: 1px solid rgba(77, 163, 255, 0.2);
+    border-radius: 8px;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.walkin-share-btn:hover {
+    background: rgba(77, 163, 255, 0.2);
+    border-color: rgba(77, 163, 255, 0.4);
+    transform: translateY(-50%) translateY(-2px);
+    box-shadow: 0 4px 12px rgba(77, 163, 255, 0.3);
+}
+
+.walkin-share-btn:active {
+    transform: translateY(-50%) translateY(0);
+    box-shadow: 0 2px 6px rgba(77, 163, 255, 0.2);
+}
+
+/* Light theme share button */
+[data-theme="light"] .walkin-share-btn {
+    background: rgba(249, 115, 22, 0.1);
+    border-color: rgba(249, 115, 22, 0.2);
+    color: #f97316;
+}
+
+[data-theme="light"] .walkin-share-btn:hover {
+    background: rgba(249, 115, 22, 0.2);
+    border-color: rgba(249, 115, 22, 0.4);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
 }
 
 /* Content Wrapper - Scrollable */
@@ -317,6 +365,7 @@
         min-height: 64px;
         max-height: 64px;
         gap: 10px;
+        padding-right: 40px;
     }
 
     .walkin-company-logo {
@@ -337,6 +386,17 @@
         justify-content: flex-start;
         font-size: 0.8rem;
         padding: 3px 8px;
+    }
+
+    .walkin-share-btn {
+        width: 28px;
+        height: 28px;
+        right: 0;
+    }
+
+    .walkin-share-btn svg {
+        width: 14px;
+        height: 14px;
     }
 
     .walkin-company-name {
