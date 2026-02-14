@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Job = require('../models/Job');
 const Company = require('../models/Company');
+const { sendNewJobNotification } = require('../services/telegram');
 
 // Get all jobs with filters
 router.get('/', async (req, res) => {
@@ -262,6 +263,15 @@ router.post('/', async (req, res) => {
 
         const job = new Job(jobData);
         const savedJob = await job.save();
+        
+        // Send Telegram notification if job is published
+        if (savedJob.status === 'published') {
+            console.log('🔔 New job published, sending Telegram notification...');
+            sendNewJobNotification(savedJob).catch(err => {
+                console.error('⚠️ Telegram notification failed (non-blocking):', err.message);
+            });
+        }
+        
         res.status(201).json(savedJob);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -296,6 +306,13 @@ router.put('/:id', async (req, res) => {
                 { $set: updateData },
                 { new: true, timestamps: false }
             );
+            
+            // Send Telegram notification when publishing a draft
+            console.log('🔔 Draft job published, sending Telegram notification...');
+            sendNewJobNotification(updatedJob).catch(err => {
+                console.error('⚠️ Telegram notification failed (non-blocking):', err.message);
+            });
+            
             return res.json(updatedJob);
         }
 

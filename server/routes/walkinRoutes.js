@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Walkin = require('../models/Walkin');
 const Company = require('../models/Company');
+const { sendNewWalkinNotification } = require('../services/telegram');
 
 // Get all walkins with filters
 router.get('/', async (req, res) => {
@@ -157,6 +158,14 @@ router.post('/', async (req, res) => {
             await newCompany.save();
         }
 
+        // Send Telegram notification if walkin is published
+        if (savedWalkin.status === 'published') {
+            console.log('🔔 New walkin published, sending Telegram notification...');
+            sendNewWalkinNotification(savedWalkin).catch(err => {
+                console.error('⚠️ Telegram notification failed (non-blocking):', err.message);
+            });
+        }
+
         res.status(201).json(savedWalkin);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -193,6 +202,15 @@ router.put('/:id', async (req, res) => {
         walkin.status = newStatus;
 
         const savedWalkin = await walkin.save({ timestamps: false });
+        
+        // Send Telegram notification when publishing a draft
+        if (!isCurrentlyPublished && willBePublished) {
+            console.log('🔔 Draft walkin published, sending Telegram notification...');
+            sendNewWalkinNotification(savedWalkin).catch(err => {
+                console.error('⚠️ Telegram notification failed (non-blocking):', err.message);
+            });
+        }
+        
         res.json(savedWalkin);
     } catch (error) {
         res.status(400).json({ message: error.message });
