@@ -4,9 +4,11 @@
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-lg);
     position: relative;
-    min-height: 200px;
+    min-height: 100px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     transition: all var(--transition-normal);
     margin-bottom: 16px;
 }
@@ -27,11 +29,12 @@
     z-index: 10;
 }
 
-/* Ensure ad content fills the card */
-.mobile-native-ad > div {
-    flex: 1;
+.mobile-ad-content {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 60px;
 }
 
 /* Desktop - hide */

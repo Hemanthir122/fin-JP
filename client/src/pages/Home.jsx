@@ -6,6 +6,7 @@ import Hero from '../components/Hero';
 import JobCard from '../components/JobCard';
 import JobFilter from '../components/JobFilter';
 import HorizontalNativeAd from '../components/ads/HorizontalNativeAd';
+import MobileNativeAd from '../components/ads/MobileNativeAd';
 import SocialBar from '../components/ads/SocialBar';
 import Popunder from '../components/ads/Popunder';
 import { useLatestJobs, useCompanies, useLocations } from '../hooks/useJobs';
@@ -165,38 +166,29 @@ function Home() {
                         </div>
                     ) : filteredJobs.length > 0 ? (
                         <>
-                            <div className="jobs-grid-wrapper">
-
-    {Array.from({ length: Math.ceil(filteredJobs.length / 3) }).map((_, groupIndex) => {
-
-        const jobGroup = filteredJobs.slice(groupIndex * 3, groupIndex * 3 + 3);
-
-        return (
-            <div key={groupIndex} className="job-group">
-
-                {/* Job Cards Row */}
-                <div className="jobs-grid grid grid-3">
-                    {jobGroup.map((job, index) => (
-                        <div
-                            key={job._id}
-                            className={`animate-fadeIn stagger-${(index % 5) + 1}`}
-                        >
-                            <JobCard job={job} />
-                        </div>
-                    ))}
-                </div>
-
-                {/* Ad Row after every 3 jobs */}
-                {!isMobile && groupIndex < Math.ceil(filteredJobs.length / 3) - 1 && (
-                    <HorizontalNativeAd index={groupIndex} />
-                )}
-
-            </div>
-        );
-    })}
-
-</div>
-
+                            <div className="jobs-grid grid grid-3">
+                                {filteredJobs.map((job, index) => {
+                                    // Desktop: Show Horizontal Ad Row after every 3 job cards
+                                    const showAdRow = (index + 1) % 3 === 0 && window.innerWidth > 768;
+                                    
+                                    // Mobile: Show Native Ad after every 2 cards
+                                    const showMobileAd = (index + 1) % 2 === 0 && window.innerWidth <= 768;
+                                    
+                                    return (
+                                        <>
+                                            <div key={job._id} className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
+                                                <JobCard job={job} />
+                                            </div>
+                                            {showAdRow && (
+                                                <HorizontalNativeAd key={`horizontal-ad-${index}`} index={index} />
+                                            )}
+                                            {showMobileAd && (
+                                                <MobileNativeAd key={`mobile-ad-${index}`} index={index} />
+                                            )}
+                                        </>
+                                    );
+                                })}
+                            </div>
 
                             <div className="view-all-container">
                                 <Link to="/jobs" className="btn btn-primary btn-lg">

@@ -28,6 +28,23 @@
     margin-top: 10px;
 }
 
+/* Mobile clean inline ad */
+.mobile-ad {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    min-height: auto;
+    padding: 0;
+}
+
+.mobile-ad .horizontal-ads-row {
+    margin-top: 0;
+}
+
+.mobile-ad .horizontal-ad-slot {
+    width: 320px;
+    height: 50px;
+}
 
 .horizontal-ad-label {
     position: absolute;

@@ -4,9 +4,10 @@ import './HorizontalNativeAd.css';
 function HorizontalNativeAd({ index }) {
 
     useEffect(() => {
-        if (window.innerWidth <= 768) return;
 
-        const loadAd = (containerId, delay) => {
+        const isMobile = window.innerWidth <= 768;
+
+        const loadAd = (containerId, delay, width, height) => {
             setTimeout(() => {
 
                 const container = document.getElementById(containerId);
@@ -20,8 +21,8 @@ function HorizontalNativeAd({ index }) {
                     var atOptions = {
                         'key' : 'a7d8e25874deba8b7a307fb936e0027d',
                         'format' : 'iframe',
-                        'height' : 60,
-                        'width' : 468,
+                        'height' : ${height},
+                        'width' : ${width},
                         'params' : {}
                     };
                 `;
@@ -37,22 +38,36 @@ function HorizontalNativeAd({ index }) {
             }, delay);
         };
 
-        loadAd(`ad-${index}-1`, 300);
-        loadAd(`ad-${index}-2`, 900);
+        if (isMobile) {
+            // 🔹 Only ONE ad for mobile
+            loadAd(`ad-${index}-mobile`, 300, 320, 50);
+        } else {
+            // 🔹 TWO ads for desktop
+            loadAd(`ad-${index}-1`, 300, 468, 60);
+            loadAd(`ad-${index}-2`, 900, 468, 60);
+        }
 
     }, [index]);
 
-    if (window.innerWidth <= 768) return null;
+    const isMobile = window.innerWidth <= 768;
 
     return (
-        <div className="horizontal-native-ad-container">
+        <div className={`horizontal-native-ad-container ${isMobile ? 'mobile-ad' : ''}`}>
 
-            <div className="horizontal-ad-label">Sponsored</div>
+            {!isMobile && (
+                <div className="horizontal-ad-label">Sponsored</div>
+            )}
 
-            <div className="horizontal-ads-row">
-                <div id={`ad-${index}-1`} className="horizontal-ad-slot"></div>
-                <div id={`ad-${index}-2`} className="horizontal-ad-slot"></div>
-            </div>
+            {isMobile ? (
+                <div className="horizontal-ads-row">
+                    <div id={`ad-${index}-mobile`} className="horizontal-ad-slot"></div>
+                </div>
+            ) : (
+                <div className="horizontal-ads-row">
+                    <div id={`ad-${index}-1`} className="horizontal-ad-slot"></div>
+                    <div id={`ad-${index}-2`} className="horizontal-ad-slot"></div>
+                </div>
+            )}
 
         </div>
     );
