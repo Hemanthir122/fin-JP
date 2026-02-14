@@ -34,7 +34,6 @@
     flex-shrink: 0 !important;
     min-height: 72px;
     max-height: 72px;
-    position: relative;
 }
 
 .walkin-company-logo {
@@ -64,14 +63,7 @@
     flex-direction: column;
     justify-content: center;
     min-width: 0;
-}
-
-.walkin-header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
+    gap: 8px;
 }
 
 .walkin-company-name {
@@ -80,11 +72,16 @@
     color: var(--text-primary);
     letter-spacing: -0.02em;
     margin: 0;
-    flex: 1;
-    min-width: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.walkin-header-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
 .walkin-time {
@@ -117,21 +114,17 @@
     transition: all 0.3s ease;
     flex-shrink: 0;
     padding: 0;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
 }
 
 .walkin-share-btn:hover {
     background: rgba(77, 163, 255, 0.2);
     border-color: rgba(77, 163, 255, 0.4);
-    transform: translateY(-50%) translateY(-2px);
+    transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(77, 163, 255, 0.3);
 }
 
 .walkin-share-btn:active {
-    transform: translateY(-50%) translateY(0);
+    transform: translateY(0);
     box-shadow: 0 2px 6px rgba(77, 163, 255, 0.2);
 }
 
@@ -365,7 +358,6 @@
         min-height: 64px;
         max-height: 64px;
         gap: 10px;
-        padding-right: 40px;
     }
 
     .walkin-company-logo {
@@ -373,17 +365,19 @@
         height: 40px;
     }
 
-    .walkin-header-top {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
+    .walkin-company-name {
+        font-size: 1rem;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        line-height: 1.3;
+    }
+
+    .walkin-header-bottom {
         gap: 8px;
     }
 
     .walkin-time {
-        width: auto;
-        margin-top: 0;
-        justify-content: flex-start;
         font-size: 0.8rem;
         padding: 3px 8px;
     }
@@ -391,7 +385,6 @@
     .walkin-share-btn {
         width: 28px;
         height: 28px;
-        right: 0;
     }
 
     .walkin-share-btn svg {

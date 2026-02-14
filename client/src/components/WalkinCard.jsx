@@ -249,23 +249,21 @@ ${platformLink}`;
 
                 {/* Company Name & Time */}
                 <div className="walkin-card-info">
-                    <div className="walkin-header-top">
-                        <h3 className="walkin-company-name">{job.company}</h3>
+                    <h3 className="walkin-company-name">{job.company}</h3>
+                    <div className="walkin-header-bottom">
                         <div className="walkin-time">
                             <Clock size={14} />
                             <span>{getTimeAgo(job.createdAt)}</span>
                         </div>
+                        <button 
+                            className="walkin-share-btn" 
+                            onClick={handleShare}
+                            title="Share this opportunity"
+                        >
+                            <Share2 size={16} />
+                        </button>
                     </div>
                 </div>
-
-                {/* Share Button */}
-                <button 
-                    className="walkin-share-btn" 
-                    onClick={handleShare}
-                    title="Share this opportunity"
-                >
-                    <Share2 size={16} />
-                </button>
             </div>
 
             {/* Contact Reveal Badge */}
