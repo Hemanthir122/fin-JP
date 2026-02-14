@@ -10,15 +10,15 @@
 }
 
 .job-filter {
-    background: linear-gradient(135deg, rgba(22, 29, 39, 0.95) 0%, rgba(26, 42, 74, 0.98) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%);
     backdrop-filter: blur(20px);
     border-radius: 20px;
     padding: 28px 32px;
     box-shadow: 
         0 8px 32px rgba(11, 19, 43, 0.08),
         0 2px 8px rgba(11, 19, 43, 0.04),
-        inset 0 1px 0 rgba(11, 29, 39, 0.8);
-    border: 1px solid rgba(73, 152, 236, 0.12);
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(77, 163, 255, 0.12);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
