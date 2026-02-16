@@ -124,8 +124,8 @@ function Jobs({ type: propType }) {
                     <>
                         <div className="jobs-grid grid grid-3">
                             {jobs.map((job, index) => {
-                                // Desktop: Show Horizontal Ad Row after every 3 job cards
-                                const showAdRow = (index + 1) % 3 === 0 && window.innerWidth > 768;
+                                // Desktop: Show Horizontal Ad Row after every 6 job cards
+                                const showAdRow = (index + 1) % 6 === 0 && window.innerWidth > 768;
                                 
                                 // Mobile: Show Native Ad after every 2 cards
                                 const showMobileAd = (index + 1) % 2 === 0 && window.innerWidth <= 768;

@@ -1,124 +1,53 @@
-.horizontal-native-ad-container {
-    grid-column: 1 / -1;
-    width: 100%;
-    background: linear-gradient(135deg, rgba(77, 163, 255, 0.03) 0%, rgba(59, 143, 232, 0.05) 100%);
-    border: 1px solid rgba(77, 163, 255, 0.15);
+/* Ad card wrapper - looks like a job card */
+.ad-card-wrapper {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
-   
-    position: relative;
-    min-height: 100px;
+    padding: 20px;
+    min-height: 300px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(11, 19, 43, 0.04);
+    position: relative;
 }
 
-.horizontal-native-ad-container:hover {
-    box-shadow: 0 4px 16px rgba(77, 163, 255, 0.1);
-    border-color: rgba(77, 163, 255, 0.25);
+.ad-card-wrapper:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(11, 19, 43, 0.12);
+    border-color: var(--primary-color);
 }
-.horizontal-ads-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
+
+.ad-slot-inline {
     width: 100%;
-    margin-top: 10px;
-}
-
-/* Mobile clean inline ad */
-.mobile-ad {
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    min-height: auto;
-    padding: 0;
-}
-
-.mobile-ad .horizontal-ads-row {
-    margin-top: 0;
-}
-
-.mobile-ad .horizontal-ad-slot {
-    width: 320px;
-    height: 50px;
-}
-
-.horizontal-ad-label {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: rgba(77, 163, 255, 0.1);
-    color: var(--text-secondary);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 5px 12px;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: 1px solid rgba(77, 163, 255, 0.2);
-    z-index: 10;
-}
-
-.horizontal-ads-grid {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    padding-top: 10px;
-}
-
-.horizontal-ads-single {
+    height: 100%;
+    min-height: 260px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
 }
 
-.horizontal-ad-slot-single {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 468px;
-    min-height: 60px;
-    width: 468px;
-    height: 60px;
+.ad-slot-inline iframe {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 260px;
 }
 
-/* Dark theme adjustments */
-[data-theme="dark"] .horizontal-native-ad-container {
-    background: linear-gradient(135deg, rgba(17, 27, 60, 0.4) 0%, rgba(11, 19, 43, 0.5) 100%);
-    border: 1px solid rgba(77, 163, 255, 0.2);
+/* Dark theme */
+[data-theme="dark"] .ad-card-wrapper {
+    background: var(--card-bg);
+    border-color: var(--border-color);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-[data-theme="dark"] .horizontal-native-ad-container:hover {
-    box-shadow: 0 4px 16px rgba(77, 163, 255, 0.15);
-    border-color: rgba(77, 163, 255, 0.3);
+[data-theme="dark"] .ad-card-wrapper:hover {
+    box-shadow: 0 8px 24px rgba(77, 163, 255, 0.15);
+    border-color: var(--primary-color);
 }
 
-/* Desktop only */
+/* Mobile - hide ads */
 @media (max-width: 768px) {
-    .horizontal-native-ad-container {
+    .ad-card-wrapper {
         display: none;
-    }
-}
-
-/* Responsive for smaller desktops */
-@media (max-width: 1500px) {
-    .horizontal-ad-slot-single {
-        width: 468px;
-        height: 60px;
-    }
-}
-
-@media (max-width: 1000px) {
-    .horizontal-ad-slot-single {
-        width: 468px;
-        height: 60px;
     }
 }

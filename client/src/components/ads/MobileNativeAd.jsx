@@ -1,60 +1,59 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import './MobileNativeAd.css';
 
 function MobileNativeAd({ index }) {
-    const containerRef = useRef(null);
-    const scriptLoadedRef = useRef(false);
 
     useEffect(() => {
         // Only load on mobile
         if (window.innerWidth > 768) return;
 
-        // Prevent duplicate script loading for this specific instance
-        if (scriptLoadedRef.current) return;
-        scriptLoadedRef.current = true;
-
-        const containerId = `mobile-ad-container-${index}`;
+        const containerId = `mobile-ad-${index}`;
         
         const timer = setTimeout(() => {
             const container = document.getElementById(containerId);
-            if (container && !container.hasChildNodes()) {
-                container.innerHTML = '';
-                
-                const atOptions = {
-                    'key': 'a7d8e25874deba8b7a307fb936e0027d',
-                    'format': 'iframe',
-                    'height': 60,
-                    'width': 468,
-                    'params': {}
-                };
+            if (!container) return;
 
-                const optionsScript = document.createElement('script');
-                optionsScript.type = 'text/javascript';
-                optionsScript.innerHTML = `atOptions = ${JSON.stringify(atOptions)};`;
-                
-                const invokeScript = document.createElement('script');
-                invokeScript.type = 'text/javascript';
-                invokeScript.src = `https://breachuptown.com/a7d8e25874deba8b7a307fb936e0027d/invoke.js?t=${Date.now()}-${index}`;
-                invokeScript.async = true;
-                
-                container.appendChild(optionsScript);
-                container.appendChild(invokeScript);
-            }
-        }, 300 + (index * 200));
+            container.innerHTML = "";
 
-        return () => {
-            clearTimeout(timer);
-            scriptLoadedRef.current = false;
-        };
+            // Create iframe to isolate ad script
+            const iframe = document.createElement('iframe');
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.minHeight = '250px';
+            iframe.style.border = 'none';
+            iframe.style.overflow = 'hidden';
+            
+            container.appendChild(iframe);
+            
+            // Write ad code into iframe
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 250px; }
+                    </style>
+                </head>
+                <body>
+                    <script async="async" data-cfasync="false" src="//breachuptown.com/f14d7f03dec7b319fea3f8af2bc57eb6/invoke.js"></script>
+                    <div id="container-f14d7f03dec7b319fea3f8af2bc57eb6"></div>
+                </body>
+                </html>
+            `);
+            iframeDoc.close();
+        }, 500 + (index * 200));
+
+        return () => clearTimeout(timer);
     }, [index]);
 
     // Don't render on desktop
     if (window.innerWidth > 768) return null;
 
     return (
-        <div className="mobile-native-ad card" ref={containerRef}>
-            <div className="ad-label-mobile">Sponsored</div>
-            <div id={`mobile-ad-container-${index}`} className="mobile-ad-content"></div>
+        <div className="mobile-ad-card-wrapper">
+            <div id={`mobile-ad-${index}`} className="mobile-ad-slot"></div>
         </div>
     );
 }
