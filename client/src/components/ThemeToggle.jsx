@@ -52,9 +52,9 @@ function ThemeToggle() {
             root.style.setProperty('--bg-card-hover', '#fff7ed');
             root.style.setProperty('--bg-glass', 'rgba(255, 255, 255, 0.95)');
             
-            root.style.setProperty('--text-primary', '#1a1a1a');
-            root.style.setProperty('--text-secondary', '#4a5568');
-            root.style.setProperty('--text-muted', '#718096');
+            root.style.setProperty('--text-primary', '#000000');
+            root.style.setProperty('--text-secondary', '#1a1a1a');
+            root.style.setProperty('--text-muted', '#4a5568');
             
             root.style.setProperty('--gradient-primary', 'linear-gradient(135deg, #f97316 0%, #fb923c 100%)');
             root.style.setProperty('--gradient-hero', 'linear-gradient(135deg, #ffffff 0%, #fff7ed 50%, #ffedd5 100%)');

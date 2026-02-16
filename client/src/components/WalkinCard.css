@@ -350,6 +350,13 @@
         padding: 16px;
         height: 380px !important;
         max-height: 380px !important;
+        border: 2px solid var(--border-color);
+        border-top: 4px solid var(--primary);
+    }
+
+    .walkin-card:hover {
+        border: 2px solid rgba(77, 163, 255, 0.5);
+        border-top: 4px solid var(--primary-light);
     }
 
     .walkin-card-header {
