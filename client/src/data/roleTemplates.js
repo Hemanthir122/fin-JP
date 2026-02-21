@@ -15,6 +15,15 @@ This position offers competitive compensation, comprehensive benefits, and a sup
             'RESTful APIs', 'Data Structures', 'Algorithms',
             'Problem Solving', 'Agile Methodologies'
         ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, Software Engineering, or related field',
+            'Freshers or 0-2 years of experience in software development',
+            'Strong understanding of object-oriented programming concepts',
+            'Familiarity with version control systems (Git)',
+            'Knowledge of software development lifecycle and methodologies',
+            'Good problem-solving and analytical skills',
+            'Excellent communication and teamwork abilities'
+        ],
         responsibilities: [
             'Design, develop, and maintain software applications using modern programming languages and frameworks',
             'Write clean, efficient, and well-documented code following best practices and coding standards',
@@ -42,6 +51,15 @@ Join our team and help us create beautiful, functional web applications that del
             'HTML5', 'CSS3', 'JavaScript', 'React.js', 'Vue.js',
             'TypeScript', 'Responsive Design', 'Git', 'REST APIs',
             'UI/UX Principles', 'Webpack', 'SASS/SCSS'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, Web Development, or related field',
+            'Freshers or 0-2 years of experience in frontend development',
+            'Proficiency in HTML5, CSS3, and JavaScript (ES6+)',
+            'Knowledge of modern frontend frameworks (React, Vue, or Angular)',
+            'Understanding of responsive design and cross-browser compatibility',
+            'Basic knowledge of web performance optimization techniques',
+            'Familiarity with version control systems (Git)'
         ],
         responsibilities: [
             'Develop responsive and accessible user interfaces using modern frontend technologies',
@@ -71,6 +89,15 @@ This position provides opportunities for growth, learning, and working with cutt
             'RESTful APIs', 'GraphQL', 'Docker', 'AWS',
             'Microservices', 'Redis', 'Git'
         ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, Information Technology, or related field',
+            'Freshers or 0-3 years of experience in backend development',
+            'Good understanding of server-side programming languages (Node.js, Python, Java, etc.)',
+            'Knowledge of relational and NoSQL databases',
+            'Understanding of RESTful API design and development',
+            'Basic knowledge of security best practices and authentication mechanisms',
+            'Familiarity with cloud platforms (AWS, Azure, or GCP) is a plus'
+        ],
         responsibilities: [
             'Design and implement robust, scalable, and secure backend services',
             'Develop and maintain RESTful APIs and integrate with frontend applications',
@@ -98,6 +125,15 @@ Join us and help build innovative applications that make a difference for our us
             'JavaScript', 'React.js', 'Node.js', 'Express.js', 'MongoDB',
             'SQL', 'HTML/CSS', 'Git', 'REST APIs', 'TypeScript',
             'Docker', 'AWS/Azure'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, Software Engineering, or related field',
+            'Freshers or 0-2 years of full stack development experience',
+            'Knowledge of both frontend and backend technologies',
+            'Familiarity with JavaScript frameworks (React, Angular, or Vue)',
+            'Understanding of server-side languages (Node.js, Python, Java, etc.)',
+            'Basic knowledge of both SQL and NoSQL databases',
+            'Understanding of web application architecture and design patterns'
         ],
         responsibilities: [
             'Develop and maintain both frontend and backend components of web applications',
@@ -127,6 +163,16 @@ This position provides a collaborative environment and opportunities for profess
             'Statistical Analysis', 'Data Visualization', 'R',
             'ETL', 'Data Modeling'
         ],
+        qualifications: [
+            'Bachelor\'s degree in Statistics, Mathematics, Computer Science, or related field',
+            'Freshers or 0-2 years of experience in data analysis',
+            'Good understanding of SQL and data querying',
+            'Familiarity with data visualization tools (Tableau, Power BI, Excel)',
+            'Knowledge of statistical analysis and data modeling techniques',
+            'Proficiency in Excel and data manipulation',
+            'Strong analytical and problem-solving skills',
+            'Good communication and presentation abilities'
+        ],
         responsibilities: [
             'Collect, clean, and preprocess data from multiple sources for analysis',
             'Perform statistical analysis to identify trends, patterns, and insights',
@@ -154,6 +200,16 @@ Join our team and help shape the future of data-driven decision making in our or
             'Python', 'R', 'Machine Learning', 'Deep Learning', 'SQL',
             'TensorFlow', 'Scikit-learn', 'Statistics', 'Data Visualization',
             'NLP', 'Big Data', 'Cloud Platforms'
+        ],
+        qualifications: [
+            'Bachelor\'s or Master\'s degree in Computer Science, Statistics, Mathematics, or related field',
+            'Freshers or 0-2 years of experience in data science or machine learning',
+            'Good programming skills in Python or R',
+            'Knowledge of machine learning frameworks (TensorFlow, PyTorch, Scikit-learn)',
+            'Understanding of statistical methods and algorithms',
+            'Familiarity with big data technologies (Hadoop, Spark) is a plus',
+            'Strong problem-solving and analytical thinking abilities',
+            'Good communication skills to explain technical concepts'
         ],
         responsibilities: [
             'Develop and implement machine learning models to solve business problems',
@@ -183,6 +239,16 @@ This position provides a collaborative environment and opportunities to work wit
             'Linux', 'Python', 'Bash', 'CI/CD', 'Ansible',
             'Monitoring Tools', 'Git'
         ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, Information Technology, or related field',
+            'Freshers or 0-2 years of experience in DevOps or system administration',
+            'Knowledge of cloud platforms (AWS, Azure, or GCP)',
+            'Understanding of containerization (Docker) and orchestration (Kubernetes)',
+            'Familiarity with CI/CD tools (Jenkins, GitLab CI, CircleCI)',
+            'Basic knowledge of infrastructure as code (Terraform, CloudFormation)',
+            'Good scripting skills (Python, Bash, or PowerShell)',
+            'Understanding of networking, security, and system architecture'
+        ],
         responsibilities: [
             'Design, build, and maintain CI/CD pipelines for automated deployments',
             'Manage and optimize cloud infrastructure on AWS, Azure, or GCP',
@@ -211,6 +277,16 @@ Join our team and help create exceptional digital experiences that users love.`,
             'Prototyping', 'Visual Design', 'Interaction Design',
             'Usability Testing', 'Design Systems'
         ],
+        qualifications: [
+            'Bachelor\'s degree in Design, Human-Computer Interaction, or related field',
+            'Freshers or 0-2 years of experience in UI/UX design',
+            'Portfolio showcasing UI/UX design projects (academic or personal)',
+            'Proficiency in design tools (Figma, Adobe XD, Sketch)',
+            'Understanding of user-centered design principles and methodologies',
+            'Knowledge of user research and usability testing',
+            'Understanding of responsive design and accessibility standards',
+            'Good visual design and typography skills'
+        ],
         responsibilities: [
             'Conduct user research to understand user needs and behaviors',
             'Create wireframes, prototypes, and high-fidelity designs',
@@ -238,6 +314,16 @@ This position provides opportunities for growth and the chance to work on produc
             'Product Strategy', 'Roadmap Planning', 'Agile/Scrum', 'User Research',
             'Data Analysis', 'Stakeholder Management', 'Communication',
             'JIRA', 'Market Research', 'Prioritization'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Business, Computer Science, Engineering, or related field',
+            'MBA is a plus',
+            'Freshers or 0-2 years of experience in product management or related roles',
+            'Understanding of product development lifecycle',
+            'Knowledge of Agile/Scrum methodologies',
+            'Good analytical and data-driven decision-making skills',
+            'Strong communication and stakeholder management abilities',
+            'Ability to understand and communicate technical concepts'
         ],
         responsibilities: [
             'Define product vision, strategy, and roadmap aligned with business goals',
@@ -268,6 +354,16 @@ Join our team and help build a strong brand that resonates with our target audie
             'Brand Management', 'Campaign Management', 'Marketing Automation',
             'Budget Management'
         ],
+        qualifications: [
+            'Bachelor\'s degree in Marketing, Business Administration, or related field',
+            'MBA is a plus',
+            '2-4 years of experience in marketing with 0-1 years in a managerial role',
+            'Good understanding of digital marketing channels and strategies',
+            'Knowledge of marketing analytics and ROI measurement',
+            'Familiarity with marketing tools (Google Analytics, HubSpot, etc.)',
+            'Good leadership and team management skills',
+            'Strong creative and strategic thinking abilities'
+        ],
         responsibilities: [
             'Develop and execute comprehensive marketing strategies',
             'Manage marketing campaigns across digital and traditional channels',
@@ -295,6 +391,16 @@ This position provides opportunities for professional growth in the HR field.`,
             'Recruitment', 'Employee Relations', 'HRIS', 'Payroll',
             'Performance Management', 'Labor Laws', 'Onboarding',
             'Training & Development', 'Communication', 'MS Office'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Human Resources, Business Administration, or related field',
+            'MBA in HR is a plus',
+            'Freshers or 0-2 years of experience in HR operations',
+            'Basic knowledge of labor laws and HR compliance requirements',
+            'Familiarity with HRIS and payroll systems',
+            'Strong interpersonal and communication skills',
+            'Ability to handle confidential information with discretion',
+            'Certification in HR (SHRM-CP, PHR) is a plus'
         ],
         responsibilities: [
             'Manage end-to-end recruitment process including sourcing, screening, and hiring',
@@ -324,6 +430,16 @@ Join our team and help tell our brand story through compelling content.`,
             'Research', 'Blog Writing', 'Social Media Content',
             'WordPress', 'Grammar', 'Creativity'
         ],
+        qualifications: [
+            'Bachelor\'s degree in English, Journalism, Communications, or related field',
+            'Freshers or 0-2 years of experience in content writing or copywriting',
+            'Excellent writing, editing, and proofreading skills',
+            'Strong command of English grammar and style',
+            'Basic understanding of SEO principles and keyword optimization',
+            'Familiarity with content management systems (WordPress, etc.)',
+            'Portfolio of writing samples (academic or personal blog)',
+            'Ability to meet deadlines and manage multiple projects'
+        ],
         responsibilities: [
             'Write original, engaging content for websites, blogs, and marketing materials',
             'Research topics and industry trends to create informed content',
@@ -352,6 +468,16 @@ This position provides opportunities for professional growth in business analysi
             'SQL', 'Documentation', 'Stakeholder Management',
             'Agile/Scrum', 'JIRA', 'Data Analysis', 'Visio'
         ],
+        qualifications: [
+            'Bachelor\'s degree in Business Administration, Computer Science, or related field',
+            'Freshers or 0-2 years of experience in business analysis',
+            'Strong analytical and problem-solving skills',
+            'Understanding of requirements gathering and documentation',
+            'Knowledge of business process modeling and analysis techniques',
+            'Familiarity with Agile/Scrum methodologies',
+            'Basic knowledge of tools like JIRA, Confluence, Visio, or similar',
+            'Certification in Business Analysis (CBAP, CCBA) is a plus'
+        ],
         responsibilities: [
             'Gather and document business requirements from stakeholders',
             'Analyze current business processes and identify improvement opportunities',
@@ -370,7 +496,7 @@ This position provides opportunities for professional growth in business analysi
 
 In this role, you will manage social media accounts, run paid advertising campaigns, optimize content for SEO, and analyze campaign performance. You will stay updated with digital marketing trends and implement strategies that achieve marketing goals.
 
-The ideal candidate should have hands-on experience with digital marketing tools and platforms, strong analytical skills, and creativity. You should be able to work independently and as part of a team to deliver successful campaigns.
+The ideal candidate should have hands-on experience with digital marketing tools and platforms, strong analytical skills, and creativity. You should be data-driven, results-oriented, and passionate about digital marketing.
 
 We offer an opportunity to work on diverse digital marketing initiatives and contribute to business growth. If you are passionate about digital marketing and want to drive results, we would love to hear from you.
 
@@ -379,6 +505,16 @@ Join our team and help build a strong digital presence for our brand.`,
             'Google Ads', 'Facebook Ads', 'SEO', 'Social Media Marketing',
             'Google Analytics', 'Email Marketing', 'Content Marketing',
             'Canva', 'Marketing Automation', 'HTML Basics'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Marketing, Business, or related field',
+            'Freshers or 0-2 years of experience in digital marketing',
+            'Basic knowledge of Google Ads and social media advertising',
+            'Understanding of SEO and content marketing principles',
+            'Familiarity with Google Analytics and marketing analytics tools',
+            'Knowledge of social media management and content creation',
+            'Good analytical and data interpretation skills',
+            'Certification in Google Ads or Digital Marketing is a plus'
         ],
         responsibilities: [
             'Plan and execute digital marketing campaigns across multiple channels',
@@ -403,6 +539,15 @@ The ideal candidate should be a recent graduate with a strong academic record, e
             'Communication', 'Learning Agility', 'Teamwork', 'Basic Computer Skills',
             'Problem Solving', 'Adaptability', 'Time Management'
         ],
+        qualifications: [
+            'Bachelor\'s degree in any discipline (recently completed or final year)',
+            'Strong academic record with minimum 60% or equivalent',
+            'Excellent communication and interpersonal skills',
+            'Basic computer proficiency (MS Office)',
+            'Eagerness to learn and adapt to new environments',
+            'Positive attitude and strong work ethic',
+            'No prior work experience required'
+        ],
         responsibilities: [
             'Participate in training sessions and workshops',
             'Assist senior team members with daily tasks and projects',
@@ -424,6 +569,15 @@ The ideal candidate should have a degree in engineering, strong technical fundam
             'Engineering Fundamentals', 'Technical Knowledge', 'Project Management',
             'Analytical Skills', 'AutoCAD', 'Programming Basics', 'MS Office'
         ],
+        qualifications: [
+            'Bachelor\'s degree in Engineering (Mechanical, Electrical, Civil, Computer Science, etc.)',
+            'Graduated within the last 1-2 years or final year student',
+            'Strong academic record with minimum 60% or 6.0 CGPA',
+            'Sound knowledge of engineering fundamentals',
+            'Basic understanding of relevant software tools (AutoCAD, MATLAB, etc.)',
+            'Good analytical and problem-solving abilities',
+            'Willingness to learn and work in different engineering domains'
+        ],
         responsibilities: [
             'Undergo technical training and on-the-job learning',
             'Assist in design, testing, and implementation of engineering solutions',
@@ -444,6 +598,16 @@ The ideal candidate should have excellent communication skills, patience, and a 
         skills: [
             'Customer Service', 'Communication', 'Problem Solving', 'Empathy',
             'CRM Software', 'Active Listening', 'Conflict Resolution', 'Typing Skills'
+        ],
+        qualifications: [
+            'Bachelor\'s degree or equivalent (12th pass with relevant experience)',
+            'Freshers or 0-1 years of experience in customer service or support role',
+            'Excellent verbal and written communication skills',
+            'Good problem-solving and conflict resolution abilities',
+            'Patience and empathy when dealing with customers',
+            'Basic computer skills and familiarity with CRM systems',
+            'Ability to work in shifts (if required)',
+            'Good typing speed (30+ WPM)'
         ],
         responsibilities: [
             'Respond to customer inquiries via phone, email, and chat',
@@ -467,6 +631,16 @@ The ideal candidate should have strong technical knowledge, troubleshooting skil
             'Networking Basics', 'Windows/Linux OS', 'Remote Support Tools',
             'Customer Service', 'Documentation'
         ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field (or equivalent experience)',
+            'Freshers or 0-2 years of experience in technical support or IT helpdesk',
+            'Good knowledge of Windows and/or Linux operating systems',
+            'Understanding of computer hardware and networking basics',
+            'Familiarity with remote support tools (TeamViewer, AnyDesk, etc.)',
+            'Good troubleshooting and problem-solving skills',
+            'Good communication skills to assist non-technical users',
+            'Relevant certifications (CompTIA A+, Network+) are a plus'
+        ],
         responsibilities: [
             'Diagnose and resolve hardware and software issues',
             'Install, configure, and update operating systems and applications',
@@ -489,6 +663,16 @@ The ideal candidate should be organized, detail-oriented, and have experience wi
             'Communication', 'Prioritization', 'ITIL Foundation',
             'Troubleshooting', 'Reporting'
         ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-2 years of experience in service desk or IT support',
+            'Basic knowledge of ITIL framework and best practices',
+            'Familiarity with ITSM tools (ServiceNow, Jira Service Desk, etc.)',
+            'Good organizational and multitasking abilities',
+            'Excellent communication and customer service skills',
+            'Ability to work under pressure and meet SLA targets',
+            'ITIL Foundation certification is preferred'
+        ],
         responsibilities: [
             'Receive and log IT incidents and service requests',
             'Categorize and prioritize tickets based on impact and urgency',
@@ -510,6 +694,16 @@ The ideal candidate should have excellent verbal communication skills, a polite 
             'Verbal Communication', 'Telecalling', 'Active Listening',
             'Language Proficiency', 'Persuasion', 'Data Entry',
             'Patience', 'Customer Handling'
+        ],
+        qualifications: [
+            'High school diploma or Bachelor\'s degree',
+            'Excellent verbal communication skills in English (and/or regional languages)',
+            'Clear and neutral accent with good pronunciation',
+            'Prior experience in voice process or telecalling (0-2 years)',
+            'Ability to work in rotational shifts including night shifts',
+            'Good listening skills and patience',
+            'Basic computer knowledge and typing skills',
+            'Comfortable with target-based work environment'
         ],
         responsibilities: [
             'Handle inbound and outbound calls professionally',

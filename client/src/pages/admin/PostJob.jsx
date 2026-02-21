@@ -96,7 +96,8 @@ function PostJob() {
                 title: "",
                 description: "",
                 skills: [],
-                responsibilities: []
+                responsibilities: [],
+                qualifications: []
             }));
             return;
         }
@@ -110,7 +111,8 @@ function PostJob() {
                 title: selectedRole,
                 description: template.description,
                 skills: template.skills,
-                responsibilities: template.responsibilities
+                responsibilities: template.responsibilities,
+                qualifications: template.qualifications || []
             }));
         }
     };
