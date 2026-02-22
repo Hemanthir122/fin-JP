@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
     MapPin, Briefcase, Clock, Building2,
@@ -73,6 +73,7 @@ function FeedbackSection({ jobId, isWalkin }) {
 
 function JobDetails() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const queryParams = new URLSearchParams(window.location.search);
     const typeParam = queryParams.get('type');
@@ -88,6 +89,42 @@ function JobDetails() {
     const isLoading = isWalkin ? isLoadingWalkin : isLoadingJob;
     const isExpired = job?.endDate && new Date(job.endDate) < new Date();
     const { data: companyJobs = [] } = useCompanyJobs(job?.company);
+
+    // Handle browser back button - redirect to jobs page if coming from external link
+    useEffect(() => {
+        // Check if user came from external link (no referrer from same domain)
+        const isExternalReferrer = !document.referrer || 
+                                   !document.referrer.includes(window.location.hostname);
+        
+        if (isExternalReferrer) {
+            // Replace current history entry so back button goes to jobs page
+            window.history.replaceState(
+                { fromExternal: true },
+                '',
+                window.location.pathname + window.location.search
+            );
+            
+            // Add jobs page to history so back button works
+            window.history.pushState(
+                { page: 'job-details' },
+                '',
+                window.location.pathname + window.location.search
+            );
+        }
+
+        const handlePopState = (event) => {
+            // If user came from external link, navigate to jobs page
+            if (event.state?.fromExternal || window.history.length <= 2) {
+                navigate('/jobs', { replace: true });
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [navigate]);
 
     // Generate Schema.org JSON-LD
     const jobSchema = useMemo(() => {
