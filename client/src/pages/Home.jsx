@@ -7,8 +7,8 @@ import JobCard from '../components/JobCard';
 import JobFilter from '../components/JobFilter';
 import HorizontalNativeAd from '../components/ads/HorizontalNativeAd';
 import MobileNativeAd from '../components/ads/MobileNativeAd';
-import SocialBar from '../components/ads/SocialBar';
-import Popunder from '../components/ads/Popunder';
+import SocialBar from '../components/ads/SocialBar'; // REMOVED: May cause redirects
+// import Popunder from '../components/ads/Popunder'; // REMOVED: Causes auto-redirects
 import { useLatestJobs, useCompanies, useLocations } from '../hooks/useJobs';
 import './Home.css';
 
@@ -105,8 +105,8 @@ function Home() {
             </Helmet>
 
             {/* Global Ads */}
-            <SocialBar />
-            <Popunder />
+            {/* <SocialBar /> */} {/* REMOVED: May cause redirects */}
+            {/* <Popunder /> */} {/* REMOVED: Causes auto-redirects */}
 
             <Hero />
 
