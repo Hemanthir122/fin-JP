@@ -715,6 +715,469 @@ The ideal candidate should have excellent verbal communication skills, a polite 
             'Ensure compliance with regulatory requirements',
             'Participate in team meetings and training sessions'
         ]
+    },
+    'Apprentice': {
+        description: `We are seeking motivated Apprentices to join our organization. As an Apprentice, you will receive hands-on training while working alongside experienced professionals to develop practical skills in your chosen field.
+
+This apprenticeship program combines on-the-job training with structured learning, providing you with the opportunity to earn while you learn. You will gain valuable industry experience and develop the competencies needed for a successful career.
+
+The ideal candidate should be eager to learn, committed to personal development, and ready to take on new challenges. If you are looking to kickstart your career through practical experience, we encourage you to apply.`,
+        skills: [
+            'Basic Technical Knowledge', 'Learning Agility', 'Communication',
+            'Teamwork', 'Problem Solving', 'Time Management',
+            'Attention to Detail', 'Adaptability'
+        ],
+        qualifications: [
+            'High school diploma or equivalent',
+            'Minimum 18 years of age',
+            'Strong willingness to learn and develop new skills',
+            'Basic computer literacy',
+            'Good communication skills',
+            'Ability to follow instructions and work as part of a team',
+            'No prior work experience required'
+        ],
+        responsibilities: [
+            'Participate in structured training programs and workshops',
+            'Work under supervision of experienced professionals',
+            'Learn and apply industry-specific skills and techniques',
+            'Complete assigned tasks and projects within deadlines',
+            'Maintain accurate records of training and work activities',
+            'Follow safety protocols and workplace procedures',
+            'Seek feedback and actively work on skill improvement',
+            'Demonstrate commitment to learning and professional development'
+        ]
+    },
+    'Intern': {
+        description: `We are offering internship opportunities for students and recent graduates. As an Intern, you will gain practical work experience, develop professional skills, and get exposure to real-world business operations.
+
+This internship provides a valuable learning experience where you will work on meaningful projects, collaborate with team members, and contribute to our organization's goals. You will receive mentorship and guidance to help you grow professionally.
+
+The ideal candidate should be a current student or recent graduate with enthusiasm, strong work ethic, and eagerness to learn. This is an excellent opportunity to bridge the gap between academic learning and professional practice.`,
+        skills: [
+            'Communication', 'Microsoft Office', 'Research', 'Teamwork',
+            'Time Management', 'Problem Solving', 'Adaptability',
+            'Basic Computer Skills'
+        ],
+        qualifications: [
+            'Currently pursuing or recently completed Bachelor\'s/Master\'s degree',
+            'Strong academic record',
+            'Excellent communication and interpersonal skills',
+            'Proficiency in MS Office (Word, Excel, PowerPoint)',
+            'Ability to work independently and in teams',
+            'Eagerness to learn and take on new challenges',
+            'Available for 2-6 months internship duration'
+        ],
+        responsibilities: [
+            'Assist team members with daily tasks and projects',
+            'Conduct research and prepare reports and presentations',
+            'Participate in team meetings and brainstorming sessions',
+            'Learn company processes, tools, and methodologies',
+            'Complete assigned projects within given timelines',
+            'Maintain professional communication with team members',
+            'Document learnings and contribute ideas for improvement',
+            'Seek feedback and work on professional development'
+        ]
+    },
+    'Graduate Intern': {
+        description: `We are hiring Graduate Interns to join our team. This program is designed for recent graduates who want to gain industry experience and develop professional skills before starting their full-time careers.
+
+As a Graduate Intern, you will work on challenging projects, receive mentorship from experienced professionals, and get exposure to various aspects of our business. This is an excellent opportunity to apply your academic knowledge in a practical setting.
+
+The ideal candidate should be a recent graduate with strong academic credentials, analytical thinking, and a passion for learning. We offer a supportive environment that fosters growth and development.`,
+        skills: [
+            'Analytical Thinking', 'Communication', 'Research', 'MS Office',
+            'Problem Solving', 'Teamwork', 'Time Management',
+            'Presentation Skills'
+        ],
+        qualifications: [
+            'Recently completed Bachelor\'s or Master\'s degree (within last 1 year)',
+            'Strong academic record with minimum 60% or equivalent',
+            'Excellent written and verbal communication skills',
+            'Strong analytical and problem-solving abilities',
+            'Proficiency in MS Office and basic computer applications',
+            'Ability to work in a fast-paced environment',
+            'Willingness to learn and adapt to new challenges'
+        ],
+        responsibilities: [
+            'Work on assigned projects and deliver quality outputs',
+            'Assist in research, analysis, and documentation tasks',
+            'Collaborate with team members on various initiatives',
+            'Prepare reports, presentations, and other deliverables',
+            'Participate in training sessions and skill development programs',
+            'Learn industry best practices and organizational processes',
+            'Contribute ideas and suggestions for process improvement',
+            'Maintain professional standards and meet deadlines'
+        ]
+    },
+    'Management Trainee': {
+        description: `We are seeking ambitious Management Trainees to join our leadership development program. As a Management Trainee, you will undergo comprehensive training across various departments to develop managerial and leadership skills.
+
+This program is designed to prepare you for future leadership roles within the organization. You will gain exposure to different business functions, work on strategic projects, and receive mentorship from senior management.
+
+The ideal candidate should be a high-potential graduate with strong leadership qualities, analytical skills, and business acumen. If you aspire to build a career in management, this is the perfect opportunity.`,
+        skills: [
+            'Leadership', 'Strategic Thinking', 'Communication', 'Problem Solving',
+            'Business Analysis', 'Project Management', 'MS Office',
+            'Teamwork', 'Decision Making'
+        ],
+        qualifications: [
+            'MBA or Bachelor\'s degree in Business, Management, or related field',
+            'Strong academic record with minimum 65% or equivalent',
+            'Excellent leadership and interpersonal skills',
+            'Strong analytical and strategic thinking abilities',
+            'Good communication and presentation skills',
+            'Ability to work under pressure and meet deadlines',
+            'Willingness to work across different departments and locations'
+        ],
+        responsibilities: [
+            'Undergo rotational training across various departments',
+            'Work on strategic projects and business initiatives',
+            'Analyze business processes and identify improvement opportunities',
+            'Assist managers in planning and decision-making activities',
+            'Prepare business reports and presentations for management',
+            'Learn organizational policies, procedures, and best practices',
+            'Participate in leadership development programs and workshops',
+            'Demonstrate potential for future managerial roles'
+        ]
+    },
+    'Engineering Intern': {
+        description: `We are offering Engineering Internship opportunities for students pursuing engineering degrees. As an Engineering Intern, you will work on real engineering projects, apply theoretical knowledge, and gain hands-on technical experience.
+
+You will collaborate with experienced engineers, use industry-standard tools and technologies, and contribute to meaningful projects. This internship provides excellent exposure to engineering practices and professional work environment.
+
+The ideal candidate should be currently pursuing an engineering degree with strong technical fundamentals and eagerness to learn. This is a great opportunity to build your engineering career.`,
+        skills: [
+            'Engineering Fundamentals', 'Technical Knowledge', 'CAD Software',
+            'Problem Solving', 'Analytical Skills', 'Teamwork',
+            'MS Office', 'Communication'
+        ],
+        qualifications: [
+            'Currently pursuing Bachelor\'s degree in Engineering (any branch)',
+            'Completed at least 4 semesters of engineering program',
+            'Strong understanding of engineering fundamentals',
+            'Basic knowledge of relevant software tools (AutoCAD, MATLAB, etc.)',
+            'Good analytical and problem-solving skills',
+            'Ability to work in a team environment',
+            'Available for 2-6 months internship'
+        ],
+        responsibilities: [
+            'Assist engineers in design, testing, and implementation tasks',
+            'Work on assigned engineering projects and deliverables',
+            'Use engineering software and tools for analysis and design',
+            'Prepare technical documentation and reports',
+            'Participate in team meetings and technical discussions',
+            'Learn industry standards and engineering best practices',
+            'Conduct research and analysis as required',
+            'Follow safety protocols and quality standards'
+        ]
+    },
+    'Software Developer Intern': {
+        description: `We are seeking Software Developer Interns to join our development team. As an intern, you will work on real software projects, write code, and learn modern development practices from experienced developers.
+
+You will gain hands-on experience with programming languages, frameworks, and development tools. This internship provides an excellent opportunity to build your coding skills and understand software development lifecycle.
+
+The ideal candidate should be pursuing a degree in Computer Science or related field with programming knowledge and passion for software development.`,
+        skills: [
+            'Programming (Java/Python/JavaScript)', 'Data Structures', 'Algorithms',
+            'Git', 'Problem Solving', 'Debugging', 'SQL',
+            'Web Development Basics'
+        ],
+        qualifications: [
+            'Currently pursuing Bachelor\'s/Master\'s in Computer Science or related field',
+            'Knowledge of at least one programming language (Java, Python, JavaScript, etc.)',
+            'Understanding of data structures and algorithms',
+            'Familiarity with version control (Git)',
+            'Good problem-solving and analytical skills',
+            'Passion for coding and software development',
+            'Available for 2-6 months internship'
+        ],
+        responsibilities: [
+            'Write clean, efficient code under supervision',
+            'Work on assigned features and bug fixes',
+            'Participate in code reviews and learn best practices',
+            'Test and debug software applications',
+            'Collaborate with team members on development tasks',
+            'Learn and use development tools and frameworks',
+            'Document code and technical specifications',
+            'Participate in team meetings and stand-ups'
+        ]
+    },
+    'HR Intern': {
+        description: `We are offering HR Internship opportunities for students interested in human resources. As an HR Intern, you will gain exposure to various HR functions including recruitment, employee engagement, training, and HR operations.
+
+You will assist the HR team in daily activities, learn HR processes and best practices, and contribute to HR initiatives. This internship provides valuable experience in the field of human resources management.
+
+The ideal candidate should be pursuing a degree in HR, Business, or related field with good interpersonal skills and interest in people management.`,
+        skills: [
+            'Communication', 'Interpersonal Skills', 'MS Office', 'Recruitment',
+            'Organization', 'Confidentiality', 'Time Management',
+            'Attention to Detail'
+        ],
+        qualifications: [
+            'Currently pursuing Bachelor\'s/Master\'s in HR, Business, or related field',
+            'Good communication and interpersonal skills',
+            'Proficiency in MS Office (Excel, Word, PowerPoint)',
+            'Understanding of basic HR concepts',
+            'Ability to maintain confidentiality',
+            'Strong organizational and multitasking abilities',
+            'Available for 2-6 months internship'
+        ],
+        responsibilities: [
+            'Assist in recruitment activities including screening and scheduling',
+            'Support employee onboarding and orientation processes',
+            'Help maintain HR records and documentation',
+            'Assist in organizing employee engagement activities',
+            'Support HR team in administrative tasks',
+            'Help prepare HR reports and presentations',
+            'Learn HR policies, procedures, and compliance requirements',
+            'Participate in HR projects and initiatives'
+        ]
+    },
+    'Marketing Intern': {
+        description: `We are seeking Marketing Interns to join our marketing team. As a Marketing Intern, you will gain hands-on experience in marketing campaigns, content creation, market research, and digital marketing activities.
+
+You will work on real marketing projects, learn marketing strategies and tools, and contribute to our marketing initiatives. This internship provides excellent exposure to the field of marketing and brand management.
+
+The ideal candidate should be pursuing a degree in Marketing, Business, or related field with creativity, analytical thinking, and passion for marketing.`,
+        skills: [
+            'Marketing Basics', 'Social Media', 'Content Writing', 'MS Office',
+            'Research', 'Communication', 'Creativity', 'Analytics'
+        ],
+        qualifications: [
+            'Currently pursuing Bachelor\'s/Master\'s in Marketing, Business, or related field',
+            'Understanding of basic marketing concepts',
+            'Good written and verbal communication skills',
+            'Familiarity with social media platforms',
+            'Creative thinking and problem-solving abilities',
+            'Proficiency in MS Office',
+            'Available for 2-6 months internship'
+        ],
+        responsibilities: [
+            'Assist in planning and executing marketing campaigns',
+            'Create content for social media and marketing materials',
+            'Conduct market research and competitor analysis',
+            'Help manage social media accounts and engagement',
+            'Assist in organizing marketing events and activities',
+            'Prepare marketing reports and presentations',
+            'Learn marketing tools and analytics platforms',
+            'Support the marketing team in various initiatives'
+        ]
+    },
+    'Digital Marketing Intern': {
+        description: `We are offering Digital Marketing Internship opportunities for students interested in online marketing. As a Digital Marketing Intern, you will learn about SEO, social media marketing, email marketing, and digital advertising.
+
+You will work on digital campaigns, analyze performance metrics, and gain hands-on experience with digital marketing tools. This internship provides valuable skills in the rapidly growing field of digital marketing.
+
+The ideal candidate should be pursuing a degree in Marketing, Communications, or related field with interest in digital technologies and online marketing.`,
+        skills: [
+            'Social Media Marketing', 'SEO Basics', 'Content Creation',
+            'Google Analytics', 'Email Marketing', 'Canva',
+            'Communication', 'Creativity'
+        ],
+        qualifications: [
+            'Currently pursuing Bachelor\'s/Master\'s in Marketing, Communications, or related field',
+            'Understanding of digital marketing concepts',
+            'Familiarity with social media platforms (Facebook, Instagram, LinkedIn, etc.)',
+            'Basic knowledge of SEO and content marketing',
+            'Good written communication skills',
+            'Creative thinking and analytical abilities',
+            'Available for 2-6 months internship'
+        ],
+        responsibilities: [
+            'Assist in managing social media accounts and campaigns',
+            'Create engaging content for digital platforms',
+            'Help with SEO optimization and keyword research',
+            'Support email marketing campaigns',
+            'Monitor and report on digital campaign performance',
+            'Assist in creating digital marketing materials',
+            'Learn and use digital marketing tools',
+            'Stay updated with digital marketing trends'
+        ]
+    },
+    'Data Analyst Intern': {
+        description: `We are seeking Data Analyst Interns to join our analytics team. As a Data Analyst Intern, you will work with data, perform analysis, create visualizations, and generate insights to support business decisions.
+
+You will learn data analysis techniques, work with analytics tools, and contribute to data-driven projects. This internship provides excellent exposure to the field of data analytics and business intelligence.
+
+The ideal candidate should be pursuing a degree in Statistics, Mathematics, Computer Science, or related field with analytical skills and interest in data.`,
+        skills: [
+            'Excel', 'SQL Basics', 'Data Analysis', 'Statistics',
+            'Data Visualization', 'Python/R Basics', 'Problem Solving',
+            'Communication'
+        ],
+        qualifications: [
+            'Currently pursuing Bachelor\'s/Master\'s in Statistics, Mathematics, CS, or related field',
+            'Strong analytical and problem-solving skills',
+            'Proficiency in Excel and data manipulation',
+            'Basic knowledge of SQL',
+            'Understanding of statistical concepts',
+            'Familiarity with data visualization tools is a plus',
+            'Available for 2-6 months internship'
+        ],
+        responsibilities: [
+            'Assist in collecting and cleaning data from various sources',
+            'Perform basic data analysis and statistical calculations',
+            'Create charts, graphs, and visualizations',
+            'Help prepare data reports and dashboards',
+            'Support data quality assurance activities',
+            'Learn and use data analysis tools and techniques',
+            'Assist in ad-hoc data requests and analysis',
+            'Document analysis methodologies and findings'
+        ]
+    },
+    'Content Writing Intern': {
+        description: `We are offering Content Writing Internship opportunities for aspiring writers. As a Content Writing Intern, you will create various types of content including blog posts, articles, social media content, and marketing copy.
+
+You will learn content writing best practices, SEO writing techniques, and develop your writing skills under the guidance of experienced content professionals. This internship provides excellent exposure to content marketing and digital publishing.
+
+The ideal candidate should be pursuing a degree in English, Journalism, Communications, or related field with strong writing skills and creativity.`,
+        skills: [
+            'Writing', 'Editing', 'Research', 'SEO Basics',
+            'Grammar', 'Creativity', 'MS Office', 'Communication'
+        ],
+        qualifications: [
+            'Currently pursuing Bachelor\'s/Master\'s in English, Journalism, Communications, or related field',
+            'Excellent writing and editing skills',
+            'Strong command of English grammar and style',
+            'Creativity and ability to write engaging content',
+            'Basic understanding of SEO is a plus',
+            'Portfolio of writing samples (academic or personal)',
+            'Available for 2-6 months internship'
+        ],
+        responsibilities: [
+            'Write blog posts, articles, and web content',
+            'Create social media content and captions',
+            'Research topics and gather information for content',
+            'Edit and proofread content for accuracy and quality',
+            'Learn SEO writing techniques and best practices',
+            'Assist in content planning and ideation',
+            'Maintain content calendar and meet deadlines',
+            'Collaborate with marketing team on content initiatives'
+        ]
+    },
+    'Junior Developer': {
+        description: `We are seeking Junior Developers to join our development team. As a Junior Developer, you will work on software development projects, write code, and learn from experienced developers while contributing to real applications.
+
+You will be involved in the full software development lifecycle, from requirements gathering to deployment. This role provides an excellent opportunity to grow your technical skills and build a career in software development.
+
+The ideal candidate should be a recent graduate or have 0-1 years of experience with programming knowledge and passion for software development.`,
+        skills: [
+            'Programming (Java/Python/JavaScript)', 'Git', 'Data Structures',
+            'Algorithms', 'SQL', 'Problem Solving', 'Debugging',
+            'Web Development'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-1 years of programming experience',
+            'Knowledge of at least one programming language',
+            'Understanding of data structures and algorithms',
+            'Familiarity with version control (Git)',
+            'Good problem-solving and analytical skills',
+            'Willingness to learn new technologies'
+        ],
+        responsibilities: [
+            'Write clean, maintainable code following best practices',
+            'Develop and test software features and components',
+            'Debug and fix software defects',
+            'Participate in code reviews and learn from feedback',
+            'Collaborate with team members on development tasks',
+            'Learn and adopt new technologies and frameworks',
+            'Document code and technical specifications',
+            'Contribute to team discussions and planning sessions'
+        ]
+    },
+    'Junior Analyst': {
+        description: `We are hiring Junior Analysts to join our team. As a Junior Analyst, you will analyze data, prepare reports, and provide insights to support business decisions and operations.
+
+You will work with various data sources, use analytical tools, and collaborate with different teams to understand business requirements. This role provides excellent exposure to business analysis and data-driven decision making.
+
+The ideal candidate should be a recent graduate with analytical skills, attention to detail, and ability to work with data and numbers.`,
+        skills: [
+            'Data Analysis', 'Excel', 'SQL', 'Problem Solving',
+            'Communication', 'Reporting', 'Attention to Detail',
+            'Business Understanding'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Business, Economics, Statistics, or related field',
+            'Freshers or 0-1 years of analytical experience',
+            'Strong proficiency in Excel and data manipulation',
+            'Basic knowledge of SQL is a plus',
+            'Good analytical and problem-solving skills',
+            'Excellent attention to detail',
+            'Strong communication and presentation abilities'
+        ],
+        responsibilities: [
+            'Collect and analyze data from various sources',
+            'Prepare reports, dashboards, and presentations',
+            'Identify trends, patterns, and insights from data',
+            'Support business teams with data requests and analysis',
+            'Maintain data quality and accuracy',
+            'Learn business processes and domain knowledge',
+            'Assist in process improvement initiatives',
+            'Collaborate with team members on analytical projects'
+        ]
+    },
+    'Associate Software Engineer': {
+        description: `We are seeking Associate Software Engineers to join our engineering team. As an Associate Software Engineer, you will develop software applications, work on technical projects, and grow your engineering skills under the guidance of senior engineers.
+
+You will be involved in designing, coding, testing, and deploying software solutions. This role provides an excellent opportunity to build a strong foundation in software engineering and advance your technical career.
+
+The ideal candidate should be a recent graduate or have 0-2 years of experience with strong programming skills and passion for technology.`,
+        skills: [
+            'Programming (Java/Python/C++)', 'Data Structures', 'Algorithms',
+            'Git', 'SQL', 'Problem Solving', 'Software Design',
+            'Testing', 'Debugging'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, Software Engineering, or related field',
+            'Freshers or 0-2 years of software development experience',
+            'Strong programming skills in one or more languages',
+            'Good understanding of data structures and algorithms',
+            'Knowledge of software development lifecycle',
+            'Familiarity with version control and development tools',
+            'Strong problem-solving and analytical abilities'
+        ],
+        responsibilities: [
+            'Design and develop software applications and features',
+            'Write efficient, well-documented, and testable code',
+            'Participate in code reviews and technical discussions',
+            'Debug and resolve software issues',
+            'Collaborate with team members on project deliverables',
+            'Learn and apply software engineering best practices',
+            'Contribute to technical documentation',
+            'Stay updated with new technologies and tools'
+        ]
+    },
+    'Associate Consultant': {
+        description: `We are hiring Associate Consultants to join our consulting team. As an Associate Consultant, you will work on client projects, analyze business problems, and provide solutions to help clients achieve their objectives.
+
+You will collaborate with senior consultants, conduct research and analysis, and contribute to project deliverables. This role provides excellent exposure to consulting methodologies and various industries.
+
+The ideal candidate should be a recent graduate with strong analytical skills, business acumen, and excellent communication abilities.`,
+        skills: [
+            'Business Analysis', 'Problem Solving', 'Communication',
+            'Presentation', 'MS Office', 'Research', 'Analytical Thinking',
+            'Client Management'
+        ],
+        qualifications: [
+            'Bachelor\'s/Master\'s degree in Business, Management, or related field',
+            'Freshers or 0-2 years of consulting or business analysis experience',
+            'Strong analytical and problem-solving skills',
+            'Excellent communication and presentation abilities',
+            'Proficiency in MS Office (Excel, PowerPoint, Word)',
+            'Ability to work in a fast-paced environment',
+            'Willingness to travel for client engagements'
+        ],
+        responsibilities: [
+            'Support consulting projects and client engagements',
+            'Conduct research and analysis on business problems',
+            'Prepare presentations and reports for clients',
+            'Assist in developing solutions and recommendations',
+            'Collaborate with team members on project deliverables',
+            'Learn consulting methodologies and frameworks',
+            'Participate in client meetings and discussions',
+            'Contribute to proposal development and business development activities'
+        ]
     }
 };
 
