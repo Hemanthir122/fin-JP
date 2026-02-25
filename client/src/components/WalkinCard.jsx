@@ -1,8 +1,10 @@
-import { Building2, Clock, Share2 } from 'lucide-react';
+import { Building2, Clock, Lock, Eye, Share2 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import './WalkinCard.css';
 
 function WalkinCard({ job }) {
+    const [isContactRevealed, setIsContactRevealed] = useState(false);
+    const [isAdLoading, setIsAdLoading] = useState(false);
     const [showScrollIndicator, setShowScrollIndicator] = useState(true);
     const contentRef = useRef(null);
 
@@ -87,6 +89,37 @@ ${platformLink}`;
         }
     };
 
+    // Handle contact reveal with ad
+    const handleRevealContact = () => {
+        if (isContactRevealed) return;
+        
+        setIsAdLoading(true);
+        
+        // Load the ad script
+        const script = document.createElement('script');
+        script.src = 'https://breachuptown.com/31/2d/00/312d000878fa23ff92459a4fb1eac311.js';
+        script.async = true;
+        
+        script.onload = () => {
+            console.log('Ad script loaded');
+            // Wait a bit for ad to display, then reveal content
+            setTimeout(() => {
+                setIsContactRevealed(true);
+                setIsAdLoading(false);
+                console.log('Contact revealed after ad');
+            }, 1000);
+        };
+        
+        script.onerror = () => {
+            console.log('Ad script failed to load, revealing anyway');
+            // If ad fails to load, still reveal content
+            setIsContactRevealed(true);
+            setIsAdLoading(false);
+        };
+        
+        document.body.appendChild(script);
+    };
+
     const renderDescription = () => {
         if (!job.description) return '';
 
@@ -101,6 +134,19 @@ ${platformLink}`;
         return urlParts.map((part, index) => {
             // Check if part is a URL
             if (part && part.match(/^https?:\/\//i)) {
+                if (!isContactRevealed) {
+                    return (
+                        <span
+                            key={index}
+                            className="walkin-url-link blurred"
+                            onClick={handleRevealContact}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <Lock size={14} className="lock-icon" />
+                            <span className="blur-text">Click to reveal</span>
+                        </span>
+                    );
+                }
                 return (
                     <a
                         key={index}
@@ -121,6 +167,19 @@ ${platformLink}`;
             const emailParts = part.split(emailRegex);
             return emailParts.map((emailPart, emailIndex) => {
                 if (emailPart && emailPart.match(emailRegex)) {
+                    if (!isContactRevealed) {
+                        return (
+                            <span
+                                key={`${index}-${emailIndex}`}
+                                className="walkin-email-link blurred"
+                                onClick={handleRevealContact}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <Lock size={14} className="lock-icon" />
+                                <span className="blur-text">Click to reveal email</span>
+                            </span>
+                        );
+                    }
                     return (
                         <a
                             key={`${index}-${emailIndex}`}
@@ -137,6 +196,19 @@ ${platformLink}`;
                 const phoneParts = emailPart.split(phoneRegex);
                 return phoneParts.map((phonePart, phoneIndex) => {
                     if (phonePart && phonePart.match(phoneRegex) && phonePart.replace(/[\s-()]/g, '').length >= 10) {
+                        if (!isContactRevealed) {
+                            return (
+                                <span
+                                    key={`${index}-${emailIndex}-${phoneIndex}`}
+                                    className="walkin-phone-link blurred"
+                                    onClick={handleRevealContact}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <Lock size={14} className="lock-icon" />
+                                    <span className="blur-text">Click to reveal phone</span>
+                                </span>
+                            );
+                        }
                         return (
                             <a
                                 key={`${index}-${emailIndex}-${phoneIndex}`}
@@ -156,6 +228,17 @@ ${platformLink}`;
 
     return (
         <div className="walkin-card card">
+            {/* Ad Loading Overlay */}
+            {isAdLoading && (
+                <div className="ad-loading-overlay">
+                    <div className="ad-loading-content">
+                        <div className="spinner-large"></div>
+                        <p>Loading advertisement...</p>
+                        <small>Please wait to reveal contact details</small>
+                    </div>
+                </div>
+            )}
+
             <div className="walkin-card-header">
                 {/* Company Logo */}
                 <div className="walkin-company-logo">
@@ -184,6 +267,14 @@ ${platformLink}`;
                     </div>
                 </div>
             </div>
+
+            {/* Contact Reveal Badge */}
+            {!isContactRevealed && (
+                <div className="contact-reveal-badge">
+                    <Eye size={14} />
+                    <span>Click on blurred contacts to reveal</span>
+                </div>
+            )}
 
             {/* Scrollable Content Container */}
             <div 
