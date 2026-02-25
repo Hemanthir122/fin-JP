@@ -1,0 +1,38 @@
+.walkin-banner-ad-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0;
+    background: transparent;
+    min-height: 80px;
+}
+
+.walkin-banner-ad-container {
+    max-width: 468px;
+    width: 100%;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+}
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+    .walkin-banner-ad-wrapper {
+        padding: 12px 8px;
+        min-height: 70px;
+    }
+    
+    .walkin-banner-ad-container {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+/* Ensure iframe from ad network is visible */
+.walkin-banner-ad-container iframe {
+    max-width: 100%;
+    height: auto;
+}
