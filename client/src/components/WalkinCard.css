@@ -349,7 +349,7 @@
     .walkin-card {
         padding: 16px;
         height: 380px !important;
-        max-height: 380px !important;
+        max-height: 460px !important;
         border: 2px solid var(--border-color);
         border-top: 4px solid var(--primary);
     }
