@@ -7,6 +7,7 @@ import Pagination from '../components/Pagination';
 import JobFilter from '../components/JobFilter';
 import HorizontalNativeAd from '../components/ads/HorizontalNativeAd';
 import MobileNativeAd from '../components/ads/MobileNativeAd';
+import WalkinBannerAd from '../components/ads/WalkinBannerAd';
 import SocialBar from '../components/ads/SocialBar'; // REMOVED: May cause redirects
 // import Popunder from '../components/ads/Popunder'; // REMOVED: Causes auto-redirects
 import { useJobs, useCompanies, useLocations, useWalkins } from '../hooks/useJobs';
@@ -127,8 +128,11 @@ function Jobs({ type: propType }) {
                                 // Desktop: Show Horizontal Ad Row after every 6 job cards
                                 const showAdRow = (index + 1) % 6 === 0 && window.innerWidth > 768;
                                 
-                                // Mobile: Show Native Ad after every 2 cards
-                                const showMobileAd = (index + 1) % 2 === 0 && window.innerWidth <= 768;
+                                // Mobile: Show Native Ad after every 2 cards (only for regular jobs)
+                                const showMobileAd = (index + 1) % 2 === 0 && window.innerWidth <= 768 && !isWalkin && job.type !== 'walkin';
+                                
+                                // Mobile: Show Walkin Banner Ad after each walkin card
+                                const showWalkinBannerAd = (isWalkin || job.type === 'walkin') && window.innerWidth <= 768;
                                 
                                 return (
                                     <>
@@ -144,6 +148,9 @@ function Jobs({ type: propType }) {
                                         )}
                                         {showMobileAd && (
                                             <MobileNativeAd key={`mobile-ad-${index}`} index={index} />
+                                        )}
+                                        {showWalkinBannerAd && (
+                                            <WalkinBannerAd key={`walkin-banner-ad-${index}`} index={index} />
                                         )}
                                     </>
                                 );
