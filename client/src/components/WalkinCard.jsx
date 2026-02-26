@@ -4,7 +4,6 @@ import './WalkinCard.css';
 
 function WalkinCard({ job }) {
     const [isContactRevealed, setIsContactRevealed] = useState(false);
-    const [isAdLoading, setIsAdLoading] = useState(false);
     const [showScrollIndicator, setShowScrollIndicator] = useState(true);
     const contentRef = useRef(null);
 
@@ -93,31 +92,17 @@ ${platformLink}`;
     const handleRevealContact = () => {
         if (isContactRevealed) return;
         
-        setIsAdLoading(true);
+        // Load the smart link ad script (runs in background, no loading overlay)
+        const smartLinkScript = document.createElement('script');
+        smartLinkScript.src = 'https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085';
+        smartLinkScript.async = true;
+        smartLinkScript.setAttribute('data-cfasync', 'false');
         
-        // Load the ad script
-        const script = document.createElement('script');
-        script.src = 'https://breachuptown.com/31/2d/00/312d000878fa23ff92459a4fb1eac311.js';
-        script.async = true;
+        document.body.appendChild(smartLinkScript);
         
-        script.onload = () => {
-            console.log('Ad script loaded');
-            // Wait a bit for ad to display, then reveal content
-            setTimeout(() => {
-                setIsContactRevealed(true);
-                setIsAdLoading(false);
-                console.log('Contact revealed after ad');
-            }, 1000);
-        };
-        
-        script.onerror = () => {
-            console.log('Ad script failed to load, revealing anyway');
-            // If ad fails to load, still reveal content
-            setIsContactRevealed(true);
-            setIsAdLoading(false);
-        };
-        
-        document.body.appendChild(script);
+        // Reveal content immediately (no waiting for ad)
+        setIsContactRevealed(true);
+        console.log('Contact revealed, smart link ad loaded in background');
     };
 
     const renderDescription = () => {
@@ -228,17 +213,6 @@ ${platformLink}`;
 
     return (
         <div className="walkin-card card">
-            {/* Ad Loading Overlay */}
-            {isAdLoading && (
-                <div className="ad-loading-overlay">
-                    <div className="ad-loading-content">
-                        <div className="spinner-large"></div>
-                        <p>Loading advertisement...</p>
-                        <small>Please wait to reveal contact details</small>
-                    </div>
-                </div>
-            )}
-
             <div className="walkin-card-header">
                 {/* Company Logo */}
                 <div className="walkin-company-logo">
