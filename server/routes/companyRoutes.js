@@ -68,20 +68,31 @@ router.get('/', async (req, res) => {
     try {
         const Job = require('../models/Job');
         
-        // Get distinct company names from jobs and internships only (exclude walkins)
-        const companies = await Job.distinct('company', {
+        // Get jobs and internships with company info
+        const jobs = await Job.find({
             type: { $in: ['job', 'internship'] },
             isActive: true,
             status: 'published'
+        }).select('company companyLogo');
+        
+        // Create a map to store unique companies with their logos
+        const companyMap = new Map();
+        
+        jobs.forEach(job => {
+            if (job.company && !companyMap.has(job.company)) {
+                companyMap.set(job.company, {
+                    name: job.company,
+                    logo: job.companyLogo || null
+                });
+            }
         });
         
-        // Sort alphabetically
-        companies.sort((a, b) => a.localeCompare(b));
+        // Convert map to array and sort alphabetically
+        const companies = Array.from(companyMap.values()).sort((a, b) => 
+            a.name.localeCompare(b.name)
+        );
         
-        // Return as array of objects with name property for consistency
-        const companyObjects = companies.map(name => ({ name }));
-        
-        res.json(companyObjects);
+        res.json(companies);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

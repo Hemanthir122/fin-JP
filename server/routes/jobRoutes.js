@@ -63,9 +63,16 @@ router.get('/', async (req, res) => {
             matchQuery.type = type;
         }
 
-        // Company filter
+        // Company filter (supports multiple companies)
         if (company) {
-            matchQuery.company = { $regex: company, $options: 'i' };
+            // Check if company is a comma-separated list or array
+            const companies = typeof company === 'string' ? company.split(',').map(c => c.trim()) : company;
+            
+            if (companies.length > 0) {
+                matchQuery.$and.push({
+                    company: { $in: companies }
+                });
+            }
         }
 
         // Clean up empty $and to avoid unintended behavior
@@ -254,6 +261,36 @@ router.post('/', async (req, res) => {
     try {
         const jobData = { ...req.body };
         
+        // Save or update company information
+        if (jobData.company && jobData.company.trim()) {
+            try {
+                const companyData = {
+                    name: jobData.company.trim()
+                };
+                
+                // Add logo if provided
+                if (jobData.companyLogo && jobData.companyLogo.trim()) {
+                    companyData.logo = jobData.companyLogo.trim();
+                }
+                
+                // Add about company if provided
+                if (jobData.aboutCompany && jobData.aboutCompany.trim()) {
+                    companyData.aboutCompany = jobData.aboutCompany.trim();
+                }
+                
+                // Use findOneAndUpdate with upsert to create or update company
+                await Company.findOneAndUpdate(
+                    { name: { $regex: `^${companyData.name}$`, $options: 'i' } },
+                    { $set: companyData },
+                    { upsert: true, new: true }
+                );
+                
+                console.log(`✅ Company "${companyData.name}" saved/updated in database`);
+            } catch (companyError) {
+                console.error('⚠️ Failed to save company (non-blocking):', companyError.message);
+            }
+        }
+        
         // Handle different statuses
         if (jobData.status === 'published') {
             jobData.publishedAt = new Date();
@@ -298,6 +335,36 @@ router.put('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Job not found' });
         }
 
+        // Save or update company information if company details are being updated
+        if (req.body.company && req.body.company.trim()) {
+            try {
+                const companyData = {
+                    name: req.body.company.trim()
+                };
+                
+                // Add logo if provided
+                if (req.body.companyLogo && req.body.companyLogo.trim()) {
+                    companyData.logo = req.body.companyLogo.trim();
+                }
+                
+                // Add about company if provided
+                if (req.body.aboutCompany && req.body.aboutCompany.trim()) {
+                    companyData.aboutCompany = req.body.aboutCompany.trim();
+                }
+                
+                // Use findOneAndUpdate with upsert to create or update company
+                await Company.findOneAndUpdate(
+                    { name: { $regex: `^${companyData.name}$`, $options: 'i' } },
+                    { $set: companyData },
+                    { upsert: true, new: true }
+                );
+                
+                console.log(`✅ Company "${companyData.name}" saved/updated in database`);
+            } catch (companyError) {
+                console.error('⚠️ Failed to save company (non-blocking):', companyError.message);
+            }
+        }
+
         // Check status transitions
         const currentStatus = job.status;
         const newStatus = req.body.status;
@@ -311,6 +378,9 @@ router.put('/:id', async (req, res) => {
             if (scheduledDate <= new Date()) {
                 return res.status(400).json({ message: 'Scheduled date must be in the future' });
             }
+            // Explicitly set status to scheduled
+            req.body.status = 'scheduled';
+            console.log(`📅 Setting job status to scheduled for: ${req.body.scheduledPublishAt}`);
         }
 
         // Check if we are moving to published status
@@ -342,15 +412,22 @@ router.put('/:id', async (req, res) => {
             return res.json(updatedJob);
         }
 
-        // For other updates, use normal save
-        Object.assign(job, req.body);
-        const savedJob = await job.save();
+        // For other updates (including scheduled), use findOneAndUpdate for consistency
+        const updateData = { ...req.body };
         
-        if (savedJob.status === 'scheduled') {
-            console.log(`📅 Job rescheduled for: ${savedJob.scheduledPublishAt}`);
+        const updatedJob = await Job.findOneAndUpdate(
+            { _id: req.params.id },
+            { $set: updateData },
+            { new: true, runValidators: true }
+        );
+        
+        if (updatedJob.status === 'scheduled') {
+            console.log(`📅 Job scheduled/rescheduled for: ${updatedJob.scheduledPublishAt}`);
+        } else if (updatedJob.status === 'draft') {
+            console.log(`📝 Job saved as draft`);
         }
         
-        res.json(savedJob);
+        res.json(updatedJob);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

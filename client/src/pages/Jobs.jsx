@@ -20,12 +20,23 @@ function Jobs({ type: propType }) {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     // Build query params for the API
-    const queryParams = useMemo(() => ({
-        page: currentPage,
-        limit: 20,
-        ...filters,
-        ...(propType && { type: propType }),
-    }), [currentPage, filters, propType]);
+    const queryParams = useMemo(() => {
+        const params = {
+            page: currentPage,
+            limit: 20,
+            ...filters,
+            ...(propType && { type: propType }),
+        };
+        
+        // Convert company array to comma-separated string
+        if (params.company && Array.isArray(params.company) && params.company.length > 0) {
+            params.company = params.company.join(',');
+        } else if (params.company && Array.isArray(params.company) && params.company.length === 0) {
+            delete params.company;
+        }
+        
+        return params;
+    }, [currentPage, filters, propType]);
 
     // React Query hooks - cached and deduplicated
     // Use the appropriate hook based on the type

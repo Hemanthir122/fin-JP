@@ -61,9 +61,16 @@ function Home() {
         }
 
         if (company) {
-            result = result.filter(job =>
-                job.company.toLowerCase().includes(company.toLowerCase())
-            );
+            // Handle both array (multi-select) and string (legacy)
+            if (Array.isArray(company) && company.length > 0) {
+                result = result.filter(job =>
+                    company.includes(job.company)
+                );
+            } else if (typeof company === 'string' && company !== '') {
+                result = result.filter(job =>
+                    job.company.toLowerCase().includes(company.toLowerCase())
+                );
+            }
         }
 
         return result;

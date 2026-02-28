@@ -21,7 +21,7 @@
     border: 1px solid rgba(77, 163, 255, 0.12);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .job-filter::before {
@@ -385,4 +385,32 @@
         font-size: 1rem;
         border-radius: 12px;
     }
+}
+
+/* Company logo in filter */
+.filter-item-company {
+    display: block;
+}
+
+.selected-company-logo {
+    position: absolute;
+    right: 40px;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    object-fit: contain;
+    background: #fff;
+    padding: 2px;
+    border: 1px solid rgba(77, 163, 255, 0.2);
+    pointer-events: none;
+    z-index: 1;
+}
+
+[data-theme="dark"] .selected-company-logo {
+    background: rgba(11, 19, 43, 0.8);
+    border: 1px solid rgba(77, 163, 255, 0.3);
+}
+
+.filter-select-with-icons {
+    padding-right: 70px;
 }
