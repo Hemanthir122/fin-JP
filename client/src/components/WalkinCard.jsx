@@ -92,17 +92,22 @@ ${platformLink}`;
     const handleRevealContact = () => {
         if (isContactRevealed) return;
         
-        // Load the smart link ad script (runs in background, no loading overlay)
-        const smartLinkScript = document.createElement('script');
-        smartLinkScript.src = 'https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085';
-        smartLinkScript.async = true;
-        smartLinkScript.setAttribute('data-cfasync', 'false');
+        // Get or initialize reveal counter from sessionStorage
+        let revealCount = parseInt(sessionStorage.getItem('walkin_reveal_count') || '0');
+        revealCount++;
+        sessionStorage.setItem('walkin_reveal_count', revealCount.toString());
         
-        document.body.appendChild(smartLinkScript);
+        // Open smart link ad for every 2nd reveal (50% of the time)
+        // This means: reveal 1 (no ad), reveal 2 (ad), reveal 3 (no ad), reveal 4 (ad), etc.
+        if (revealCount % 2 === 0) {
+            window.open('https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085', '_blank');
+            console.log(`Contact revealed (${revealCount}), smart link ad opened`);
+        } else {
+            console.log(`Contact revealed (${revealCount}), no ad this time`);
+        }
         
-        // Reveal content immediately (no waiting for ad)
+        // Reveal content immediately
         setIsContactRevealed(true);
-        console.log('Contact revealed, smart link ad loaded in background');
     };
 
     const renderDescription = () => {

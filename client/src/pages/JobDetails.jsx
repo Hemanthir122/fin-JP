@@ -433,15 +433,13 @@ ${platformLink}`;
                                             Job Expired
                                         </button>
                                     ) : (
-                                        <a
-                                            href={job.applyLink || '#'}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                        <button
+                                            onClick={() => handleApplyClick(job.applyLink)}
                                             className="btn btn-primary btn-lg btn-apply"
                                         >
                                             Apply Now
                                             <ExternalLink size={18} />
-                                        </a>
+                                        </button>
                                     )}
                                 </div>
                             )}
