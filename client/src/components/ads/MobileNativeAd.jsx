@@ -18,8 +18,8 @@ function MobileNativeAd({ index }) {
             // Create iframe to isolate ad script
             const iframe = document.createElement('iframe');
             iframe.style.width = '100%';
-            iframe.style.height = '100%';
-            iframe.style.minHeight = '250px';
+            iframe.style.height = '80px';
+            iframe.style.minHeight = '60px';
             iframe.style.border = 'none';
             iframe.style.overflow = 'hidden';
             
@@ -33,12 +33,27 @@ function MobileNativeAd({ index }) {
                 <html>
                 <head>
                     <style>
-                        body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 250px; }
+                        body { 
+                            margin: 0; 
+                            padding: 0; 
+                            display: flex; 
+                            justify-content: center; 
+                            align-items: center; 
+                            min-height: 60px;
+                        }
                     </style>
                 </head>
                 <body>
-                    <script async="async" data-cfasync="false" src="//breachuptown.com/f14d7f03dec7b319fea3f8af2bc57eb6/invoke.js"></script>
-                    <div id="container-f14d7f03dec7b319fea3f8af2bc57eb6"></div>
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : 'a7d8e25874deba8b7a307fb936e0027d',
+                            'format' : 'iframe',
+                            'height' : 60,
+                            'width' : 468,
+                            'params' : {}
+                        };
+                    </script>
+                    <script type="text/javascript" src="https://breachuptown.com/a7d8e25874deba8b7a307fb936e0027d/invoke.js"></script>
                 </body>
                 </html>
             `);

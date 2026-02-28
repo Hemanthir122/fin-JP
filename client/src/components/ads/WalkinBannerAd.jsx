@@ -4,9 +4,6 @@ import './WalkinBannerAd.css';
 function WalkinBannerAd({ index }) {
 
     useEffect(() => {
-        // Only load on mobile
-        if (window.innerWidth > 768) return;
-
         const containerId = `walkin-banner-ad-${index}`;
         
         const timer = setTimeout(() => {
@@ -64,9 +61,6 @@ function WalkinBannerAd({ index }) {
 
         return () => clearTimeout(timer);
     }, [index]);
-
-    // Don't render on desktop
-    if (window.innerWidth > 768) return null;
 
     return (
         <div className="walkin-banner-ad-wrapper">

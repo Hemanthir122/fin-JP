@@ -139,7 +139,7 @@ function Jobs({ type: propType }) {
                                 // Desktop: Show Horizontal Ad Row after every 6 job cards
                                 const showAdRow = (index + 1) % 6 === 0 && window.innerWidth > 768;
                                 
-                                // Mobile: Show Native Ad after every 2 cards (only for regular jobs)
+                                // Mobile: Show Native Ad after every 2 cards (only for regular jobs, not walkins)
                                 const showMobileAd = (index + 1) % 2 === 0 && window.innerWidth <= 768 && !isWalkin && job.type !== 'walkin';
                                 
                                 // Mobile: Show Walkin Banner Ad after each walkin card
