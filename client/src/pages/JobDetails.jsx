@@ -86,9 +86,30 @@ function JobDetails() {
     const { data: walkinData, isLoading: isLoadingWalkin } = useWalkinDetails(id);
 
     const job = isWalkin ? walkinData : jobData;
-    const isLoading = isWalkin ? isLoadingWalkin : isLoadingJob;
+    const isLoading = isWalkin ? isLoadingJob : isLoadingJob;
     const isExpired = job?.endDate && new Date(job.endDate) < new Date();
     const { data: companyJobs = [] } = useCompanyJobs(job?.company);
+
+    // Handle Apply Now click with alternating smart link ad
+    const handleApplyClick = (applyLink) => {
+        // Get or initialize apply counter from sessionStorage
+        let applyCount = parseInt(sessionStorage.getItem('job_apply_count') || '0');
+        applyCount++;
+        sessionStorage.setItem('job_apply_count', applyCount.toString());
+        
+        // Open smart link ad for every 2nd apply (50% of the time)
+        if (applyCount % 2 === 0) {
+            window.open('https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085', '_blank');
+            console.log(`Apply clicked (${applyCount}), smart link ad opened`);
+        } else {
+            console.log(`Apply clicked (${applyCount}), no ad this time`);
+        }
+        
+        // Open the actual apply link
+        if (applyLink && applyLink !== '#') {
+            window.open(applyLink, '_blank');
+        }
+    };
 
     // Handle browser back button - redirect to jobs page if coming from external link
     useEffect(() => {
@@ -271,6 +292,16 @@ ${platformLink}`;
                     </script>
                 )}
             </Helmet>
+            
+            {/* Notification Bar */}
+            <div className="notification-bar">
+                <div className="container">
+                    <p className="notification-text">
+                        💡 Having trouble with the apply link? Please refresh and try again - we're working to improve your experience!
+                    </p>
+                </div>
+            </div>
+            
             {/* Header */}
             <div className="job-header">
                 <div className="container">
