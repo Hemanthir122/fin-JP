@@ -1,12 +1,87 @@
 const express = require('express');
 const router = express.Router();
 const Company = require('../models/Company');
+const https = require('https');
+const http = require('http');
 
-// Get all companies for autocomplete
+// Fetch company logo from external API
+router.get('/fetch-logo/:companyName', async (req, res) => {
+    try {
+        const companyName = req.params.companyName;
+        
+        // Try different domain formats
+        const domains = [
+            companyName.toLowerCase().replace(/\s+/g, '') + '.com',
+            companyName.toLowerCase().replace(/\s+/g, '-') + '.com',
+            companyName.toLowerCase().replace(/\s+/g, '') + '.in',
+            companyName.toLowerCase().replace(/\s+/g, '') + '.io',
+            companyName.toLowerCase().replace(/\s+/g, '') + '.co'
+        ];
+        
+        // Function to check if URL exists
+        const checkUrl = (url) => {
+            return new Promise((resolve) => {
+                const protocol = url.startsWith('https') ? https : http;
+                protocol.get(url, (response) => {
+                    if (response.statusCode === 200) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                }).on('error', () => {
+                    resolve(false);
+                });
+            });
+        };
+        
+        // Try Clearbit Logo API
+        for (const domain of domains) {
+            const logoUrl = `https://logo.clearbit.com/${domain}`;
+            
+            const exists = await checkUrl(logoUrl);
+            if (exists) {
+                return res.json({ 
+                    success: true, 
+                    logoUrl: logoUrl,
+                    source: 'clearbit'
+                });
+            }
+        }
+        
+        // If no logo found
+        res.json({ 
+            success: false, 
+            message: 'Logo not found',
+            logoUrl: null 
+        });
+        
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
+    }
+});
+
+// Get all companies for autocomplete (only from jobs and internships, not walkins)
 router.get('/', async (req, res) => {
     try {
-        const companies = await Company.find().sort({ name: 1 });
-        res.json(companies);
+        const Job = require('../models/Job');
+        
+        // Get distinct company names from jobs and internships only (exclude walkins)
+        const companies = await Job.distinct('company', {
+            type: { $in: ['job', 'internship'] },
+            isActive: true,
+            status: 'published'
+        });
+        
+        // Sort alphabetically
+        companies.sort((a, b) => a.localeCompare(b));
+        
+        // Return as array of objects with name property for consistency
+        const companyObjects = companies.map(name => ({ name }));
+        
+        res.json(companyObjects);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
