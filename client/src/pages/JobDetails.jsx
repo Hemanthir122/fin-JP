@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import {
     MapPin, Briefcase, Clock, Building2,
     CheckCircle, ArrowLeft, ExternalLink, Share2,
-    ThumbsUp, ThumbsDown
+    ThumbsUp, ThumbsDown, AlertCircle, X
 } from 'lucide-react';
 import { useJobDetails, useCompanyJobs, useWalkinDetails } from '../hooks/useJobs';
 import api from '../utils/api';
@@ -12,6 +12,50 @@ import AdsterraNativeBannerJobDetail from '../components/ads/AdsterraNativeBanne
 import AdsterraSmartLink from '../components/ads/AdsterraSmartLink';
 import AdsterraBannerMobile from '../components/ads/AdsterraBannerMobile';
 import './JobDetails.css';
+
+// Floating Report Bar Component
+function FloatingReportBar({ jobId, isWalkin }) {
+    const [isVisible, setIsVisible] = useState(true);
+
+    const handleReport = () => {
+        // Scroll to feedback section
+        const feedbackSection = document.querySelector('.feedback-section');
+        if (feedbackSection) {
+            feedbackSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Add a highlight effect
+            feedbackSection.style.animation = 'highlightPulse 1s ease-out';
+            setTimeout(() => {
+                feedbackSection.style.animation = '';
+            }, 1000);
+        }
+        // Hide the floating bar after clicking
+        setIsVisible(false);
+    };
+
+    if (!isVisible || isWalkin) return null; // Don't show for walkins
+
+    return (
+        <div className="floating-report-bar">
+            <div className="floating-report-content">
+                <AlertCircle size={20} className="report-icon" />
+                <span className="report-text">Job not found or closed?</span>
+                <button
+                    className="report-btn"
+                    onClick={handleReport}
+                >
+                    Report
+                </button>
+                <button
+                    className="close-report-btn"
+                    onClick={() => setIsVisible(false)}
+                    aria-label="Close"
+                >
+                    <X size={18} />
+                </button>
+            </div>
+        </div>
+    );
+}
 
 // Feedback Section Component
 function FeedbackSection({ jobId, isWalkin }) {
@@ -279,6 +323,9 @@ ${platformLink}`;
 
     return (
         <div className="job-details-page">
+            {/* Floating Report Bar */}
+            <FloatingReportBar jobId={id} isWalkin={isWalkin} />
+            
             <Helmet>
                 <title>{job.title} | {job.company} - JobConnects</title>
                 <meta name="description" content={`Apply for ${job.title} at ${job.company} in ${job.location}. ${job.skills?.slice(0, 3).join(', ')} required. Find more jobs on JobConnects.`} />
