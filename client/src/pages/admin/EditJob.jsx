@@ -110,10 +110,32 @@ function EditJob() {
             const matchingCompany = companies.find(
                 c => c.name.toLowerCase() === finalValue.toLowerCase()
             );
-            if (matchingCompany && matchingCompany.logo) {
-                setFormData(prev => ({ ...prev, companyLogo: matchingCompany.logo }));
+            if (matchingCompany) {
+                setFormData(prev => ({ 
+                    ...prev, 
+                    companyLogo: matchingCompany.logo || '',
+                    aboutCompany: matchingCompany.aboutCompany || ''
+                }));
+            } else if (finalValue.length > 2) {
+                // If no matching company in DB, try to fetch logo from API
+                fetchCompanyLogo(finalValue);
             }
             setShowCompanyDropdown(value.length > 0);
+        }
+    };
+
+    const fetchCompanyLogo = async (companyName) => {
+        try {
+            const response = await api.get(`/companies/fetch-logo/${encodeURIComponent(companyName)}`);
+            
+            if (response.data.success && response.data.logoUrl) {
+                setFormData(prev => ({ ...prev, companyLogo: response.data.logoUrl }));
+                console.log('✅ Logo fetched from:', response.data.source);
+            } else {
+                console.log('⚠️ No logo found for:', companyName);
+            }
+        } catch (error) {
+            console.log('Could not fetch company logo:', error);
         }
     };
 
@@ -121,7 +143,8 @@ function EditJob() {
         setFormData(prev => ({
             ...prev,
             company: company.name,
-            companyLogo: company.logo || ''
+            companyLogo: company.logo || '',
+            aboutCompany: company.aboutCompany || ''
         }));
         setShowCompanyDropdown(false);
     };
@@ -137,7 +160,8 @@ function EditJob() {
                 title: selectedRole,
                 description: template.description,
                 skills: template.skills,
-                responsibilities: template.responsibilities
+                responsibilities: template.responsibilities,
+                qualifications: template.qualifications || []
             }));
         }
     };
@@ -394,14 +418,55 @@ function EditJob() {
                                 </div>
                                 <div className="form-group">
                                     <label className="label">Company Logo URL</label>
-                                    <input
-                                        type="url"
-                                        name="companyLogo"
-                                        value={formData.companyLogo}
-                                        onChange={handleChange}
-                                        className="input"
-                                        placeholder="https://example.com/logo.png"
-                                    />
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <input
+                                            type="url"
+                                            name="companyLogo"
+                                            value={formData.companyLogo}
+                                            onChange={handleChange}
+                                            className="input"
+                                            placeholder="https://example.com/logo.png"
+                                            style={{ flex: 1 }}
+                                        />
+                                        {formData.company && (
+                                            <button
+                                                type="button"
+                                                className="btn btn-secondary"
+                                                onClick={() => fetchCompanyLogo(formData.company)}
+                                                title="Fetch logo automatically"
+                                            >
+                                                Fetch Logo
+                                            </button>
+                                        )}
+                                    </div>
+                                    <small style={{ color: 'var(--text-muted)', marginTop: '8px', display: 'block' }}>
+                                        Logo will be fetched automatically when you type company name, or click "Fetch Logo" button
+                                    </small>
+                                    {formData.companyLogo && (
+                                        <div style={{ marginTop: '12px', padding: '12px', border: '1px solid var(--border-color)', borderRadius: '8px', backgroundColor: 'var(--bg-secondary)' }}>
+                                            <small style={{ color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>Logo Preview:</small>
+                                            <img 
+                                                src={formData.companyLogo} 
+                                                alt="Company Logo Preview" 
+                                                style={{ 
+                                                    maxWidth: '120px', 
+                                                    maxHeight: '120px', 
+                                                    objectFit: 'contain',
+                                                    border: '1px solid var(--border-color)',
+                                                    borderRadius: '4px',
+                                                    padding: '8px',
+                                                    backgroundColor: 'white'
+                                                }}
+                                                onError={(e) => {
+                                                    e.target.style.display = 'none';
+                                                    e.target.nextSibling.style.display = 'block';
+                                                }}
+                                            />
+                                            <small style={{ color: '#e74c3c', display: 'none', marginTop: '8px' }}>
+                                                Invalid image URL or failed to load
+                                            </small>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* About Company Section */}

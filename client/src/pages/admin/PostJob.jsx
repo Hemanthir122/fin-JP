@@ -66,15 +66,37 @@ function PostJob() {
 
         setFormData(prev => ({ ...prev, [name]: finalValue }));
 
-        // Auto-fill company logo when company is selected
+        // Auto-fill company logo and about when company is selected
         if (name === 'company') {
             const matchingCompany = companies.find(
                 c => c.name.toLowerCase() === finalValue.toLowerCase()
             );
-            if (matchingCompany && matchingCompany.logo) {
-                setFormData(prev => ({ ...prev, companyLogo: matchingCompany.logo }));
+            if (matchingCompany) {
+                setFormData(prev => ({ 
+                    ...prev, 
+                    companyLogo: matchingCompany.logo || '',
+                    aboutCompany: matchingCompany.aboutCompany || ''
+                }));
+            } else if (finalValue.length > 2) {
+                // If no matching company in DB, try to fetch logo from API
+                fetchCompanyLogo(finalValue);
             }
             setShowCompanyDropdown(value.length > 0);
+        }
+    };
+
+    const fetchCompanyLogo = async (companyName) => {
+        try {
+            const response = await api.get(`/companies/fetch-logo/${encodeURIComponent(companyName)}`);
+            
+            if (response.data.success && response.data.logoUrl) {
+                setFormData(prev => ({ ...prev, companyLogo: response.data.logoUrl }));
+                console.log('✅ Logo fetched from:', response.data.source);
+            } else {
+                console.log('⚠️ No logo found for:', companyName);
+            }
+        } catch (error) {
+            console.log('Could not fetch company logo:', error);
         }
     };
 
@@ -82,7 +104,8 @@ function PostJob() {
         setFormData(prev => ({
             ...prev,
             company: company.name,
-            companyLogo: company.logo || ''
+            companyLogo: company.logo || '',
+            aboutCompany: company.aboutCompany || ''
         }));
         setShowCompanyDropdown(false);
     };
@@ -423,14 +446,30 @@ function PostJob() {
                                 {formData.type !== 'walkin' && (
                                     <div className="form-group">
                                         <label className="label">Company Logo URL</label>
-                                        <input
-                                            type="url"
-                                            name="companyLogo"
-                                            value={formData.companyLogo}
-                                            onChange={handleChange}
-                                            className="input"
-                                            placeholder="https://example.com/logo.png"
-                                        />
+                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                            <input
+                                                type="url"
+                                                name="companyLogo"
+                                                value={formData.companyLogo}
+                                                onChange={handleChange}
+                                                className="input"
+                                                placeholder="https://example.com/logo.png"
+                                                style={{ flex: 1 }}
+                                            />
+                                            {formData.company && (
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={() => fetchCompanyLogo(formData.company)}
+                                                    title="Fetch logo automatically"
+                                                >
+                                                    Fetch Logo
+                                                </button>
+                                            )}
+                                        </div>
+                                        <small style={{ color: 'var(--text-muted)', marginTop: '8px', display: 'block' }}>
+                                            Logo will be fetched automatically when you type company name, or click "Fetch Logo" button
+                                        </small>
                                         {formData.companyLogo && (
                                             <div style={{ marginTop: '12px', padding: '12px', border: '1px solid var(--border-color)', borderRadius: '8px', backgroundColor: 'var(--bg-secondary)' }}>
                                                 <small style={{ color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>Logo Preview:</small>

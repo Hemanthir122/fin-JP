@@ -314,7 +314,7 @@ function ManageJobs() {
                                         <th>Location</th>
                                         <th>Type</th>
                                         <th>Status</th>
-                                        <th>Posted</th>
+                                        <th>Posted/Scheduled</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -342,17 +342,40 @@ function ManageJobs() {
                                                 <span
                                                     className="badge"
                                                     style={{
-                                                        background: job.status === 'draft' ? '#e0e0e0' : 'var(--accent-green)',
-                                                        color: job.status === 'draft' ? '#333' : '#fff',
+                                                        background: 
+                                                            job.status === 'draft' ? '#e0e0e0' : 
+                                                            job.status === 'scheduled' ? '#ffa726' : 
+                                                            'var(--accent-green)',
+                                                        color: 
+                                                            job.status === 'draft' ? '#333' : 
+                                                            job.status === 'scheduled' ? '#fff' : 
+                                                            '#fff',
                                                         padding: '4px 8px',
                                                         borderRadius: '4px',
                                                         fontSize: '12px'
                                                     }}
                                                 >
-                                                    {job.status === 'draft' ? 'Draft' : 'Published'}
+                                                    {job.status === 'draft' ? 'Draft' : 
+                                                     job.status === 'scheduled' ? 'Scheduled' : 
+                                                     'Published'}
                                                 </span>
                                             </td>
-                                            <td>{formatDate(job.createdAt)}</td>
+                                            <td>
+                                                {job.status === 'scheduled' && job.scheduledPublishAt ? (
+                                                    <div style={{ fontSize: '12px' }}>
+                                                        <div style={{ fontWeight: '500', color: '#ffa726' }}>
+                                                            {formatDate(job.scheduledPublishAt)}
+                                                        </div>
+                                                        <div style={{ color: 'var(--text-muted)', fontSize: '11px' }}>
+                                                            Scheduled
+                                                        </div>
+                                                    </div>
+                                                ) : job.publishedAt ? (
+                                                    formatDate(job.publishedAt)
+                                                ) : (
+                                                    formatDate(job.createdAt)
+                                                )}
+                                            </td>
                                             <td>
                                                 <div className="table-actions">
                                                     <Link
