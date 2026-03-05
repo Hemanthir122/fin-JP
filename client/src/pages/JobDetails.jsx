@@ -6,8 +6,9 @@ import {
     CheckCircle, ArrowLeft, ExternalLink, Share2,
     ThumbsUp, ThumbsDown, AlertCircle, X
 } from 'lucide-react';
-import { useJobDetails, useCompanyJobs, useWalkinDetails } from '../hooks/useJobs';
+import { useJobDetails, useCompanyJobs, useWalkinDetails, useSuggestedJobs } from '../hooks/useJobs';
 import api from '../utils/api';
+import JobCard from '../components/JobCard';
 import AdsterraNativeBannerJobDetail from '../components/ads/AdsterraNativeBannerJobDetail';
 import AdsterraSmartLink from '../components/ads/AdsterraSmartLink';
 import AdsterraBannerMobile from '../components/ads/AdsterraBannerMobile';
@@ -133,6 +134,13 @@ function JobDetails() {
     const isLoading = isWalkin ? isLoadingJob : isLoadingJob;
     const isExpired = job?.endDate && new Date(job.endDate) < new Date();
     const { data: companyJobs = [] } = useCompanyJobs(job?.company);
+    
+    // Fetch suggested jobs based on location and skills
+    const { data: suggestedJobs = [] } = useSuggestedJobs(
+        id,
+        job?.location,
+        job?.skills || []
+    );
 
     // Handle Apply Now click - SMART LINK AD DISABLED
     const handleApplyClick = (applyLink) => {
@@ -596,6 +604,19 @@ ${platformLink}`;
                             )}
                         </div>
                     </div>
+                    
+                    {/* Suggested Jobs Section */}
+                    {!isWalkin && suggestedJobs.length > 0 && (
+                        <section className="suggested-jobs-section">
+                            <h2 className="section-heading">Similar Jobs You May Like</h2>
+                            <p className="section-subtitle">Based on your current search and location</p>
+                            <div className="suggested-jobs-grid">
+                                {suggestedJobs.map((suggestedJob) => (
+                                    <JobCard key={suggestedJob._id} job={suggestedJob} />
+                                ))}
+                            </div>
+                        </section>
+                    )}
                 </div>
             </div>
         </div>

@@ -559,3 +559,47 @@
         font-size: 13px;
     }
 }
+
+/* Suggested Jobs Section */
+.suggested-jobs-section {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border-color);
+}
+
+.suggested-jobs-section .section-heading {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.suggested-jobs-section .section-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.suggested-jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+@media (max-width: 768px) {
+    .suggested-jobs-section {
+        margin-top: 40px;
+        padding-top: 30px;
+    }
+
+    .suggested-jobs-section .section-heading {
+        font-size: 1.5rem;
+    }
+
+    .suggested-jobs-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}

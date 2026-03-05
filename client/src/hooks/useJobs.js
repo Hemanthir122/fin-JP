@@ -283,3 +283,24 @@ export function useDeleteWalkin() {
     });
 }
 
+// Hook to fetch suggested/similar jobs based on current job
+export function useSuggestedJobs(currentJobId, location, skills = []) {
+    return useQuery({
+        queryKey: ['jobs', 'suggested', currentJobId, location, skills.join(',')],
+        queryFn: async () => {
+            const params = new URLSearchParams();
+            if (location) params.append('location', location);
+            if (skills.length > 0) params.append('skills', skills.slice(0, 3).join(','));
+            params.append('limit', '6');
+            
+            const { data } = await api.get(`/jobs?${params.toString()}`);
+            // Filter out current job and return only jobs array
+            const jobs = data.jobs || data;
+            return jobs.filter(job => job._id !== currentJobId).slice(0, 6);
+        },
+        enabled: !!currentJobId,
+        staleTime: 15 * 60 * 1000, // 15 minutes
+        gcTime: 30 * 60 * 1000,
+        refetchOnWindowFocus: false,
+    });
+}
