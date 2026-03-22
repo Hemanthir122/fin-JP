@@ -1,5 +1,71 @@
 // Role templates with auto-generated description, skills, and responsibilities
 const roleTemplates = {
+    'AI Engineer': {
+        description: `We are seeking a talented AI Engineer to join our team and help build intelligent systems. As an AI Engineer, you will be responsible for designing, developing, and deploying AI solutions that solve complex business problems.
+
+In this role, you will work on machine learning models, natural language processing, computer vision, and other AI technologies. You will collaborate with data scientists, software engineers, and product teams to integrate AI capabilities into our products.
+
+The ideal candidate should have strong programming skills, understanding of machine learning algorithms, and experience with AI frameworks. You should be passionate about artificial intelligence and eager to work on cutting-edge AI projects.
+
+We offer an exciting opportunity to work on innovative AI solutions and contribute to the advancement of AI technology in our organization.`,
+        skills: [
+            'Python', 'Machine Learning', 'Deep Learning', 'TensorFlow', 'PyTorch',
+            'NLP', 'Computer Vision', 'AI Frameworks', 'Model Deployment',
+            'Data Processing', 'Git', 'Cloud Platforms'
+        ],
+        qualifications: [
+            'Bachelor\'s or Master\'s degree in Computer Science, AI, or related field',
+            'Freshers or 0-2 years of experience in AI/ML engineering',
+            'Strong programming skills in Python',
+            'Knowledge of machine learning and deep learning frameworks',
+            'Understanding of AI algorithms and techniques',
+            'Familiarity with model deployment and MLOps',
+            'Good problem-solving and analytical skills'
+        ],
+        responsibilities: [
+            'Design and develop AI models and solutions',
+            'Implement machine learning algorithms and deep learning models',
+            'Train, evaluate, and optimize AI models',
+            'Deploy AI models to production environments',
+            'Collaborate with data scientists and engineers',
+            'Integrate AI capabilities into applications',
+            'Monitor and maintain AI systems',
+            'Stay updated with latest AI technologies and research'
+        ]
+    },
+    'AI/ML Developer': {
+        description: `We are looking for an AI/ML Developer to join our machine learning team. As an AI/ML Developer, you will be responsible for developing and implementing machine learning solutions that drive business value.
+
+In this role, you will work on building predictive models, recommendation systems, and intelligent applications. You will collaborate with cross-functional teams to understand requirements and deliver AI-powered solutions.
+
+The ideal candidate should have programming experience, knowledge of machine learning algorithms, and passion for AI technology. You should be comfortable working with data and building end-to-end ML solutions.
+
+We offer an opportunity to work on exciting AI/ML projects and contribute to innovation in our organization.`,
+        skills: [
+            'Python', 'Machine Learning', 'Scikit-learn', 'TensorFlow', 'Keras',
+            'Data Analysis', 'Feature Engineering', 'Model Training',
+            'SQL', 'Git', 'REST APIs', 'Cloud Services'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, Data Science, or related field',
+            'Freshers or 0-2 years of experience in ML development',
+            'Good programming skills in Python',
+            'Knowledge of machine learning algorithms and frameworks',
+            'Understanding of data preprocessing and feature engineering',
+            'Familiarity with model evaluation and optimization',
+            'Strong analytical and problem-solving abilities'
+        ],
+        responsibilities: [
+            'Develop and implement machine learning models',
+            'Preprocess and analyze data for model training',
+            'Build and optimize ML pipelines',
+            'Evaluate model performance and iterate on solutions',
+            'Deploy ML models to production',
+            'Collaborate with data scientists and engineers',
+            'Document ML workflows and methodologies',
+            'Stay current with ML best practices and tools'
+        ]
+    },
     'Software Developer': {
         description: `We are seeking a highly motivated and skilled Software Developer to join our dynamic team. As a Software Developer, you will be responsible for designing, developing, and maintaining high-quality software applications that meet our business requirements and exceed user expectations.
 
@@ -491,6 +557,40 @@ This position provides opportunities for professional growth in business analysi
             'Provide ongoing support and clarification during development'
         ]
     },
+    'Cloud Engineer': {
+        description: `We are seeking a Cloud Engineer to join our infrastructure team. As a Cloud Engineer, you will be responsible for designing, implementing, and managing cloud infrastructure and services on platforms like AWS, Azure, or Google Cloud.
+
+In this role, you will work on cloud architecture, migration projects, and optimization of cloud resources. You will ensure scalability, security, and cost-effectiveness of cloud solutions.
+
+The ideal candidate should have knowledge of cloud platforms, infrastructure as code, and cloud services. You should be passionate about cloud technologies and eager to build robust cloud solutions.
+
+We offer an opportunity to work with cutting-edge cloud technologies and contribute to our cloud transformation initiatives.`,
+        skills: [
+            'AWS', 'Azure', 'Google Cloud', 'Terraform', 'CloudFormation',
+            'Docker', 'Kubernetes', 'Linux', 'Python', 'Networking',
+            'Security', 'Monitoring'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-2 years of experience in cloud engineering',
+            'Knowledge of cloud platforms (AWS, Azure, or GCP)',
+            'Understanding of cloud services and architecture',
+            'Familiarity with infrastructure as code tools',
+            'Basic knowledge of containerization and orchestration',
+            'Good problem-solving and analytical skills',
+            'Cloud certifications (AWS, Azure, GCP) are a plus'
+        ],
+        responsibilities: [
+            'Design and implement cloud infrastructure solutions',
+            'Deploy and manage cloud services and resources',
+            'Implement infrastructure as code using Terraform or CloudFormation',
+            'Monitor and optimize cloud resource utilization',
+            'Ensure security and compliance of cloud environments',
+            'Automate cloud operations and deployments',
+            'Troubleshoot cloud infrastructure issues',
+            'Collaborate with development teams on cloud solutions'
+        ]
+    },
     'Digital Marketing Executive': {
         description: `We are looking for a results-driven Digital Marketing Executive to join our marketing team. As a Digital Marketing Executive, you will be responsible for planning and executing digital marketing campaigns across various channels to drive traffic, engagement, and conversions.
 
@@ -682,6 +782,299 @@ The ideal candidate should be organized, detail-oriented, and have experience wi
             'Communicate incident updates to affected users',
             'Generate reports on service desk performance',
             'Participate in incident review meetings'
+        ]
+    },
+    'Security Engineer': {
+        description: `We are seeking a Security Engineer to join our security team. As a Security Engineer, you will be responsible for protecting our systems, networks, and data from security threats and vulnerabilities.
+
+In this role, you will implement security measures, conduct security assessments, and respond to security incidents. You will work on security monitoring, vulnerability management, and security compliance.
+
+The ideal candidate should have knowledge of security principles, tools, and best practices. You should be passionate about cybersecurity and committed to protecting organizational assets.
+
+We offer an opportunity to work on security initiatives and contribute to building a secure infrastructure.`,
+        skills: [
+            'Security Fundamentals', 'Network Security', 'Vulnerability Assessment',
+            'SIEM Tools', 'Firewalls', 'IDS/IPS', 'Security Monitoring',
+            'Incident Response', 'Linux', 'Scripting'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, Cybersecurity, or related field',
+            'Freshers or 0-2 years of experience in security engineering',
+            'Knowledge of security principles and best practices',
+            'Understanding of network security and protocols',
+            'Familiarity with security tools and technologies',
+            'Basic knowledge of security frameworks (NIST, ISO 27001)',
+            'Security certifications (CEH, Security+, CISSP) are a plus'
+        ],
+        responsibilities: [
+            'Implement and maintain security controls and measures',
+            'Monitor security events and respond to incidents',
+            'Conduct vulnerability assessments and penetration testing',
+            'Analyze security logs and identify threats',
+            'Ensure compliance with security policies and standards',
+            'Implement security patches and updates',
+            'Participate in security audits and assessments',
+            'Document security procedures and incidents'
+        ]
+    },
+    'Senior Software Development Engineer': {
+        description: `We are seeking a Senior Software Development Engineer to join our engineering team. As a Senior SDE, you will be responsible for designing and developing complex software systems, providing technical leadership, and mentoring junior engineers.
+
+In this role, you will work on challenging technical problems, make architectural decisions, and drive engineering excellence. You will collaborate with cross-functional teams to deliver high-impact solutions.
+
+The ideal candidate should have strong software engineering experience, deep technical expertise, and leadership skills. You should be passionate about building scalable systems and mentoring others.
+
+We offer an opportunity to work on cutting-edge technologies and make a significant impact on our products.`,
+        skills: [
+            'Advanced Programming', 'System Design', 'Architecture', 'Leadership',
+            'Microservices', 'Cloud Platforms', 'Data Structures', 'Algorithms',
+            'Code Review', 'Mentoring', 'Problem Solving'
+        ],
+        qualifications: [
+            'Bachelor\'s or Master\'s degree in Computer Science or related field',
+            '4-8 years of software development experience',
+            'Strong expertise in programming languages and frameworks',
+            'Experience with system design and architecture',
+            'Proven track record of delivering complex projects',
+            'Strong leadership and mentoring abilities',
+            'Excellent problem-solving and communication skills'
+        ],
+        responsibilities: [
+            'Design and develop complex software systems and features',
+            'Provide technical leadership and architectural guidance',
+            'Mentor and guide junior engineers',
+            'Conduct code reviews and ensure code quality',
+            'Make technical decisions and drive best practices',
+            'Collaborate with product and design teams',
+            'Optimize system performance and scalability',
+            'Lead technical discussions and design reviews'
+        ]
+    },
+    'Site Reliability Engineer': {
+        description: `We are seeking a Site Reliability Engineer to join our SRE team. As an SRE, you will be responsible for ensuring the reliability, availability, and performance of our production systems.
+
+In this role, you will work on automation, monitoring, incident response, and capacity planning. You will bridge the gap between development and operations to build reliable and scalable systems.
+
+The ideal candidate should have knowledge of systems engineering, automation, and software development. You should be passionate about reliability engineering and building resilient systems.
+
+We offer an opportunity to work on SRE practices and contribute to operational excellence.`,
+        skills: [
+            'Linux', 'Python', 'Kubernetes', 'Monitoring', 'Incident Management',
+            'Automation', 'CI/CD', 'Cloud Platforms', 'Networking',
+            'Performance Tuning', 'SLI/SLO/SLA'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-2 years of experience in SRE or operations',
+            'Knowledge of Linux systems and scripting',
+            'Understanding of monitoring and observability',
+            'Familiarity with containerization and orchestration',
+            'Basic knowledge of cloud platforms',
+            'Good problem-solving and troubleshooting skills'
+        ],
+        responsibilities: [
+            'Ensure reliability and availability of production systems',
+            'Implement monitoring, alerting, and observability',
+            'Respond to incidents and perform root cause analysis',
+            'Automate operational tasks and processes',
+            'Optimize system performance and capacity',
+            'Implement SLIs, SLOs, and error budgets',
+            'Collaborate with development teams on reliability',
+            'Participate in on-call rotations'
+        ]
+    },
+    'Software Development Engineer I (SDE I)': {
+        description: `We are seeking Software Development Engineer I to join our engineering team. As an SDE I, you will be responsible for developing software features, writing quality code, and contributing to product development.
+
+In this role, you will work on feature development, bug fixes, and technical improvements. You will collaborate with team members and learn from senior engineers to grow your technical skills.
+
+The ideal candidate should have solid programming skills, understanding of software development principles, and eagerness to learn. You should be passionate about software engineering and building great products.
+
+We offer an opportunity to work on impactful projects and grow your career as a software engineer.`,
+        skills: [
+            'Programming (Java/Python/C++)', 'Data Structures', 'Algorithms',
+            'Git', 'SQL', 'REST APIs', 'Problem Solving', 'Testing',
+            'Debugging', 'Agile'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science or related field',
+            '0-2 years of software development experience',
+            'Strong programming skills in one or more languages',
+            'Good understanding of data structures and algorithms',
+            'Knowledge of software development lifecycle',
+            'Familiarity with version control and development tools',
+            'Strong problem-solving abilities'
+        ],
+        responsibilities: [
+            'Develop software features and components',
+            'Write clean, efficient, and well-tested code',
+            'Participate in code reviews and design discussions',
+            'Debug and fix software defects',
+            'Collaborate with team members on deliverables',
+            'Learn and apply engineering best practices',
+            'Contribute to technical documentation',
+            'Continuously improve technical skills'
+        ]
+    },
+    'Software Development Engineer II (SDE II)': {
+        description: `We are seeking Software Development Engineer II to join our engineering team. As an SDE II, you will be responsible for designing and developing software systems, leading technical initiatives, and mentoring junior engineers.
+
+In this role, you will work on complex technical problems, make design decisions, and drive engineering quality. You will collaborate with cross-functional teams to deliver high-quality solutions.
+
+The ideal candidate should have strong software engineering experience, technical depth, and ability to work independently. You should be passionate about building scalable systems and technical excellence.
+
+We offer an opportunity to work on challenging projects and advance your engineering career.`,
+        skills: [
+            'Advanced Programming', 'System Design', 'Architecture', 'Microservices',
+            'Cloud Platforms', 'Data Structures', 'Algorithms', 'Code Review',
+            'Mentoring', 'Problem Solving', 'Leadership'
+        ],
+        qualifications: [
+            'Bachelor\'s or Master\'s degree in Computer Science or related field',
+            '2-5 years of software development experience',
+            'Strong expertise in programming and system design',
+            'Experience with building scalable systems',
+            'Good understanding of software architecture',
+            'Ability to mentor junior engineers',
+            'Excellent problem-solving and communication skills'
+        ],
+        responsibilities: [
+            'Design and develop complex software systems',
+            'Lead technical initiatives and projects',
+            'Mentor junior engineers and conduct code reviews',
+            'Make technical and architectural decisions',
+            'Optimize system performance and scalability',
+            'Collaborate with product and design teams',
+            'Drive engineering best practices',
+            'Participate in technical planning and design reviews'
+        ]
+    },
+    'Software Development Engineer (SDE) Intern': {
+        description: `We are offering Software Development Engineer Internship opportunities for students pursuing computer science or related degrees. As an SDE Intern, you will work on real software projects, write production code, and learn from experienced engineers.
+
+You will gain hands-on experience with software development lifecycle, modern technologies, and engineering practices. This internship provides excellent exposure to software engineering at scale.
+
+The ideal candidate should be pursuing a degree in Computer Science with strong programming skills and passion for software development.`,
+        skills: [
+            'Programming (Java/Python/C++)', 'Data Structures', 'Algorithms',
+            'Git', 'Problem Solving', 'Debugging', 'SQL',
+            'Software Development'
+        ],
+        qualifications: [
+            'Currently pursuing Bachelor\'s/Master\'s in Computer Science or related field',
+            'Strong programming skills in one or more languages',
+            'Good understanding of data structures and algorithms',
+            'Knowledge of software development fundamentals',
+            'Familiarity with version control (Git)',
+            'Strong problem-solving abilities',
+            'Available for 2-6 months internship'
+        ],
+        responsibilities: [
+            'Develop software features and components',
+            'Write clean, efficient code under supervision',
+            'Participate in code reviews and learn best practices',
+            'Debug and test software applications',
+            'Collaborate with team members on projects',
+            'Learn software engineering practices and tools',
+            'Document code and technical specifications',
+            'Participate in team meetings and discussions'
+        ]
+    },
+    'Solutions Architect': {
+        description: `We are seeking a Solutions Architect to join our architecture team. As a Solutions Architect, you will be responsible for designing end-to-end technical solutions that meet business requirements and align with architectural standards.
+
+In this role, you will work with stakeholders to understand requirements, design scalable architectures, and guide implementation teams. You will ensure solutions are robust, secure, and maintainable.
+
+The ideal candidate should have strong technical expertise, architectural experience, and excellent communication skills. You should be passionate about designing elegant solutions to complex problems.
+
+We offer an opportunity to work on diverse architectural challenges and shape our technical direction.`,
+        skills: [
+            'Solution Architecture', 'System Design', 'Cloud Architecture',
+            'Microservices', 'Integration Patterns', 'Security', 'Scalability',
+            'Communication', 'Documentation', 'Technical Leadership'
+        ],
+        qualifications: [
+            'Bachelor\'s or Master\'s degree in Computer Science or related field',
+            '3-6 years of experience in software development and architecture',
+            'Strong understanding of architectural patterns and principles',
+            'Experience with cloud platforms and services',
+            'Knowledge of microservices and distributed systems',
+            'Excellent communication and stakeholder management skills',
+            'Architecture certifications (AWS, Azure, TOGAF) are a plus'
+        ],
+        responsibilities: [
+            'Design end-to-end technical solutions and architectures',
+            'Collaborate with stakeholders to understand requirements',
+            'Create architectural diagrams and documentation',
+            'Evaluate technologies and make recommendations',
+            'Ensure solutions meet quality and security standards',
+            'Guide development teams on implementation',
+            'Conduct architecture reviews and assessments',
+            'Stay updated with emerging technologies and trends'
+        ]
+    },
+    'Student Intern': {
+        description: `We are offering Student Internship opportunities for undergraduate students. As a Student Intern, you will gain practical work experience, learn professional skills, and get exposure to real-world business operations.
+
+This internship provides a valuable learning experience where you will work on projects, collaborate with professionals, and develop skills relevant to your field of study. You will receive guidance and mentorship to support your professional growth.
+
+The ideal candidate should be a current student with enthusiasm, willingness to learn, and strong work ethic. This is an excellent opportunity to gain experience while pursuing your education.`,
+        skills: [
+            'Communication', 'Microsoft Office', 'Research', 'Teamwork',
+            'Time Management', 'Learning Agility', 'Problem Solving',
+            'Basic Computer Skills'
+        ],
+        qualifications: [
+            'Currently enrolled in undergraduate program (any discipline)',
+            'Good academic standing',
+            'Strong communication and interpersonal skills',
+            'Proficiency in MS Office',
+            'Eagerness to learn and take on new challenges',
+            'Ability to work independently and in teams',
+            'Available for 2-6 months internship'
+        ],
+        responsibilities: [
+            'Assist team members with assigned tasks and projects',
+            'Conduct research and prepare reports',
+            'Participate in team meetings and activities',
+            'Learn organizational processes and tools',
+            'Complete projects within given timelines',
+            'Maintain professional communication',
+            'Seek feedback and work on skill development',
+            'Contribute ideas and suggestions'
+        ]
+    },
+    'Technical Support Engineer': {
+        description: `We are seeking a Technical Support Engineer to provide technical assistance to customers and resolve their technical issues. As a Technical Support Engineer, you will troubleshoot problems, provide solutions, and ensure customer satisfaction.
+
+In this role, you will work with customers via phone, email, and chat to diagnose and resolve technical issues. You will document issues, escalate complex problems, and contribute to knowledge base articles.
+
+The ideal candidate should have strong technical knowledge, excellent communication skills, and customer service orientation. You should be patient, analytical, and committed to helping customers.
+
+We offer an opportunity to work with diverse technologies and make a positive impact on customer experience.`,
+        skills: [
+            'Technical Troubleshooting', 'Customer Service', 'Communication',
+            'Problem Solving', 'Ticketing Systems', 'Product Knowledge',
+            'Documentation', 'Remote Support Tools'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-2 years of experience in technical support',
+            'Good technical knowledge and troubleshooting skills',
+            'Excellent communication and customer service abilities',
+            'Patience and empathy when dealing with customers',
+            'Ability to explain technical concepts to non-technical users',
+            'Familiarity with support tools and ticketing systems'
+        ],
+        responsibilities: [
+            'Provide technical support to customers via multiple channels',
+            'Diagnose and resolve technical issues',
+            'Document customer interactions and solutions',
+            'Escalate complex issues to appropriate teams',
+            'Create and maintain knowledge base articles',
+            'Follow up with customers to ensure resolution',
+            'Gather customer feedback and suggest improvements',
+            'Stay updated with product features and updates'
         ]
     },
     'Voice Process': {
@@ -933,6 +1326,72 @@ The ideal candidate should be pursuing a degree in HR, Business, or related fiel
             'Participate in HR projects and initiatives'
         ]
     },
+    'Infrastructure Engineer': {
+        description: `We are seeking an Infrastructure Engineer to join our IT operations team. As an Infrastructure Engineer, you will be responsible for designing, implementing, and maintaining IT infrastructure including servers, networks, and storage systems.
+
+In this role, you will ensure the reliability, performance, and security of infrastructure systems. You will work on infrastructure automation, monitoring, and capacity planning.
+
+The ideal candidate should have knowledge of infrastructure technologies, networking, and system administration. You should be passionate about building and maintaining robust infrastructure.
+
+We offer an opportunity to work on critical infrastructure projects and contribute to operational excellence.`,
+        skills: [
+            'Linux', 'Windows Server', 'Networking', 'VMware', 'Storage',
+            'Monitoring Tools', 'Scripting', 'Security', 'Cloud Infrastructure',
+            'Automation', 'Troubleshooting'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-2 years of experience in infrastructure engineering',
+            'Knowledge of server and network infrastructure',
+            'Understanding of virtualization technologies',
+            'Familiarity with Linux and Windows server administration',
+            'Basic knowledge of networking protocols and security',
+            'Good troubleshooting and problem-solving skills'
+        ],
+        responsibilities: [
+            'Design and implement infrastructure solutions',
+            'Manage and maintain servers, networks, and storage systems',
+            'Monitor infrastructure performance and availability',
+            'Implement security measures and best practices',
+            'Automate infrastructure tasks and processes',
+            'Troubleshoot infrastructure issues and incidents',
+            'Plan and execute infrastructure upgrades',
+            'Document infrastructure configurations and procedures'
+        ]
+    },
+    'Java Developer': {
+        description: `We are seeking a Java Developer to join our development team. As a Java Developer, you will be responsible for designing, developing, and maintaining Java-based applications that meet business requirements.
+
+In this role, you will work on backend services, APIs, and enterprise applications using Java and related technologies. You will collaborate with cross-functional teams to deliver high-quality software solutions.
+
+The ideal candidate should have strong Java programming skills, understanding of object-oriented design, and knowledge of Java frameworks. You should be passionate about Java development and eager to build scalable applications.
+
+We offer an opportunity to work on challenging Java projects and grow your expertise in Java technologies.`,
+        skills: [
+            'Java', 'Spring Boot', 'Spring Framework', 'Hibernate', 'SQL',
+            'RESTful APIs', 'Maven', 'Git', 'JUnit', 'Microservices',
+            'Data Structures', 'Design Patterns'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-2 years of experience in Java development',
+            'Strong programming skills in Java',
+            'Knowledge of Java frameworks (Spring, Hibernate)',
+            'Understanding of object-oriented programming concepts',
+            'Familiarity with SQL and database systems',
+            'Good problem-solving and analytical skills'
+        ],
+        responsibilities: [
+            'Design and develop Java-based applications and services',
+            'Write clean, efficient, and maintainable Java code',
+            'Develop RESTful APIs and backend services',
+            'Implement database operations using SQL and ORM frameworks',
+            'Participate in code reviews and technical discussions',
+            'Debug and resolve application issues',
+            'Write unit tests and ensure code quality',
+            'Collaborate with team members on project deliverables'
+        ]
+    },
     'Marketing Intern': {
         description: `We are seeking Marketing Interns to join our marketing team. As a Marketing Intern, you will gain hands-on experience in marketing campaigns, content creation, market research, and digital marketing activities.
 
@@ -961,6 +1420,105 @@ The ideal candidate should be pursuing a degree in Marketing, Business, or relat
             'Prepare marketing reports and presentations',
             'Learn marketing tools and analytics platforms',
             'Support the marketing team in various initiatives'
+        ]
+    },
+    'Platform Engineer': {
+        description: `We are seeking a Platform Engineer to join our engineering team. As a Platform Engineer, you will be responsible for building and maintaining the platform infrastructure that enables development teams to build, deploy, and run applications efficiently.
+
+In this role, you will work on platform services, developer tools, and infrastructure automation. You will ensure platform reliability, scalability, and developer productivity.
+
+The ideal candidate should have knowledge of cloud platforms, containerization, and platform technologies. You should be passionate about building platforms that empower developers.
+
+We offer an opportunity to work on platform engineering initiatives and contribute to developer experience.`,
+        skills: [
+            'Kubernetes', 'Docker', 'AWS', 'Terraform', 'CI/CD', 'Linux',
+            'Python', 'Monitoring', 'Service Mesh', 'GitOps',
+            'Platform Services', 'Automation'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-2 years of experience in platform engineering',
+            'Knowledge of containerization and orchestration',
+            'Understanding of cloud platforms and services',
+            'Familiarity with infrastructure as code',
+            'Basic knowledge of CI/CD pipelines',
+            'Good problem-solving and automation skills'
+        ],
+        responsibilities: [
+            'Build and maintain platform infrastructure and services',
+            'Implement container orchestration with Kubernetes',
+            'Develop platform tools and automation',
+            'Ensure platform reliability and performance',
+            'Support development teams with platform services',
+            'Implement monitoring and observability solutions',
+            'Automate platform operations and deployments',
+            'Document platform architecture and procedures'
+        ]
+    },
+    'Python Software Engineer': {
+        description: `We are seeking a Python Software Engineer to join our development team. As a Python Software Engineer, you will be responsible for designing, developing, and maintaining Python-based applications and services.
+
+In this role, you will work on backend systems, APIs, data processing, and automation using Python. You will collaborate with cross-functional teams to deliver high-quality software solutions.
+
+The ideal candidate should have strong Python programming skills, understanding of software design principles, and knowledge of Python frameworks. You should be passionate about Python development and eager to build scalable applications.
+
+We offer an opportunity to work on diverse Python projects and grow your expertise in Python technologies.`,
+        skills: [
+            'Python', 'Django', 'Flask', 'FastAPI', 'SQL', 'RESTful APIs',
+            'Git', 'Data Structures', 'Algorithms', 'Testing',
+            'Docker', 'AWS'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-2 years of experience in Python development',
+            'Strong programming skills in Python',
+            'Knowledge of Python frameworks (Django, Flask, FastAPI)',
+            'Understanding of object-oriented programming',
+            'Familiarity with SQL and database systems',
+            'Good problem-solving and analytical skills'
+        ],
+        responsibilities: [
+            'Design and develop Python-based applications and services',
+            'Write clean, efficient, and maintainable Python code',
+            'Develop RESTful APIs and backend services',
+            'Implement data processing and automation scripts',
+            'Participate in code reviews and technical discussions',
+            'Debug and resolve application issues',
+            'Write unit tests and ensure code quality',
+            'Collaborate with team members on project deliverables'
+        ]
+    },
+    'QA Engineer': {
+        description: `We are seeking a QA Engineer to join our quality assurance team. As a QA Engineer, you will be responsible for ensuring the quality of software products through manual and automated testing.
+
+In this role, you will design test cases, execute tests, identify defects, and work with development teams to ensure software quality. You will contribute to improving testing processes and quality standards.
+
+The ideal candidate should have knowledge of testing methodologies, attention to detail, and passion for quality assurance. You should be analytical and committed to delivering high-quality software.
+
+We offer an opportunity to work on quality assurance initiatives and contribute to product excellence.`,
+        skills: [
+            'Manual Testing', 'Test Case Design', 'Bug Tracking', 'JIRA',
+            'API Testing', 'SQL', 'Agile Testing', 'Regression Testing',
+            'Test Automation Basics', 'Communication'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-2 years of experience in QA or testing',
+            'Knowledge of software testing methodologies',
+            'Understanding of test case design and execution',
+            'Familiarity with bug tracking tools (JIRA, Bugzilla)',
+            'Basic knowledge of SQL and databases',
+            'Strong analytical and attention to detail'
+        ],
+        responsibilities: [
+            'Design and execute test cases for software applications',
+            'Perform functional, regression, and integration testing',
+            'Identify, document, and track software defects',
+            'Collaborate with developers to resolve issues',
+            'Participate in test planning and estimation',
+            'Ensure test coverage and quality standards',
+            'Contribute to test automation efforts',
+            'Provide feedback on product quality and usability'
         ]
     },
     'Digital Marketing Intern': {
@@ -1023,6 +1581,39 @@ The ideal candidate should be pursuing a degree in Statistics, Mathematics, Comp
             'Learn and use data analysis tools and techniques',
             'Assist in ad-hoc data requests and analysis',
             'Document analysis methodologies and findings'
+        ]
+    },
+    'Data Engineer': {
+        description: `We are seeking a Data Engineer to join our data team. As a Data Engineer, you will be responsible for designing, building, and maintaining data pipelines and infrastructure that enable data-driven decision making.
+
+In this role, you will work on ETL processes, data warehousing, and big data technologies. You will ensure data quality, reliability, and availability for analytics and business intelligence.
+
+The ideal candidate should have strong programming skills, knowledge of data technologies, and understanding of data architecture. You should be passionate about building scalable data solutions.
+
+We offer an opportunity to work on challenging data engineering projects and contribute to our data infrastructure.`,
+        skills: [
+            'Python', 'SQL', 'ETL', 'Data Warehousing', 'Spark', 'Hadoop',
+            'Airflow', 'Kafka', 'AWS', 'Data Modeling', 'Git',
+            'NoSQL Databases'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, Data Engineering, or related field',
+            'Freshers or 0-2 years of experience in data engineering',
+            'Strong programming skills in Python or Java',
+            'Good knowledge of SQL and database systems',
+            'Understanding of ETL processes and data pipelines',
+            'Familiarity with big data technologies (Spark, Hadoop)',
+            'Knowledge of cloud platforms (AWS, Azure, GCP) is a plus'
+        ],
+        responsibilities: [
+            'Design and build scalable data pipelines and ETL processes',
+            'Develop and maintain data warehouse solutions',
+            'Implement data quality checks and monitoring',
+            'Optimize data storage and retrieval performance',
+            'Collaborate with data scientists and analysts',
+            'Automate data workflows and processes',
+            'Ensure data security and compliance',
+            'Document data architecture and processes'
         ]
     },
     'Content Writing Intern': {
@@ -1146,6 +1737,39 @@ The ideal candidate should be a recent graduate or have 0-2 years of experience 
             'Learn and apply software engineering best practices',
             'Contribute to technical documentation',
             'Stay updated with new technologies and tools'
+        ]
+    },
+    'Automation Test Engineer': {
+        description: `We are seeking an Automation Test Engineer to join our quality assurance team. As an Automation Test Engineer, you will be responsible for designing, developing, and executing automated test scripts to ensure software quality.
+
+In this role, you will work with test automation frameworks, create test strategies, and collaborate with development teams to integrate automated testing into the CI/CD pipeline. You will help improve test coverage and reduce manual testing efforts.
+
+The ideal candidate should have programming skills, knowledge of test automation tools, and understanding of software testing principles. You should be detail-oriented and passionate about quality assurance.
+
+We offer an opportunity to work on test automation initiatives and contribute to delivering high-quality software products.`,
+        skills: [
+            'Selenium', 'Java', 'Python', 'Test Automation', 'TestNG', 'JUnit',
+            'API Testing', 'CI/CD', 'Git', 'Postman', 'Jenkins',
+            'Agile Testing'
+        ],
+        qualifications: [
+            'Bachelor\'s degree in Computer Science, IT, or related field',
+            'Freshers or 0-2 years of experience in test automation',
+            'Good programming skills in Java, Python, or similar languages',
+            'Knowledge of test automation frameworks (Selenium, Appium, etc.)',
+            'Understanding of software testing methodologies',
+            'Familiarity with CI/CD tools and processes',
+            'Strong analytical and problem-solving skills'
+        ],
+        responsibilities: [
+            'Design and develop automated test scripts and frameworks',
+            'Execute automated tests and analyze results',
+            'Integrate automated tests into CI/CD pipelines',
+            'Identify and report software defects',
+            'Collaborate with developers to ensure testability',
+            'Maintain and enhance test automation frameworks',
+            'Create test documentation and reports',
+            'Stay updated with test automation best practices'
         ]
     },
     'Associate Consultant': {
