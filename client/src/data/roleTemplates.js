@@ -1295,6 +1295,44 @@ The ideal candidate should be pursuing a degree in Computer Science or related f
             'Participate in team meetings and stand-ups'
         ]
     },
+    'Software Engineer': {
+        description: `We are seeking a talented Software Engineer to join our engineering team. As a Software Engineer, you will be responsible for designing, developing, testing, and maintaining software systems that power our products and services.
+
+In this role, you will work on complex technical challenges, write high-quality code, and collaborate with cross-functional teams to deliver scalable solutions. You will be involved in the entire software development lifecycle, from architecture design to deployment and maintenance.
+
+The ideal candidate should have strong programming skills, solid understanding of computer science fundamentals, and experience with modern software development practices. You should be passionate about technology, eager to learn, and committed to writing clean, efficient, and maintainable code.
+
+We offer an exciting opportunity to work on innovative projects, grow your technical skills, and make a significant impact on our products. If you are a problem solver who loves building software, we want to hear from you.
+
+This position provides competitive compensation, excellent benefits, and a collaborative environment that values technical excellence and continuous improvement.`,
+        skills: [
+            'Java', 'Python', 'C++', 'JavaScript', 'Data Structures',
+            'Algorithms', 'System Design', 'Git', 'SQL', 'NoSQL',
+            'RESTful APIs', 'Microservices', 'Cloud Platforms', 'CI/CD'
+        ],
+        qualifications: [
+            'Bachelor\'s or Master\'s degree in Computer Science, Software Engineering, or related field',
+            'Freshers or 0-3 years of software engineering experience',
+            'Strong programming skills in one or more languages (Java, Python, C++, etc.)',
+            'Solid understanding of data structures, algorithms, and system design',
+            'Knowledge of software development best practices and design patterns',
+            'Experience with version control systems (Git)',
+            'Good problem-solving and analytical abilities',
+            'Excellent communication and teamwork skills'
+        ],
+        responsibilities: [
+            'Design and develop scalable, reliable, and maintainable software systems',
+            'Write clean, efficient, and well-tested code following best practices',
+            'Participate in system architecture and design discussions',
+            'Collaborate with product managers, designers, and other engineers',
+            'Conduct code reviews and provide constructive feedback',
+            'Debug and resolve complex technical issues',
+            'Optimize application performance and scalability',
+            'Write and maintain technical documentation',
+            'Stay current with emerging technologies and industry trends',
+            'Contribute to continuous improvement of development processes'
+        ]
+    },
     'HR Intern': {
         description: `We are offering HR Internship opportunities for students interested in human resources. As an HR Intern, you will gain exposure to various HR functions including recruitment, employee engagement, training, and HR operations.
 
