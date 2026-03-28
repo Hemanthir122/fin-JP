@@ -4,7 +4,7 @@ import './ApplyClickAd.css';
 const ApplyClickAd = () => {
     const clickCountRef = useRef(0);
     const adContainerRef = useRef(null);
-    const CLICK_THRESHOLD = 3;
+    const CLICK_THRESHOLD = 5;
     const AD_SCRIPT_SRC = 'https://breachuptown.com/31/2d/00/312d000878fa23ff92459a4fb1eac311.js';
 
     useEffect(() => {

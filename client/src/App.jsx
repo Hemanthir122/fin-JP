@@ -4,7 +4,6 @@ import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import ClickTracker from './components/ClickTracker';
 import ApplyClickAd from './components/ads/ApplyClickAd';
 
 // Lazy load pages for better performance
@@ -51,7 +50,6 @@ function App() {
     <HelmetProvider>
       <Router>
         <ScrollToTop />
-        <ClickTracker />
         <ApplyClickAd />
         <div className="app">
           <Suspense fallback={<Loading />}>
