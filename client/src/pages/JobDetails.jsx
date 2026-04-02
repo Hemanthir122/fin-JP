@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import { useJobDetails, useCompanyJobs, useWalkinDetails } from '../hooks/useJobs';
 import api from '../utils/api';
+import StructuredData from '../components/StructuredData';
+import { generateJobPostingSchema } from '../utils/seo';
 import AdsterraNativeBannerJobDetail from '../components/ads/AdsterraNativeBannerJobDetail';
 import AdsterraSmartLink from '../components/ads/AdsterraSmartLink';
 import AdsterraBannerMobile from '../components/ads/AdsterraBannerMobile';
@@ -150,46 +152,7 @@ function JobDetails() {
     // Generate Schema.org JSON-LD
     const jobSchema = useMemo(() => {
         if (!job) return null;
-
-        const schema = {
-            "@context": "https://schema.org/",
-            "@type": "JobPosting",
-            "title": job.title,
-            "description": job.description,
-            "identifier": {
-                "@type": "PropertyValue",
-                "name": job.company,
-                "value": job._id
-            },
-            "datePosted": job.createdAt,
-            "validThrough": job.endDate || new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
-            "employmentType": job.type === 'internship' ? "INTERN" : "FULL_TIME",
-            "hiringOrganization": {
-                "@type": "Organization",
-                "name": job.company,
-                "sameAs": "https://jobconnects.online",
-                "logo": job.companyLogo || "https://jobconnects.online/logo-jp.svg"
-            },
-            "jobLocation": {
-                "@type": "Place",
-                "address": {
-                    "@type": "PostalAddress",
-                    "addressLocality": job.location || "Bangalore",
-                    "addressRegion": "Karnataka",
-                    "addressCountry": "IN"
-                }
-            },
-            "baseSalary": {
-                "@type": "MonetaryAmount",
-                "currency": "INR",
-                "value": {
-                    "@type": "QuantitativeValue",
-                    "value": job.package || "Not Disclosed",
-                    "unitText": "YEAR"
-                }
-            }
-        };
-
+        const schema = generateJobPostingSchema(job);
         return JSON.stringify(schema);
     }, [job]);
 
