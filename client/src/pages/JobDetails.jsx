@@ -355,7 +355,8 @@ ${platformLink}`;
                             </section>
 
                             {/* Ad Placement 2: Smart Link - Between description and about company */}
-                            <AdsterraSmartLink />
+                            {/* Only show for walkin jobs */}
+                            {isWalkin && <AdsterraSmartLink />}
 
                             {/* About Company */}
                             {job.aboutCompany && (
