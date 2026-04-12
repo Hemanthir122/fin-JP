@@ -108,7 +108,7 @@ function Jobs({ type: propType }) {
             </Helmet>
 
             {/* Global Ads */}
-            { <SocialBar /> } {/* REMOVED: May cause redirects */}
+            <SocialBar />
             {/* <Popunder /> */} {/* REMOVED: Causes auto-redirects */}
 
             <div className="jobs-page-header">

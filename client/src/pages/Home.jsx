@@ -112,7 +112,7 @@ function Home() {
             </Helmet>
 
             {/* Global Ads */}
-            {/* <SocialBar /> */} {/* REMOVED: May cause redirects */}
+            <SocialBar />
             {/* <Popunder /> */} {/* REMOVED: Causes auto-redirects */}
 
             <Hero />

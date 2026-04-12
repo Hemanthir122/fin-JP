@@ -11,7 +11,6 @@ import api from '../utils/api';
 import StructuredData from '../components/StructuredData';
 import { generateJobPostingSchema } from '../utils/seo';
 import AdsterraNativeBannerJobDetail from '../components/ads/AdsterraNativeBannerJobDetail';
-import AdsterraSmartLink from '../components/ads/AdsterraSmartLink';
 import AdsterraBannerMobile from '../components/ads/AdsterraBannerMobile';
 import './JobDetails.css';
 
@@ -353,10 +352,6 @@ ${platformLink}`;
                                     {job.description}
                                 </div>
                             </section>
-
-                            {/* Ad Placement 2: Smart Link - Between description and about company */}
-                            {/* Only show for walkin jobs */}
-                            {isWalkin && <AdsterraSmartLink />}
 
                             {/* About Company */}
                             {job.aboutCompany && (
