@@ -1,8 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 function SocialBar() {
-    const containerRef = useRef(null);
-
     useEffect(() => {
         // Randomly decide how many ads to show (2 or 3)
         const numAds = Math.random() > 0.5 ? 2 : 3;
@@ -11,53 +9,48 @@ function SocialBar() {
         const existingScript = document.querySelector('script[src*="53e55836ee891aa30b1843270191bee1"]');
         if (existingScript) return;
 
-        // Create container for ads if it doesn't exist
-        let adsContainer = document.getElementById('social-ads-container');
-        if (!adsContainer) {
-            adsContainer = document.createElement('div');
-            adsContainer.id = 'social-ads-container';
-            adsContainer.style.cssText = `
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                z-index: 9999;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                padding: 10px;
-                pointer-events: none;
-            `;
-            document.body.appendChild(adsContainer);
-        }
-
-        // Load multiple instances of the ad script
+        // Load multiple instances of the ad script with different positioning
         for (let i = 0; i < numAds; i++) {
             setTimeout(() => {
-                // Create a separate div for each ad
-                const adDiv = document.createElement('div');
-                adDiv.id = `social-ad-${i}`;
-                adDiv.style.cssText = `
-                    width: 100%;
-                    pointer-events: auto;
-                    margin-bottom: 5px;
+                // Create a wrapper div for each ad with specific positioning
+                const adWrapper = document.createElement('div');
+                adWrapper.id = `social-ad-wrapper-${i}`;
+                adWrapper.style.cssText = `
+                    position: fixed;
+                    bottom: ${i * 120}px;
+                    left: 0;
+                    right: 0;
+                    z-index: ${9999 - i};
+                    pointer-events: none;
                 `;
-                adsContainer.appendChild(adDiv);
+                
+                // Create inner container for the ad
+                const adContainer = document.createElement('div');
+                adContainer.id = `social-ad-container-${i}`;
+                adContainer.style.cssText = `
+                    pointer-events: auto;
+                    position: relative;
+                `;
+                
+                adWrapper.appendChild(adContainer);
+                document.body.appendChild(adWrapper);
 
-                // Load the ad script
+                // Load the ad script into the container
                 const script = document.createElement('script');
                 script.src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
                 script.async = true;
                 script.setAttribute('data-ad-instance', i);
-                adDiv.appendChild(script);
-            }, i * 800); // 800ms delay between each ad
+                adContainer.appendChild(script);
+            }, i * 1000); // 1 second delay between each ad
         }
 
         return () => {
             // Cleanup on unmount
-            const container = document.getElementById('social-ads-container');
-            if (container) {
-                container.remove();
+            for (let i = 0; i < 3; i++) {
+                const wrapper = document.getElementById(`social-ad-wrapper-${i}`);
+                if (wrapper) {
+                    wrapper.remove();
+                }
             }
         };
     }, []);
