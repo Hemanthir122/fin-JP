@@ -1,67 +1,62 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 function SocialBar() {
-    useEffect(() => {
-        // Always show 3 ads
-        const numAds = 3;
-        
-        // Check if scripts already loaded
-        const existingScript = document.querySelector('script[src*="53e55836ee891aa30b1843270191bee1"]');
-        if (existingScript) return;
+  useEffect(() => {
+    const numAds = 3;
 
-        // Add CSS to force positioning of ads
-        const style = document.createElement('style');
-        style.id = 'social-ads-positioning';
-        style.textContent = `
-            /* Force positioning for social bar ads */
-            body > div[id*="container-"] {
-                position: fixed !important;
-                left: 0 !important;
-                right: 0 !important;
-                width: 100% !important;
-                margin: 0 !important;
-                transform: none !important;
-            }
-            
-            /* Position each ad with specific bottom values */
-            body > div[id*="container-"]:nth-of-type(1) {
-                bottom: 0px !important;
-                z-index: 9997 !important;
-            }
-            
-            body > div[id*="container-"]:nth-of-type(2) {
-                bottom: 45px !important;
-                z-index: 9998 !important;
-            }
-            
-            body > div[id*="container-"]:nth-of-type(3) {
-                bottom: 135px !important;
-                z-index: 9999 !important;
-            }
-        `;
-        document.head.appendChild(style);
+    // Remove old container if exists (prevent duplicates)
+    const oldContainer = document.getElementById("ads-wrapper");
+    if (oldContainer) oldContainer.remove();
 
-        // Load multiple instances of the ad script
-        for (let i = 0; i < numAds; i++) {
-            setTimeout(() => {
-                const script = document.createElement('script');
-                script.src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
-                script.async = true;
-                script.setAttribute('data-ad-instance', i);
-                document.body.appendChild(script);
-            }, i * 1200); // 1.2 second delay between each ad
-        }
+    // Create main wrapper
+    const container = document.createElement("div");
+    container.id = "ads-wrapper";
 
-        return () => {
-            // Cleanup
-            const styleEl = document.getElementById('social-ads-positioning');
-            if (styleEl) {
-                styleEl.remove();
-            }
-        };
-    }, []);
+    Object.assign(container.style, {
+      position: "fixed",
+      bottom: "0",
+      left: "0",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column-reverse", // stack from bottom
+      alignItems: "center",
+      gap: "10px",
+      zIndex: "9999",
+      pointerEvents: "none", // don't block UI
+    });
 
-    return null; // This ad renders itself
+    document.body.appendChild(container);
+
+    // Load ads one by one
+    for (let i = 0; i < numAds; i++) {
+      const adBox = document.createElement("div");
+
+      Object.assign(adBox.style, {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        pointerEvents: "auto",
+      });
+
+      container.appendChild(adBox);
+
+      setTimeout(() => {
+        const script = document.createElement("script");
+        script.src =
+          "https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js";
+        script.async = true;
+
+        adBox.appendChild(script);
+      }, i * 1500); // delay to avoid conflicts
+    }
+
+    return () => {
+      const container = document.getElementById("ads-wrapper");
+      if (container) container.remove();
+    };
+  }, []);
+
+  return null;
 }
 
 export default SocialBar;
