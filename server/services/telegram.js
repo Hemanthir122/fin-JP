@@ -95,12 +95,28 @@ async function sendNewJobNotification(job) {
         }
     }
     
+    // Determine what to show for experience/type field
+    let experienceOrType = job.experience || 'Not specified';
+    let fieldLabel = 'Experience';
+    
+    if (experienceOrType === 'Not specified' || experienceOrType === '') {
+        // If experience is not available, try to use jobType
+        experienceOrType = job.jobType || job.type || 'Not specified';
+        fieldLabel = 'Type';
+    }
+    
+    // Format location with country if available
+    let locationDisplay = job.location;
+    if (job.country && job.country.trim() !== '') {
+        locationDisplay = `${job.location} (${job.country})`;
+    }
+    
     const message = `🔥 <b>New ${isInternship ? 'Internship' : 'Job'} Posted!</b>
 
 🏢 <b>Company:</b> ${job.company}
 💼 <b>Role:</b> ${job.title}
-📍 <b>Location:</b> ${job.location}
-🎓 <b>Experience:</b> ${job.experience || 'Not specified'}
+📍 <b>Location:</b> ${locationDisplay}
+🎓 <b>${fieldLabel}:</b> ${experienceOrType}
 💰 <b>${isInternship ? 'Stipend' : 'Package'}:</b> ${packageInfo}
 
 🔗 <b>Apply Now:</b>
@@ -142,10 +158,19 @@ async function sendNewWalkinNotification(walkin) {
         description = description.substring(0, maxLength) + '...';
     }
     
+    // Format location with country if available
+    let locationDisplay = '';
+    if (walkin.location && walkin.location.trim() !== '') {
+        locationDisplay = walkin.location;
+        if (walkin.country && walkin.country.trim() !== '') {
+            locationDisplay = `${walkin.location} (${walkin.country})`;
+        }
+    }
+    
     const message = `🚶 <b>New Walk-in Drive Posted!</b>
 
 🏢 <b>Company:</b> ${walkin.company}
-
+${locationDisplay ? `📍 <b>Location:</b> ${locationDisplay}\n\n` : ''}
 📋 <b>Details:</b>
 ${description}
 

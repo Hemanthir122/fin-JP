@@ -24,6 +24,10 @@ const jobSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    country: {
+        type: String,
+        default: ''
+    },
     package: {
         type: String,
         required: true
@@ -40,6 +44,10 @@ const jobSchema = new mongoose.Schema({
         type: String,
         enum: ['job', 'internship', 'walkin'],
         default: 'job'
+    },
+    jobType: {
+        type: String,
+        default: ''
     },
     description: {
         type: String,
@@ -83,6 +91,10 @@ const jobSchema = new mongoose.Schema({
     notUsefulCount: {
         type: Number,
         default: 0
+    },
+    isExternalJob: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
