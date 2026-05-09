@@ -140,7 +140,7 @@ function Jobs({ type: propType }) {
                             </div>
                         ) : jobs.length > 0 ? (
                             <>
-                                {/* ── Mobile: flat list, banner after every card ── */}
+                                {/* ── Mobile: flat list, banner after every 4th card ── */}
                                 <div className="jobs-mobile-list">
                                     {jobs.map((job, i) => (
                                         <div key={job._id}>
@@ -150,10 +150,7 @@ function Jobs({ type: propType }) {
                                                     : <JobCard job={job} />
                                                 }
                                             </div>
-                                            <MobileBannerAd key={`mb-${job._id}`} />
-                                            {jobs.length > 6 && (i + 1) % 3 === 0 && (
-                                                <SponsoredCard key={`sp-m-${i}`} />
-                                            )}
+                                            {(i + 1) % 4 === 0 && <MobileBannerAd key={`mb-${job._id}`} />}
                                         </div>
                                     ))}
                                 </div>

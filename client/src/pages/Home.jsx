@@ -169,17 +169,14 @@ function Home() {
                         </div>
                     ) : filteredJobs.length > 0 ? (
                         <>
-                            {/* ── Mobile: flat list with banner after every card ── */}
+                            {/* ── Mobile: flat list, banner after every 4th card ── */}
                             <div className="jobs-mobile-list">
                                 {filteredJobs.map((job, i) => (
                                     <div key={job._id}>
                                         <div className={`animate-fadeIn stagger-${(i % 5) + 1}`}>
                                             <JobCard job={job} />
                                         </div>
-                                        <MobileBannerAd key={`mb-${job._id}`} />
-                                        {filteredJobs.length > 6 && (i + 1) % 3 === 0 && (
-                                            <SponsoredCard key={`sp-m-${i}`} />
-                                        )}
+                                        {(i + 1) % 4 === 0 && <MobileBannerAd key={`mb-${job._id}`} />}
                                     </div>
                                 ))}
                             </div>

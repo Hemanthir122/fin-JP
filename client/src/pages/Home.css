@@ -272,6 +272,13 @@
 .jobs-mobile-list {
     display: none;
     flex-direction: column;
+    gap: 10px;
+}
+
+/* Each job+ad pair */
+.jobs-mobile-list > div {
+    display: flex;
+    flex-direction: column;
     gap: 0;
 }
 
