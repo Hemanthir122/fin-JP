@@ -1,0 +1,61 @@
+/* ── Native Banner Section — premium content container ── */
+.native-banner-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 20px 24px 24px;
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .native-banner-section {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.native-banner-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.native-banner-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+    flex-shrink: 0;
+}
+
+.native-banner-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    flex: 1;
+}
+
+.native-banner-ad-badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2px 8px;
+}
+
+.native-banner-body {
+    min-height: 120px;
+    width: 100%;
+}
+
+.native-banner-body > div {
+    width: 100%;
+}

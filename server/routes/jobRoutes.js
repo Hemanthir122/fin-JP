@@ -1,19 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const Job = require('../models/Job');
+const ExternalJob = require('../models/ExternalJob');
 const Company = require('../models/Company');
 const { sendNewJobNotification } = require('../services/telegram');
 
-// Get all jobs with filters
+// Get all jobs with filters (includes approved external jobs)
 router.get('/', async (req, res) => {
     try {
-        const { search, location, type, company, page = 1, limit = 12 } = req.query;
+        const { search, location, type, company, page = 1, limit = 12, isExternalJob } = req.query;
 
-        // Build match query
+        // Build match query for internal jobs
+        // When status=all (admin view), include inactive/draft jobs too
         let matchQuery = {
-            isActive: true,
             $and: []
         };
+
+        // Only filter by isActive for public (non-admin) requests
+        if (req.query.status !== 'all') {
+            matchQuery.isActive = true;
+        }
+
+        // If isExternalJob filter is specified, only return external jobs
+        if (isExternalJob === 'true') {
+            matchQuery.isExternalJob = true;
+        } else if (isExternalJob === 'false') {
+            matchQuery.isExternalJob = { $ne: true };
+        }
 
         // Filter by status (default to 'published' unless 'all' or specific status requested)
         if (req.query.status && req.query.status !== 'all') {
@@ -82,12 +95,13 @@ router.get('/', async (req, res) => {
 
         const skip = (parseInt(page) - 1) * parseInt(limit);
 
-        // Use aggregation to sort by publishedAt with fallback to createdAt
-        const jobs = await Job.aggregate([
+        // Get internal jobs
+        const internalJobs = await Job.aggregate([
             { $match: matchQuery },
             {
                 $addFields: {
-                    sortDate: { $ifNull: ['$publishedAt', '$createdAt'] }
+                    sortDate: { $ifNull: ['$publishedAt', '$createdAt'] },
+                    source: 'internal'
                 }
             },
             { $sort: { sortDate: -1 } },
@@ -95,10 +109,79 @@ router.get('/', async (req, res) => {
             { $limit: parseInt(limit) }
         ]);
 
-        const total = await Job.countDocuments(matchQuery);
+        // Get approved external jobs (only for public view and if not filtering by isExternalJob=false)
+        let externalJobs = [];
+        if (req.query.status !== 'all' && isExternalJob !== 'false') {
+            let externalMatchQuery = { status: 'approved' };
+            
+            if (search) {
+                externalMatchQuery.$or = [
+                    { role: { $regex: search, $options: 'i' } },
+                    { company: { $regex: search, $options: 'i' } },
+                    { description: { $regex: search, $options: 'i' } }
+                ];
+            }
+            
+            if (location) {
+                // For external jobs, check both location and country fields
+                if (externalMatchQuery.$or) {
+                    // If we already have $or from search, add location to $and
+                    externalMatchQuery.$and = [
+                        { $or: externalMatchQuery.$or },
+                        {
+                            $or: [
+                                { location: { $regex: location, $options: 'i' } },
+                                { country: { $regex: location, $options: 'i' } }
+                            ]
+                        }
+                    ];
+                    delete externalMatchQuery.$or;
+                } else {
+                    externalMatchQuery.$or = [
+                        { location: { $regex: location, $options: 'i' } },
+                        { country: { $regex: location, $options: 'i' } }
+                    ];
+                }
+            }
+            
+            if (company) {
+                const companies = typeof company === 'string' ? company.split(',').map(c => c.trim()) : company;
+                if (companies.length > 0) {
+                    externalMatchQuery.company = { $in: companies };
+                }
+            }
+            
+            externalJobs = await ExternalJob.find(externalMatchQuery)
+                .sort({ approvedAt: -1 })
+                .limit(parseInt(limit))
+                .lean()
+                .then(jobs => jobs.map(job => ({
+                    ...job,
+                    source: 'external',
+                    title: job.role,
+                    package: job.salary,
+                    description: job.description || `${job.role} at ${job.company}`,
+                    companyLogo: job.companyLogo || ''
+                })));
+        }
+
+        // Combine and sort by date
+        const allJobs = [...internalJobs, ...externalJobs]
+            .sort((a, b) => {
+                const dateA = a.sortDate || a.approvedAt || new Date(0);
+                const dateB = b.sortDate || b.approvedAt || new Date(0);
+                return new Date(dateB) - new Date(dateA);
+            })
+            .slice(0, parseInt(limit));
+
+        const internalTotal = await Job.countDocuments(matchQuery);
+        const externalTotal = req.query.status !== 'all' && isExternalJob !== 'false' ? await ExternalJob.countDocuments({ status: 'approved' }) : 0;
+        const total = internalTotal + externalTotal;
+
+        console.log('[GET /jobs] Internal jobs:', internalJobs.length, 'External jobs:', externalJobs.length, 'Total:', total);
 
         res.json({
-            jobs,
+            jobs: allJobs,
             totalPages: Math.ceil(total / parseInt(limit)),
             currentPage: parseInt(page),
             total
@@ -394,7 +477,8 @@ router.put('/:id', async (req, res) => {
                 ...req.body,
                 status: 'published',
                 publishedAt: now,
-                createdAt: now
+                createdAt: now,
+                isActive: true  // Ensure job is active when published
             };
 
             const updatedJob = await Job.findOneAndUpdate(
@@ -414,6 +498,11 @@ router.put('/:id', async (req, res) => {
 
         // For other updates (including scheduled), use findOneAndUpdate for consistency
         const updateData = { ...req.body };
+        
+        // Always ensure isActive is true when status is published
+        if (updateData.status === 'published') {
+            updateData.isActive = true;
+        }
         
         const updatedJob = await Job.findOneAndUpdate(
             { _id: req.params.id },
@@ -495,6 +584,23 @@ router.get('/admin/feedback-stats', async (req, res) => {
             .limit(100);
 
         res.json(jobs);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Fix published jobs that have isActive: false (repair endpoint)
+router.post('/repair/fix-published-inactive', async (req, res) => {
+    try {
+        const result = await Job.updateMany(
+            { status: 'published', isActive: false },
+            { $set: { isActive: true } }
+        );
+        console.log(`[REPAIR] Fixed ${result.modifiedCount} published jobs with isActive: false`);
+        res.json({ 
+            message: `Fixed ${result.modifiedCount} published jobs that were incorrectly inactive`,
+            modifiedCount: result.modifiedCount
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

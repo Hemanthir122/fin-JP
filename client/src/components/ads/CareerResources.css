@@ -1,0 +1,115 @@
+/* ── Career Resources Section ── */
+.career-resources-section {
+    background: var(--bg-page);
+}
+
+.career-resources-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.career-resources-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 900px) {
+    .career-resources-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+    .career-resources-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Card ── */
+.career-resource-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.career-resource-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-accent);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.career-resource-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(15,23,42,0.1);
+    border-color: var(--card-border, var(--border-color));
+}
+
+.career-resource-card:hover::before {
+    opacity: 1;
+}
+
+[data-theme="dark"] .career-resource-card {
+    background: var(--bg-card);
+}
+
+.cr-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--card-bg, var(--bg-subtle));
+    border: 1px solid var(--card-border, var(--border-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.cr-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.cr-body {
+    flex: 1;
+}
+
+.cr-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+}
+
+.cr-desc {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.cr-cta {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--card-accent, var(--primary));
+    margin-top: 4px;
+    transition: gap 0.15s ease;
+}
+
+.career-resource-card:hover .cr-cta {
+    gap: 4px;
+}

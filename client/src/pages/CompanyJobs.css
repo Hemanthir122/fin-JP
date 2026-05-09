@@ -1,66 +1,123 @@
 .company-jobs-page {
     min-height: 100vh;
+    background: var(--bg-page);
     padding-bottom: 80px;
 }
 
 .company-header {
-    padding: 120px 0 50px;
-    background: var(--gradient-hero);
+    padding: 100px 0 40px;
+    background: linear-gradient(135deg, #fff7ed 0%, #fffbf5 60%, #fff 100%);
+    border-bottom: 1px solid var(--border-color);
 }
+
+[data-theme="dark"] .company-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    transition: color 0.15s;
+}
+
+.back-link:hover { color: #f97316; }
 
 .company-info {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 24px;
 }
 
 .company-logo-large {
-    width: 100px;
-    height: 100px;
-    border-radius: 20px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    width: 88px;
+    height: 88px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1.5px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     color: var(--text-muted);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
 }
 
 .company-logo-large img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 8px;
 }
 
+.company-details { flex: 1; }
+
 .company-name {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 800;
     color: var(--text-primary);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
 }
 
 .company-jobs-count {
     color: var(--text-secondary);
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.company-jobs-count::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #f97316;
+    border-radius: 50%;
 }
 
 .company-jobs-page .jobs-grid {
-    margin-top: 40px;
+    margin-top: 32px;
 }
 
 @media (max-width: 768px) {
-    .company-header {
-        padding: 100px 0 40px;
-    }
+    .company-header { padding: 90px 0 32px; }
+    .company-info { flex-direction: column; text-align: center; gap: 16px; }
+    .company-name { font-size: 1.5rem; }
+    .company-logo-large { width: 72px; height: 72px; }
+}
 
-    .company-info {
+/* ── Sponsored native ad spans full grid width ── */
+.company-jobs-page .jobs-grid .sponsored-native-card {
+    grid-column: 1 / -1;
+}
+
+/* ── 2-column grid on desktop ── */
+@media (min-width: 641px) {
+    .company-jobs-page .jobs-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+}
+
+/* ── Single column on mobile ── */
+@media (max-width: 640px) {
+    .company-jobs-page .jobs-grid {
+        display: flex;
         flex-direction: column;
-        text-align: center;
-        gap: 20px;
+        gap: 10px;
     }
+}
 
-    .company-name {
-        font-size: 1.75rem;
-    }
+/* Extra bottom padding on mobile for the fixed CTA bar */
+@media (max-width: 900px) {
+    .company-jobs-page { padding-bottom: 64px; }
 }

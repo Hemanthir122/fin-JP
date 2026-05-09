@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu } from 'lucide-react';
-import AdminThemeToggle from './AdminThemeToggle';
 import '../pages/admin/Admin.css';
 
 function AdminLayout({ children }) {
@@ -37,7 +36,6 @@ function AdminLayout({ children }) {
                 </nav>
 
                 <div className="admin-sidebar-footer">
-                    <AdminThemeToggle />
                     <Link to="/" className="nav-item back-link">
                         ← Back to Site
                     </Link>

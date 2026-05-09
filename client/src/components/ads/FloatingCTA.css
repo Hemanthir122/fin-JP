@@ -1,0 +1,48 @@
+/* ── Floating CTA — mobile/tablet only, fixed bottom center ── */
+.floating-cta {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #fff !important;
+    text-decoration: none;
+    padding: 14px 24px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    box-shadow: 0 -4px 20px rgba(249,115,22,0.3);
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    white-space: nowrap;
+    border-radius: 0;
+    /* safe area for phones with home bar */
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+}
+
+.floating-cta-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.floating-cta:hover {
+    background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+}
+
+.floating-cta-label {
+    pointer-events: none;
+    width: 100%;
+    text-align: center;
+    display: block;
+}
+
+/* Only show on mobile/tablet, hide on desktop where sidebar exists */
+@media (max-width: 900px) {
+    .floating-cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

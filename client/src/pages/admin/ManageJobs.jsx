@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Edit, Trash2, Eye, Menu } from 'lucide-react';
+import { Search, Edit, Trash2, Eye, Menu, Send } from 'lucide-react';
 
 import api from '../../utils/api';
 import './Admin.css';
@@ -69,7 +69,10 @@ function ManageJobs() {
         try {
             await Promise.all(items.map(item => {
                 const endpoint = item.model === 'walkin' ? `/walkins/${item._id}` : `/jobs/${item._id}`;
-                return api.put(endpoint, { status: newStatus });
+                const body = newStatus === 'published'
+                    ? { status: newStatus, isActive: true }
+                    : { status: newStatus };
+                return api.put(endpoint, body);
             }));
             await fetchJobs();
             clearSelection();
@@ -84,6 +87,28 @@ function ManageJobs() {
 
     const bulkPublish = () => performBulkStatusUpdate('published');
     const bulkDraft = () => performBulkStatusUpdate('draft');
+
+    const publishJob = async (job) => {
+        try {
+            const endpoint = job.model === 'walkin' ? `/walkins/${job._id}` : `/jobs/${job._id}`;
+            await api.put(endpoint, { status: 'published', isActive: true });
+            await fetchJobs();
+        } catch (e) {
+            console.error('Error publishing job:', e);
+            alert('Error publishing job. Please try again.');
+        }
+    };
+
+    const draftJob = async (job) => {
+        try {
+            const endpoint = job.model === 'walkin' ? `/walkins/${job._id}` : `/jobs/${job._id}`;
+            await api.put(endpoint, { status: 'draft' });
+            await fetchJobs();
+        } catch (e) {
+            console.error('Error moving job to draft:', e);
+            alert('Error moving job to draft. Please try again.');
+        }
+    };
 
     const bulkDelete = async () => {
         const items = jobs.filter(j => selectedKeys.has(keyFor(j)));
@@ -359,18 +384,40 @@ function ManageJobs() {
                                                         to={`/job/${job._id}?type=${job.type}&view=admin`}
                                                         target="_blank"
                                                         className="table-btn table-btn-edit"
+                                                        title="View"
                                                     >
                                                         <Eye size={14} />
                                                     </Link>
                                                     <Link
                                                         to={`/admin/edit-job/${job._id}?type=${job.type}`}
                                                         className="table-btn table-btn-edit"
+                                                        title="Edit"
                                                     >
                                                         <Edit size={14} />
                                                     </Link>
+                                                    {job.status === 'draft' ? (
+                                                        <button
+                                                            className="table-btn"
+                                                            onClick={() => publishJob(job)}
+                                                            title="Publish"
+                                                            style={{ background: '#dcfce7', color: '#16a34a', border: '1px solid #bbf7d0' }}
+                                                        >
+                                                            <Send size={14} />
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            className="table-btn"
+                                                            onClick={() => draftJob(job)}
+                                                            title="Move to Draft"
+                                                            style={{ background: '#f5f3ff', color: '#7c3aed', border: '1px solid #ddd6fe' }}
+                                                        >
+                                                            <Edit size={14} />
+                                                        </button>
+                                                    )}
                                                     <button
                                                         className="table-btn table-btn-delete"
                                                         onClick={() => openDeleteModal(job._id, job.type)}
+                                                        title="Delete"
                                                     >
                                                         <Trash2 size={14} />
                                                     </button>

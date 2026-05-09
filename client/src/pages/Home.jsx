@@ -1,123 +1,120 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Target, Zap, Shield, Users } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import JobCard from '../components/JobCard';
 import JobFilter from '../components/JobFilter';
-import HorizontalNativeAd from '../components/ads/HorizontalNativeAd';
-import MobileNativeAd from '../components/ads/MobileNativeAd';
-import SocialBar from '../components/ads/SocialBar'; // REMOVED: May cause redirects
-// import Popunder from '../components/ads/Popunder'; // REMOVED: Causes auto-redirects
+import CountryBar from '../components/CountryBar';
 import { useLatestJobs, useCompanies, useLocations } from '../hooks/useJobs';
+import SponsoredCard from '../components/ads/SponsoredCard';
+import NativeBannerSection from '../components/ads/NativeBannerSection';
+import FloatingCTA from '../components/ads/FloatingCTA';
+import MobileBannerAd from '../components/ads/MobileBannerAd';
 import './Home.css';
+
+const SMARTLINK = 'https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085';
 
 function Home() {
     const [filters, setFilters] = useState({});
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 640);
 
-    // React Query hooks - cached and deduplicated
+    useEffect(() => {
+        const handler = () => setIsMobile(window.innerWidth <= 640);
+        window.addEventListener('resize', handler);
+        return () => window.removeEventListener('resize', handler);
+    }, []);
+
     const { data: jobs = [], isLoading: jobsLoading } = useLatestJobs();
     const { data: companies = [] } = useCompanies();
     const { data: locations = [] } = useLocations();
-
-    const loading = jobsLoading;
-
-    // Handle resize for responsive ad placement
-    useState(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // Client-side filtering on already fetched data
-    const filteredJobs = useMemo(() => {
-        let result = [...jobs];
-        
-        // Safety filter: Remove any draft jobs (should be filtered by backend, but this ensures it)
-        result = result.filter(job => job.status === 'published' || !job.status);
-        
-        const { search, location, type, company } = filters;
-
-        if (search) {
-            const searchLower = search.toLowerCase();
-            result = result.filter(job =>
-                job.title.toLowerCase().includes(searchLower) ||
-                job.company.toLowerCase().includes(searchLower) ||
-                job.location.toLowerCase().includes(searchLower)
-            );
-        }
-
-        if (location) {
-            result = result.filter(job =>
-                job.location.toLowerCase().includes(location.toLowerCase())
-            );
-        }
-
-        if (type) {
-            result = result.filter(job => job.type === type);
-        }
-
-        if (company) {
-            // Handle both array (multi-select) and string (legacy)
-            if (Array.isArray(company) && company.length > 0) {
-                result = result.filter(job =>
-                    company.includes(job.company)
-                );
-            } else if (typeof company === 'string' && company !== '') {
-                result = result.filter(job =>
-                    job.company.toLowerCase().includes(company.toLowerCase())
-                );
-            }
-        }
-
-        return result;
-    }, [jobs, filters]);
 
     const handleFilter = useCallback((newFilters) => {
         setFilters(newFilters);
     }, []);
 
-    const features = [
-        {
-            icon: Target,
-            title: 'Curated Opportunities',
-            description: 'Hand-picked jobs from verified companies across industries'
-        },
-        {
-            icon: Zap,
-            title: 'Quick Apply',
-            description: 'Apply to multiple jobs instantly with your profile'
-        },
-        {
-            icon: Shield,
-            title: 'Verified Listings',
-            description: 'All job postings are verified for authenticity'
-        },
-        {
-            icon: Users,
-            title: 'Career Support',
-            description: 'Get guidance and support throughout your job search'
+    const handleCountryChange = useCallback((country) => {
+        setFilters(prev => ({ ...prev, country, cities: [] }));
+    }, []);
+
+    const filteredJobs = useMemo(() => {
+        let result = [...jobs];
+        result = result.filter(job => job.status === 'published' || !job.status);
+
+        const { search, types, company, country, cities } = filters;
+
+        if (cities && cities.length > 0) {
+            result = result.filter(job => {
+                const loc = (job.location || '').toLowerCase();
+                return cities.some(cityName => loc.includes(cityName.toLowerCase()));
+            });
+        } else if (country) {
+            result = result.filter(job => {
+                const loc = (job.location || '').toLowerCase();
+                const ctry = (job.country || '').toLowerCase();
+                return loc.includes(country.toLowerCase()) || ctry.includes(country.toLowerCase());
+            });
         }
+
+        if (search) {
+            const s = search.toLowerCase();
+            result = result.filter(job =>
+                job.title.toLowerCase().includes(s) ||
+                job.company.toLowerCase().includes(s) ||
+                (job.location || '').toLowerCase().includes(s)
+            );
+        }
+        if (types && types.length > 0) result = result.filter(job => types.includes(job.type || 'job'));
+        if (company) {
+            if (Array.isArray(company) && company.length > 0)
+                result = result.filter(job => company.includes(job.company));
+            else if (typeof company === 'string' && company)
+                result = result.filter(job => job.company.toLowerCase().includes(company.toLowerCase()));
+        }
+
+        return result;
+    }, [jobs, filters]);
+
+    const features = [
+        { icon: Target, title: 'Curated Opportunities', description: 'Hand-picked jobs from verified companies across industries' },
+        { icon: Zap,    title: 'Quick Apply',           description: 'Apply to multiple jobs instantly with your profile' },
+        { icon: Shield, title: 'Verified Listings',     description: 'All job postings are verified for authenticity' },
+        { icon: Users,  title: 'Career Support',        description: 'Get guidance and support throughout your job search' },
     ];
+
+    /* Inject sponsored native ad + mobile banner:
+       - Only sponsored when total > 6: mobile after 3, desktop after 6
+       - Mobile banner after every job card (mobile only via CSS)
+    */
+    const jobsWithAds = useMemo(() => {
+        const items = [];
+        const total = filteredJobs.length;
+        const interval = isMobile ? 3 : 6;
+        let adCount = 0;
+
+        filteredJobs.forEach((job, i) => {
+            items.push({ type: 'job', job, key: job._id });
+            // Mobile banner after every job
+            items.push({ type: 'mobile-banner', key: `mb-${i}` });
+            // Sponsored native ad at interval (only if > 6 jobs)
+            if (total > 6 && (i + 1) % interval === 0) {
+                items.push({ type: 'sponsored', key: `sponsored-${adCount++}` });
+            }
+        });
+        return items;
+    }, [filteredJobs, isMobile]);
 
     return (
         <div className="home-page">
             <Helmet>
-                <title>JobConnects - Find Best Jobs, Internships & Walk-ins in India</title>
-                <meta name="description" content="Find the latest jobs, internships, and walk-in drive opportunities in India. Connect with top recruitng companies like TCS, Infosys, Wipro, and more." />
+                <title>JobConnects - Find Best Jobs, Internships & Walk-ins Worldwide</title>
+                <meta name="description" content="Find the latest jobs, internships, and walk-in drive opportunities. Connect with top companies like TCS, Infosys, Wipro, and more on JobConnects." />
                 <link rel="canonical" href="https://jobconnects.online/" />
             </Helmet>
 
-            {/* Global Ads */}
-            <SocialBar />
-            {/* <Popunder /> */} {/* REMOVED: Causes auto-redirects */}
-
             <Hero />
 
-            {/* About Section */}
+            {/* ── Why Choose Us ── */}
             <section className="section about-section">
                 <div className="container">
                     <div className="about-content">
@@ -140,7 +137,6 @@ function Home() {
                         ))}
                     </div>
 
-                    {/* Features Navigation Dots */}
                     <div className="features-navigation">
                         <span className="dot active"></span>
                         <span className="dot"></span>
@@ -149,52 +145,56 @@ function Home() {
                 </div>
             </section>
 
-            {/* Jobs Section */}
+            {/* ── Native Banner — between Why Choose Us and Latest Opportunities ── */}
+            <div className="container home-native-banner-wrap">
+                <NativeBannerSection title="Trending Career Picks" />
+            </div>
+
+            {/* ── Latest Opportunities ── */}
             <section className="section jobs-section">
                 <div className="container">
                     <div className="jobs-header">
                         <div>
                             <h2 className="section-title">Latest Opportunities</h2>
-                            <p className="section-subtitle">
-                                Explore the newest job openings from top companies
-                            </p>
+                            <p className="section-subtitle">Explore the newest job openings from top companies</p>
                         </div>
                     </div>
 
-                    <JobFilter
-                        onFilter={handleFilter}
-                        companies={companies}
-                        locations={locations}
-                    />
+                    <CountryBar onCountryChange={handleCountryChange} />
+                    <JobFilter onFilter={handleFilter} companies={companies} locations={locations} />
 
-                    {loading ? (
+                    {jobsLoading ? (
                         <div className="loading-container">
                             <div className="spinner"></div>
                         </div>
                     ) : filteredJobs.length > 0 ? (
                         <>
-                            <div className="jobs-grid grid grid-3">
-                                {filteredJobs.map((job, index) => {
-                                    // Desktop: Show Horizontal Ad Row after every 6 job cards
-                                    const showAdRow = (index + 1) % 6 === 0 && window.innerWidth > 768;
-                                    
-                                    // Mobile: Show Native Ad after every 2 cards
-                                    const showMobileAd = (index + 1) % 2 === 0 && window.innerWidth <= 768;
-                                    
-                                    return (
-                                        <>
-                                            <div key={job._id} className={`animate-fadeIn stagger-${(index % 5) + 1}`}>
-                                                <JobCard job={job} />
-                                            </div>
-                                            {showAdRow && (
-                                                <HorizontalNativeAd key={`horizontal-ad-${index}`} index={index} />
-                                            )}
-                                            {showMobileAd && (
-                                                <MobileNativeAd key={`mobile-ad-${index}`} index={index} />
-                                            )}
-                                        </>
-                                    );
-                                })}
+                            {/* ── Mobile: flat list with banner after every card ── */}
+                            <div className="jobs-mobile-list">
+                                {filteredJobs.map((job, i) => (
+                                    <div key={job._id}>
+                                        <div className={`animate-fadeIn stagger-${(i % 5) + 1}`}>
+                                            <JobCard job={job} />
+                                        </div>
+                                        <MobileBannerAd key={`mb-${job._id}`} />
+                                        {filteredJobs.length > 6 && (i + 1) % 3 === 0 && (
+                                            <SponsoredCard key={`sp-m-${i}`} />
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* ── Desktop: 2-col grid, sponsored every 6 ── */}
+                            <div className="jobs-grid grid grid-2 jobs-desktop-grid">
+                                {filteredJobs.map((job, i) => (
+                                    <div key={job._id} className={`animate-fadeIn stagger-${(i % 5) + 1}`}>
+                                        <JobCard job={job} />
+                                    </div>
+                                ))}
+                                {filteredJobs.length > 6 && Array.from(
+                                    { length: Math.floor(filteredJobs.length / 6) },
+                                    (_, i) => <SponsoredCard key={`sp-d-${i}`} />
+                                )}
                             </div>
 
                             <div className="view-all-container">
@@ -205,15 +205,56 @@ function Home() {
                             </div>
                         </>
                     ) : (
-                        <div className="empty-state">
-                            <h3>No jobs found</h3>
-                            <p>Try adjusting your filters to find more opportunities</p>
+                        /* ── Premium Empty State ── */
+                        <div className="home-empty-state">
+                            <div className="empty-state-icon">🔍</div>
+                            {filters.cities && filters.cities.length > 0 ? (
+                                <>
+                                    <h3>No jobs found in {filters.cities.join(', ')}</h3>
+                                    <p>We're actively sourcing jobs from <strong>{filters.cities.join(', ')}</strong>. Check back in a few days.</p>
+                                    <div className="empty-state-actions">
+                                        <button className="btn btn-secondary" onClick={() => handleFilter({ ...filters, cities: [] })}>
+                                            Show all {filters.country} jobs
+                                        </button>
+                                        <Link to="/jobs" className="btn btn-primary">Browse All Jobs</Link>
+                                    </div>
+                                </>
+                            ) : filters.country ? (
+                                <>
+                                    <h3>No jobs found for {filters.country}</h3>
+                                    <p>New listings are added daily — check back soon!</p>
+                                    <div className="empty-state-actions">
+                                        <button className="btn btn-secondary" onClick={() => handleFilter({ ...filters, country: '' })}>Show All Countries</button>
+                                        <Link to="/jobs" className="btn btn-primary">Browse All Jobs</Link>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <h3>No jobs found</h3>
+                                    <p>Try adjusting your filters or explore these opportunities:</p>
+                                    <div className="empty-state-actions">
+                                        <Link to="/jobs" className="btn btn-primary">Browse All Jobs</Link>
+                                    </div>
+                                </>
+                            )}
+
+                            {/* Premium fallback sponsored cards */}
+                            <div className="empty-sponsored-grid">
+                                <SponsoredCard />
+                            </div>
                         </div>
                     )}
                 </div>
             </section>
 
-            {/* CTA Section */}
+
+
+            {/* ── Native Banner — after career resources ── */}
+            <div className="container home-native-banner-wrap">
+                <NativeBannerSection title="Featured Openings" />
+            </div>
+
+            {/* ── CTA Section ── */}
             <section className="section cta-section">
                 <div className="container">
                     <div className="cta-content glass">
@@ -228,13 +269,22 @@ function Home() {
                             <Link to="/jobs" className="btn btn-primary btn-lg">
                                 Browse Jobs
                             </Link>
-                            <Link to="/internships" className="btn btn-secondary btn-lg">
-                                Find Internships
-                            </Link>
+                            <a
+                                href={SMARTLINK}
+                                className="btn btn-secondary btn-lg"
+                                target="_blank"
+                                rel="noopener noreferrer nofollow"
+                                onClick={(e) => { e.preventDefault(); window.open(SMARTLINK, '_blank', 'noopener,noreferrer'); }}
+                            >
+                                Explore Opportunities
+                            </a>
                         </div>
                     </div>
                 </div>
             </section>
+
+            {/* ── Floating Mobile CTA ── */}
+            <FloatingCTA />
         </div>
     );
 }

@@ -10,8 +10,6 @@ import { useJobDetails, useCompanyJobs, useWalkinDetails } from '../hooks/useJob
 import api from '../utils/api';
 import StructuredData from '../components/StructuredData';
 import { generateJobPostingSchema } from '../utils/seo';
-import AdsterraNativeBannerJobDetail from '../components/ads/AdsterraNativeBannerJobDetail';
-import AdsterraBannerMobile from '../components/ads/AdsterraBannerMobile';
 import './JobDetails.css';
 
 // Feedback Section Component
@@ -342,9 +340,6 @@ ${platformLink}`;
                 <div className="container">
                     <div className="job-content-grid">
                         <div className="job-main">
-                            {/* Ad Placement 1: Native Banner - After header, before description */}
-                            <AdsterraNativeBannerJobDetail />
-
                             {/* Description */}
                             <section className="job-section">
                                 <h2 className="section-heading">Job Description</h2>
@@ -377,9 +372,6 @@ ${platformLink}`;
                                 </section>
                             )}
 
-                            {/* Ad Placement 3: Banner Mobile - After required skills */}
-                            <AdsterraBannerMobile />
-
                             {/* Responsibilities */}
                             {job.responsibilities && job.responsibilities.length > 0 && (
                                 <section className="job-section">
@@ -410,9 +402,6 @@ ${platformLink}`;
                                 </section>
                             )}
 
-                            {/* Ad Placement 4: Banner Mobile - Before Feedback/Apply section */}
-                            <AdsterraBannerMobile />
-                            
                             {/* Feedback Section - Hidden for Walkins */}
                             {!isWalkin && <FeedbackSection jobId={id} isWalkin={isWalkin} />}
                             {/* Apply Button - In Page - Hidden for Walkins */}

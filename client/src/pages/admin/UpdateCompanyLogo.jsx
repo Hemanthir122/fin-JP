@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { X, Check, Building2, Menu, Upload, AlertCircle } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 import api from '../../utils/api';
 import './Admin.css';
 
 function UpdateCompanyLogo() {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const [companies, setCompanies] = useState([]);
     const [showCompanyDropdown, setShowCompanyDropdown] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -115,6 +117,10 @@ function UpdateCompanyLogo() {
 
             setSuccess(true);
             setError('');
+            
+            // Invalidate all job queries so cards refresh with new logo
+            queryClient.invalidateQueries({ queryKey: ['jobs'] });
+            queryClient.invalidateQueries({ queryKey: ['walkins'] });
             
             // Update the selected company with new data
             setSelectedCompany(response.data.company);

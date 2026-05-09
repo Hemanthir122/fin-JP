@@ -13,10 +13,10 @@ export const jobKeys = {
 
 // Default options for long stale times
 const defaultQueryOptions = {
-    staleTime: 30 * 60 * 1000, // 30 minutes
-    gcTime: 60 * 60 * 1000,    // 60 minutes
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    staleTime: 0,               // Always consider data stale - refetch on every mount
+    gcTime: 5 * 60 * 1000,     // Keep in memory for 5 minutes
+    refetchOnWindowFocus: true, // Refetch when user switches back to the tab
+    refetchOnMount: true,       // Always check for fresh data on mount
     retry: 1,
 };
 
@@ -67,7 +67,8 @@ export function useCompanyJobs(companyName) {
         queryKey: jobKeys.company(companyName),
         queryFn: async () => {
             const { data } = await api.get(`/jobs/company/${encodeURIComponent(companyName)}`);
-            return data;
+            // API returns { jobs, totalPages, total } — extract jobs array
+            return Array.isArray(data) ? data : (data.jobs || []);
         },
         enabled: !!companyName,
         ...defaultQueryOptions,

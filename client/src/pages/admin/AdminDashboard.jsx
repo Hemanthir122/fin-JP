@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Briefcase, Users, Calendar, Plus, List, TrendingUp, Clock, Menu, ThumbsUp } from 'lucide-react';
+import { Briefcase, Users, Calendar, Plus, List, TrendingUp, Clock, Menu, ThumbsUp, Search, Filter, Eye, Check, X } from 'lucide-react';
 
 import api from '../../utils/api';
-import AdminThemeToggle from '../../components/AdminThemeToggle';
 import './Admin.css';
 
 function AdminDashboard() {
@@ -16,6 +15,8 @@ function AdminDashboard() {
     });
     const [loading, setLoading] = useState(true);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState('dashboard');
+    const [searchQuery, setSearchQuery] = useState('');
 
 
     useEffect(() => {
@@ -42,25 +43,18 @@ function AdminDashboard() {
             description: 'Active full-time positions'
         },
         {
-            title: 'Internships',
+            title: 'Companies',
             value: stats.totalInternships,
             icon: Users,
             color: 'green',
-            description: 'Active internship openings'
+            description: 'Registered companies'
         },
         {
-            title: 'Walk-ins',
+            title: 'Showing',
             value: stats.totalWalkins,
-            icon: Calendar,
+            icon: Eye,
             color: 'orange',
-            description: 'Active walk-in interviews'
-        },
-        {
-            title: 'Total Listings',
-            value: stats.totalAll,
-            icon: TrendingUp,
-            color: 'purple',
-            description: 'All active job listings'
+            description: 'Currently visible listings'
         }
     ];
 
@@ -91,6 +85,9 @@ function AdminDashboard() {
                     <Link to="/admin/manage-jobs" className="nav-item">
                         Manage Jobs
                     </Link>
+                    <Link to="/admin/external-jobs" className="nav-item">
+                        External Jobs Database
+                    </Link>
                     <Link to="/admin/update-company-logo" className="nav-item">
                         Update Company Logo
                     </Link>
@@ -99,7 +96,6 @@ function AdminDashboard() {
                     </Link>
                 </nav>
                 <div className="admin-sidebar-footer">
-                    <AdminThemeToggle />
                     <Link to="/" className="nav-item back-link">
                         ← Back to Site
                     </Link>
@@ -125,18 +121,45 @@ function AdminDashboard() {
                             <Menu size={24} />
                         </button>
                         <div>
-                            <h1>Dashboard</h1>
+                            <h1>External Job Database</h1>
                             <p>Welcome back! Here's an overview of your job portal.</p>
                         </div>
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <AdminThemeToggle />
                         <Link to="/admin/post-job" className="btn btn-primary">
                             <Plus size={18} />
-                            Post New Job
+                            Post a Job
                         </Link>
                     </div>
+                </div>
+
+                {/* Navigation Tabs */}
+                <div className="dashboard-tabs">
+                    <button 
+                        className={`tab-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('dashboard')}
+                    >
+                        Dashboard
+                    </button>
+                    <button 
+                        className={`tab-item ${activeTab === 'postings' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('postings')}
+                    >
+                        Postings
+                    </button>
+                    <button 
+                        className={`tab-item ${activeTab === 'candidates' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('candidates')}
+                    >
+                        Candidates
+                    </button>
+                    <button 
+                        className={`tab-item ${activeTab === 'talent' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('talent')}
+                    >
+                        Talent Pool
+                    </button>
                 </div>
 
                 {loading ? (
@@ -145,6 +168,7 @@ function AdminDashboard() {
                     </div>
                 ) : (
                     <>
+                        {/* Stats Cards */}
                         <div className="stats-grid">
                             {statCards.map((stat, index) => (
                                 <div key={index} className={`stat-card stat-${stat.color}`}>
@@ -160,65 +184,67 @@ function AdminDashboard() {
                             ))}
                         </div>
 
-                        <div className="admin-grid">
-                            <div className="admin-card">
-                                <div className="card-header">
-                                    <h2>
-                                        <Clock size={20} />
-                                        Recent Jobs
-                                    </h2>
-                                    <Link to="/admin/manage-jobs" className="view-all">
-                                        View All
-                                    </Link>
-                                </div>
-                                <div className="recent-jobs-list">
-                                    {stats.recentJobs.length > 0 ? (
-                                        stats.recentJobs.map((job) => (
-                                            <div key={job._id} className="recent-job-item">
-                                                <div className="job-info">
-                                                    <span className="job-title">{job.title}</span>
-                                                    <span className="job-company">{job.company}</span>
-                                                </div>
-                                                <div className="job-meta">
-                                                    <span className={`badge badge-${job.type}`}>
-                                                        {job.type}
-                                                    </span>
-                                                    <span className="job-date">{formatDate(job.createdAt)}</span>
-                                                </div>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p className="no-data">No jobs posted yet</p>
-                                    )}
-                                </div>
+                        {/* Search and Filter */}
+                        <div className="search-filter-bar">
+                            <div className="search-container">
+                                <Search size={18} />
+                                <input 
+                                    type="text" 
+                                    placeholder="Search by job title, company, or keywords..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
                             </div>
+                            <button className="filter-btn">
+                                <Filter size={18} />
+                                Filter
+                            </button>
+                            <button className="sort-btn">
+                                Newest First
+                                <span>▼</span>
+                            </button>
+                        </div>
 
-                            <div className="admin-card">
-                                <div className="card-header">
-                                    <h2>
-                                        <List size={20} />
-                                        Quick Actions
-                                    </h2>
+                        {/* Jobs List */}
+                        <div className="jobs-list-container">
+                            {stats.recentJobs.length > 0 ? (
+                                stats.recentJobs.map((job) => (
+                                    <div key={job._id} className="job-list-item">
+                                        <div className="job-icon">
+                                            <Briefcase size={24} />
+                                        </div>
+                                        <div className="job-details">
+                                            <h3 className="job-title">{job.title}</h3>
+                                            <div className="job-meta-info">
+                                                <span className="meta-item">
+                                                    📍 {job.location || 'Location not specified'}
+                                                </span>
+                                                <span className="meta-item">
+                                                    💼 {job.experience || 'Experience not specified'}
+                                                </span>
+                                                <span className="meta-item">
+                                                    ⏱️ {job.type || 'Full-Time'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="job-actions">
+                                            <button className="action-btn reject">
+                                                <X size={18} />
+                                            </button>
+                                            <button className="action-btn approve">
+                                                <Check size={18} />
+                                            </button>
+                                            <Link to={`/admin/manage-jobs`} className="action-btn view">
+                                                View and Apply
+                                            </Link>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="no-jobs-message">
+                                    <p>No jobs posted yet</p>
                                 </div>
-                                <div className="quick-actions">
-                                    <Link to="/admin/post-job" className="quick-action">
-                                        <Plus size={20} />
-                                        <span>Post a new job listing</span>
-                                    </Link>
-                                    <Link to="/admin/manage-jobs" className="quick-action">
-                                        <List size={20} />
-                                        <span>Manage existing jobs</span>
-                                    </Link>
-                                    <Link to="/jobs" target="_blank" className="quick-action">
-                                        <Briefcase size={20} />
-                                        <span>View public job page</span>
-                                    </Link>
-                                    <Link to="/admin/feedback-stats" className="quick-action">
-                                        <ThumbsUp size={20} />
-                                        <span>View feedback statistics</span>
-                                    </Link>
-                                </div>
-                            </div>
+                            )}
                         </div>
                     </>
                 )}

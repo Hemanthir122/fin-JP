@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
@@ -10,6 +10,7 @@ const Home = lazy(() => import('./pages/Home'));
 const Jobs = lazy(() => import('./pages/Jobs'));
 const JobDetails = lazy(() => import('./pages/JobDetails'));
 const CompanyJobs = lazy(() => import('./pages/CompanyJobs'));
+const Companies = lazy(() => import('./pages/Companies'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Privacy = lazy(() => import('./pages/Privacy'));
@@ -21,6 +22,10 @@ const ManageJobs = lazy(() => import('./pages/admin/ManageJobs'));
 const EditJob = lazy(() => import('./pages/admin/EditJob'));
 const UpdateCompanyLogo = lazy(() => import('./pages/admin/UpdateCompanyLogo'));
 const FeedbackStats = lazy(() => import('./pages/admin/FeedbackStats'));
+const ExternalJobs = lazy(() => import('./pages/admin/ExternalJobs'));
+const ExternalJobsHistory = lazy(() => import('./pages/admin/ExternalJobsHistory'));
+const ApprovedExternalJobs = lazy(() => import('./pages/admin/ApprovedExternalJobs'));
+const ManageCompanyLogos = lazy(() => import('./pages/admin/ManageCompanyLogos'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const ResumeBuilder = lazy(() => import('./pages/ResumeBuilder'));
 
@@ -45,6 +50,16 @@ function ProtectedRoute({ children }) {
 import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
+  // Load Social Bar after app mounts — avoids race with other ad scripts
+  useEffect(() => {
+    const existing = document.querySelector('script[src*="53e55836ee891aa30b1843270191bee1"]');
+    if (existing) return; // already loaded
+    const script = document.createElement('script');
+    script.src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <HelmetProvider>
       <Router>
@@ -81,9 +96,29 @@ function App() {
                   <UpdateCompanyLogo />
                 </ProtectedRoute>
               } />
+              <Route path="/admin/external-jobs" element={
+                <ProtectedRoute>
+                  <ExternalJobs />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/external-jobs-history" element={
+                <ProtectedRoute>
+                  <ExternalJobsHistory />
+                </ProtectedRoute>
+              } />
               <Route path="/admin/feedback-stats" element={
                 <ProtectedRoute>
                   <FeedbackStats />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/approved-external-jobs" element={
+                <ProtectedRoute>
+                  <ApprovedExternalJobs />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/manage-company-logos" element={
+                <ProtectedRoute>
+                  <ManageCompanyLogos />
                 </ProtectedRoute>
               } />
 
@@ -96,7 +131,7 @@ function App() {
                       <Route path="/" element={<Home />} />
                       <Route path="/jobs" element={<Jobs />} />
                       <Route path="/internships" element={<Jobs type="internship" />} />
-                      <Route path="/walkins" element={<Jobs type="walkin" />} />
+                      <Route path="/companies" element={<Companies />} />
                       <Route path="/job/:id" element={<JobDetails />} />
                       <Route path="/company/:companyName" element={<CompanyJobs />} />
                       <Route path="/contact" element={<Contact />} />

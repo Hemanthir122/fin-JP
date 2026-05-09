@@ -95,6 +95,14 @@ const jobSchema = new mongoose.Schema({
     isExternalJob: {
         type: Boolean,
         default: false
+    },
+    externalJobApprovedAt: {
+        type: Date,
+        default: null
+    },
+    autoDeleteAt: {
+        type: Date,
+        default: null
     }
 }, {
     timestamps: true

@@ -1,0 +1,52 @@
+/* ── Sponsored Native Card — sits inline with job cards, spans full width ── */
+.sponsored-native-card {
+    grid-column: 1 / -1; /* always full width inside the jobs grid */
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 16px 20px 20px;
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .sponsored-native-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+/* ── Label row ── */
+.sponsored-native-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.sponsored-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+    flex-shrink: 0;
+}
+
+/* ── Ad body ── */
+.sponsored-native-body {
+    width: 100%;
+    min-height: 120px;
+}
+
+.sponsored-native-iframe {
+    width: 100%;
+    min-height: 120px;
+    border: none;
+    display: block;
+    background: transparent;
+}
