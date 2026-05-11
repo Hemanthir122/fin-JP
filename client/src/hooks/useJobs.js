@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../utils/api';
 
-// Query keys for cache management
 export const jobKeys = {
     all: ['jobs'],
     lists: () => [...jobKeys.all, 'list'],
@@ -11,16 +10,24 @@ export const jobKeys = {
     company: (companyName) => [...jobKeys.all, 'company', companyName],
 };
 
-// Default options for long stale times
+// Shared options — cache for 5 min, no aggressive refetching
 const defaultQueryOptions = {
-    staleTime: 0,               // Always consider data stale - refetch on every mount
-    gcTime: 5 * 60 * 1000,     // Keep in memory for 5 minutes
-    refetchOnWindowFocus: true, // Refetch when user switches back to the tab
-    refetchOnMount: true,       // Always check for fresh data on mount
+    staleTime: 5 * 60 * 1000,   // 5 minutes — don't refetch if data is fresh
+    gcTime:    10 * 60 * 1000,  // keep in memory 10 minutes
+    refetchOnWindowFocus: false, // don't refetch on tab switch
+    refetchOnMount: false,       // use cache if available
     retry: 1,
 };
 
-// Hook to fetch all jobs with filters
+// Static data — companies, locations rarely change
+const staticQueryOptions = {
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+    gcTime:    24 * 60 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 1,
+};
+
 export function useJobs(params = {}) {
     const queryParams = new URLSearchParams();
     let filteredParams = {};
@@ -33,8 +40,6 @@ export function useJobs(params = {}) {
     });
 
     const queryString = queryParams.toString();
-    
-    // Create a stable query key from filtered params only
     const stableKey = JSON.stringify(filteredParams);
 
     return useQuery({
@@ -47,7 +52,6 @@ export function useJobs(params = {}) {
     });
 }
 
-// Hook to fetch a single job by ID
 export function useJobDetails(id, { view } = {}) {
     return useQuery({
         queryKey: jobKeys.detail([id, view || null]),
@@ -57,17 +61,19 @@ export function useJobDetails(id, { view } = {}) {
             return data;
         },
         enabled: !!id,
-        ...defaultQueryOptions,
+        staleTime: 10 * 60 * 1000, // 10 min
+        gcTime:    30 * 60 * 1000,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        retry: 1,
     });
 }
 
-// Hook to fetch jobs by company
 export function useCompanyJobs(companyName) {
     return useQuery({
         queryKey: jobKeys.company(companyName),
         queryFn: async () => {
             const { data } = await api.get(`/jobs/company/${encodeURIComponent(companyName)}`);
-            // API returns { jobs, totalPages, total } — extract jobs array
             return Array.isArray(data) ? data : (data.jobs || []);
         },
         enabled: !!companyName,
@@ -75,10 +81,8 @@ export function useCompanyJobs(companyName) {
     });
 }
 
-// Hook to create a new job
 export function useCreateJob() {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: async (jobData) => {
             const { data } = await api.post('/jobs', jobData);
@@ -90,10 +94,8 @@ export function useCreateJob() {
     });
 }
 
-// Hook to update a job
 export function useUpdateJob() {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: async ({ id, ...jobData }) => {
             const { data } = await api.put(`/jobs/${id}`, jobData);
@@ -106,10 +108,8 @@ export function useUpdateJob() {
     });
 }
 
-// Hook to delete a job
 export function useDeleteJob() {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: async (id) => {
             const { data } = await api.delete(`/jobs/${id}`);
@@ -121,7 +121,6 @@ export function useDeleteJob() {
     });
 }
 
-// Hook to fetch companies (for filters)
 export function useCompanies() {
     return useQuery({
         queryKey: ['companies'],
@@ -129,14 +128,10 @@ export function useCompanies() {
             const { data } = await api.get('/companies');
             return data;
         },
-        staleTime: 24 * 60 * 60 * 1000, // 24 hours (Static data)
-        gcTime: 24 * 60 * 60 * 1000,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false
+        ...staticQueryOptions,
     });
 }
 
-// Hook to fetch locations (for filters)
 export function useLocations() {
     return useQuery({
         queryKey: ['locations'],
@@ -144,30 +139,25 @@ export function useLocations() {
             const { data } = await api.get('/jobs/locations');
             return data;
         },
-        staleTime: 24 * 60 * 60 * 1000, // 24 hours (Static data)
-        gcTime: 24 * 60 * 60 * 1000,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false
+        ...staticQueryOptions,
     });
 }
 
-// Hook to fetch latest jobs for Home page
 export function useLatestJobs() {
     return useQuery({
         queryKey: ['jobs', 'latest'],
         queryFn: async () => {
-            console.log('Fetching /jobs/latest');
             const { data } = await api.get('/jobs/latest');
-            console.log('Latest jobs received:', data);
             return data;
         },
-        staleTime: 10 * 1000, // 10 seconds for quick updates after publish
-        gcTime: 60 * 60 * 1000,
-        refetchOnWindowFocus: false // FIXED: Removed auto-refetch
+        staleTime: 3 * 60 * 1000,  // 3 minutes — fresh enough, not hammering server
+        gcTime:    10 * 60 * 1000,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        retry: 1,
     });
 }
 
-// Hook to fetch company details
 export function useCompanyDetails(companyName) {
     return useQuery({
         queryKey: ['company', companyName],
@@ -176,16 +166,12 @@ export function useCompanyDetails(companyName) {
             return data;
         },
         enabled: !!companyName,
-        staleTime: 60 * 60 * 1000, // 1 hour
-        gcTime: 24 * 60 * 60 * 1000,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false
+        ...staticQueryOptions,
     });
 }
 
 // ==================== WALKIN HOOKS ====================
 
-// Query keys for walkin cache management
 export const walkinKeys = {
     all: ['walkins'],
     lists: () => [...walkinKeys.all, 'list'],
@@ -194,7 +180,6 @@ export const walkinKeys = {
     detail: (id) => [...walkinKeys.details(), id],
 };
 
-// Hook to fetch all walkins with filters
 export function useWalkins(params = {}) {
     const queryParams = new URLSearchParams();
     let filteredParams = {};
@@ -207,8 +192,6 @@ export function useWalkins(params = {}) {
     });
 
     const queryString = queryParams.toString();
-    
-    // Create a stable query key from filtered params only
     const stableKey = JSON.stringify(filteredParams);
 
     return useQuery({
@@ -221,7 +204,6 @@ export function useWalkins(params = {}) {
     });
 }
 
-// Hook to fetch a single walkin by ID
 export function useWalkinDetails(id) {
     return useQuery({
         queryKey: [walkinKeys.all, 'detail', id],
@@ -230,18 +212,16 @@ export function useWalkinDetails(id) {
             return data;
         },
         enabled: !!id,
-        staleTime: 30 * 60 * 1000, // 30 minutes
-        gcTime: 60 * 60 * 1000,    // 60 minutes
+        staleTime: 10 * 60 * 1000,
+        gcTime:    30 * 60 * 1000,
         refetchOnWindowFocus: false,
         refetchOnMount: false,
-        retry: 1, // Only retry once on 404
+        retry: 1,
     });
 }
 
-// Hook to create a new walkin
 export function useCreateWalkin() {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: async (walkinData) => {
             const { data } = await api.post('/walkins', walkinData);
@@ -253,10 +233,8 @@ export function useCreateWalkin() {
     });
 }
 
-// Hook to update a walkin
 export function useUpdateWalkin() {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: async ({ id, ...walkinData }) => {
             const { data } = await api.put(`/walkins/${id}`, walkinData);
@@ -269,10 +247,8 @@ export function useUpdateWalkin() {
     });
 }
 
-// Hook to delete a walkin
 export function useDeleteWalkin() {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: async (id) => {
             const { data } = await api.delete(`/walkins/${id}`);
@@ -283,4 +259,3 @@ export function useDeleteWalkin() {
         },
     });
 }
-
