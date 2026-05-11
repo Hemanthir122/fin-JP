@@ -22,8 +22,8 @@ connectDB();
 // Start the scheduler for scheduled posts
 startScheduler();
 
-// Start the auto-delete scheduler for external jobs
-startAutoDeleteScheduler();
+// Auto-delete scheduler DISABLED — jobs are kept indefinitely
+// startAutoDeleteScheduler();
 
 // Middleware
 app.use(cors({
