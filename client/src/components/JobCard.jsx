@@ -91,10 +91,12 @@ function JobCard({ job }) {
                 {/* Title + type badge */}
                 <div className="jc-title-row">
                     <h3 className="jc-title">{job.title}</h3>
-                    <span className={`jc-badge jc-badge-type jc-badge-${job.type || 'job'}`}>
-                        {getTypeLabel(job.type)}
-                    </span>
-                    {isNew && <span className="jc-badge jc-badge-new">🔥 New</span>}
+                    <div className="jc-title-badges">
+                        <span className={`jc-badge jc-badge-type jc-badge-${job.type || 'job'}`}>
+                            {getTypeLabel(job.type)}
+                        </span>
+                        {isNew && <span className="jc-badge jc-badge-new">🔥 New</span>}
+                    </div>
                 </div>
 
                 {/* Company */}
