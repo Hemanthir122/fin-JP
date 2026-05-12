@@ -44,12 +44,14 @@ function JobCard({ job }) {
         const link = `https://www.jobconnects.online/job/${job._id}`;
         const text = [
             `🔥 New Job Posted!`,
+
             `🏢 Company: ${job.company}`,
             `💼 Role: ${job.title}`,
-            job.location   ? `📍 Location: ${job.location}`     : null,
-            job.experience ? `🎓 Experience: ${job.experience}`  : null,
-            job.salary     ? `💰 Package: ${job.salary}`         : null,
-            `🔗 Apply Now:\n${link}`,
+            job.location   ? `📍 Location: ${job.location}`    : null,
+            job.experience ? `🎓 Experience: ${job.experience}` : null,
+            job.package    ? `💰 Package: ${job.package}`       : null,
+            `🔗 Apply Now: ${link}`,
+            
             `✨ Apply before it's too late!`,
         ].filter(Boolean).join('\n');
 
