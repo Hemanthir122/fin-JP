@@ -1,43 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://jobconnects.online/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://jobconnects.online/jobs</loc>
-    <changefreq>hourly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://jobconnects.online/internships</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jobconnects.online/walkins</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jobconnects.online/about</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://jobconnects.online/contact</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://jobconnects.online/privacy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://jobconnects.online/terms</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-  </url>
+
+  <!-- ── Core pages ── -->
+  <url><loc>https://jobconnects.online/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://jobconnects.online/jobs</loc><changefreq>hourly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://jobconnects.online/internships</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/companies</loc><changefreq>daily</changefreq><priority>0.85</priority></url>
+  <url><loc>https://jobconnects.online/resume-builder</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+
+  <!-- ── USA ── -->
+  <url><loc>https://jobconnects.online/jobs?search=USA</loc><changefreq>daily</changefreq><priority>0.92</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=New+York</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=California</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Texas</loc><changefreq>daily</changefreq><priority>0.85</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Seattle</loc><changefreq>daily</changefreq><priority>0.85</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Chicago</loc><changefreq>daily</changefreq><priority>0.85</priority></url>
+
+  <!-- ── UK ── -->
+  <url><loc>https://jobconnects.online/jobs?search=UK</loc><changefreq>daily</changefreq><priority>0.92</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=London</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Manchester</loc><changefreq>daily</changefreq><priority>0.85</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Birmingham</loc><changefreq>daily</changefreq><priority>0.83</priority></url>
+
+  <!-- ── Europe ── -->
+  <url><loc>https://jobconnects.online/jobs?search=Germany</loc><changefreq>daily</changefreq><priority>0.92</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Berlin</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Munich</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Frankfurt</loc><changefreq>daily</changefreq><priority>0.85</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Poland</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Warsaw</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Krakow</loc><changefreq>daily</changefreq><priority>0.85</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Norway</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Oslo</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Netherlands</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Amsterdam</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=France</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Paris</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Sweden</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Stockholm</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Switzerland</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Denmark</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Finland</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Belgium</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Austria</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Ireland</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Dublin</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Spain</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Portugal</loc><changefreq>daily</changefreq><priority>0.85</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Czech+Republic</loc><changefreq>daily</changefreq><priority>0.85</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Romania</loc><changefreq>daily</changefreq><priority>0.84</priority></url>
+
+  <!-- ── Gulf / Middle East ── -->
+  <url><loc>https://jobconnects.online/jobs?search=UAE</loc><changefreq>daily</changefreq><priority>0.92</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Dubai</loc><changefreq>daily</changefreq><priority>0.92</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Abu+Dhabi</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Saudi+Arabia</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Riyadh</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Jeddah</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Qatar</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Doha</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Kuwait</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Bahrain</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Oman</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+
+  <!-- ── Australia & Pacific ── -->
+  <url><loc>https://jobconnects.online/jobs?search=Australia</loc><changefreq>daily</changefreq><priority>0.92</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Sydney</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Melbourne</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Brisbane</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Perth</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=New+Zealand</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+
+  <!-- ── Canada ── -->
+  <url><loc>https://jobconnects.online/jobs?search=Canada</loc><changefreq>daily</changefreq><priority>0.92</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Toronto</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Vancouver</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Calgary</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+
+  <!-- ── Asia ── -->
+  <url><loc>https://jobconnects.online/jobs?search=Singapore</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Japan</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=India</loc><changefreq>daily</changefreq><priority>0.92</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Bangalore</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Mumbai</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Hyderabad</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Pune</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Delhi</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=Chennai</loc><changefreq>daily</changefreq><priority>0.86</priority></url>
+
+  <!-- ── Job types ── -->
+  <url><loc>https://jobconnects.online/jobs?search=remote</loc><changefreq>daily</changefreq><priority>0.93</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=work+from+home</loc><changefreq>daily</changefreq><priority>0.92</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=part+time</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=delivery</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=driver</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=freelance</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=software+engineer</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=data+analyst</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=nursing</loc><changefreq>daily</changefreq><priority>0.87</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=fresher</loc><changefreq>daily</changefreq><priority>0.88</priority></url>
+  <url><loc>https://jobconnects.online/jobs?search=visa+sponsorship</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+
+  <!-- ── Static pages ── -->
+  <url><loc>https://jobconnects.online/about</loc><changefreq>monthly</changefreq><priority>0.50</priority></url>
+  <url><loc>https://jobconnects.online/contact</loc><changefreq>monthly</changefreq><priority>0.50</priority></url>
+  <url><loc>https://jobconnects.online/privacy</loc><changefreq>monthly</changefreq><priority>0.30</priority></url>
+  <url><loc>https://jobconnects.online/terms</loc><changefreq>monthly</changefreq><priority>0.30</priority></url>
+
 </urlset>

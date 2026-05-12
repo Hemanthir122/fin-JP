@@ -107,10 +107,20 @@ function Home() {
     return (
         <div className="home-page">
             <Helmet>
-                <title>JobConnects - Find Best Jobs, Internships & Walk-ins Worldwide</title>
-                <meta name="description" content="Find the latest jobs, internships, and walk-in drive opportunities. Connect with top companies like TCS, Infosys, Wipro, and more on JobConnects." />
+                <title>JobConnects - Remote, Part-Time, Delivery & Worldwide Jobs 2025</title>
+                <meta name="description" content="Find remote jobs, work from home, part-time, per hour, delivery, driving, freelance and full-time jobs worldwide. India, USA, UK, Canada, Australia, UAE, Germany, Singapore and 50+ countries. Freshers to 20+ years. Apply instantly." />
+                <meta name="keywords" content="remote jobs, work from home, part time jobs, per hour jobs, hourly jobs, delivery jobs, driver jobs, courier jobs, logistics jobs, freelance jobs, contract jobs, full time jobs, fresher jobs, internships, IT jobs, software engineer, data analyst, jobs in India, jobs in USA, jobs in UK, jobs in Canada, jobs in Australia, jobs in UAE, jobs in Dubai, jobs in Germany, jobs in Singapore, Bangalore jobs, Mumbai jobs, Hyderabad jobs, TCS jobs, Infosys jobs, Google jobs, Amazon jobs, quick apply, hiring 2025" />
                 <link rel="canonical" href="https://jobconnects.online/" />
+                <meta property="og:title" content="JobConnects - Remote, Part-Time, Delivery & Worldwide Jobs" />
+                <meta property="og:description" content="Find remote, part-time, per hour, delivery and full-time jobs worldwide. All countries, all experience levels." />
+                <meta property="og:url" content="https://jobconnects.online/" />
+                <meta property="og:type" content="website" />
+                <meta property="og:image" content="https://jobconnects.online/logo.png" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="JobConnects - Remote, Part-Time, Delivery & Worldwide Jobs" />
+                <meta name="twitter:description" content="Find remote, part-time, per hour, delivery and full-time jobs worldwide." />
             </Helmet>
+
 
             <Hero />
 
@@ -144,7 +154,6 @@ function Home() {
                     </div>
                 </div>
             </section>
-
             {/* ── Native Banner — between Why Choose Us and Latest Opportunities ── */}
             <div className="container home-native-banner-wrap">
                 <NativeBannerSection title="Trending Career Picks" />

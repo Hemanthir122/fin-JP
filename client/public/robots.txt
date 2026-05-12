@@ -1,6 +1,19 @@
 User-agent: *
 Allow: /
+
+# Disallow admin pages from indexing
 Disallow: /admin
-Disallow: /api
+Disallow: /admin/
+
+# Allow all job pages
+Allow: /jobs
+Allow: /internships
+Allow: /companies
+Allow: /job/
+Allow: /company/
+Allow: /resume-builder
 
 Sitemap: https://jobconnects.online/sitemap.xml
+
+# Crawl-delay for bots
+Crawl-delay: 1
