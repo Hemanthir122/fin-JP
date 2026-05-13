@@ -32,12 +32,14 @@ export function useJobs(params = {}) {
     const queryParams = new URLSearchParams();
     let filteredParams = {};
 
-    Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-            queryParams.append(key, value);
-            filteredParams[key] = value;
-        }
-    });
+    if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                queryParams.append(key, value);
+                filteredParams[key] = value;
+            }
+        });
+    }
 
     const queryString = queryParams.toString();
     const stableKey = JSON.stringify(filteredParams);
@@ -48,6 +50,7 @@ export function useJobs(params = {}) {
             const { data } = await api.get(`/jobs${queryString ? `?${queryString}` : ''}`);
             return data;
         },
+        enabled: params !== null,
         ...defaultQueryOptions,
     });
 }
@@ -184,12 +187,14 @@ export function useWalkins(params = {}) {
     const queryParams = new URLSearchParams();
     let filteredParams = {};
 
-    Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-            queryParams.append(key, value);
-            filteredParams[key] = value;
-        }
-    });
+    if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                queryParams.append(key, value);
+                filteredParams[key] = value;
+            }
+        });
+    }
 
     const queryString = queryParams.toString();
     const stableKey = JSON.stringify(filteredParams);
@@ -200,6 +205,7 @@ export function useWalkins(params = {}) {
             const { data } = await api.get(`/walkins${queryString ? `?${queryString}` : ''}`);
             return data;
         },
+        enabled: params !== null,
         ...defaultQueryOptions,
     });
 }

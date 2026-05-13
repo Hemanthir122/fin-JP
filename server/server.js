@@ -35,38 +35,48 @@ app.use(cors({
 
 app.use(express.json());
 
-// Request logging
+// Request logging — only log non-GET requests to reduce noise
 app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`, req.body);
+    if (req.method !== 'GET') {
+        console.log(`${req.method} ${req.path}`);
+    }
     next();
 });
 
-// Auto-delete jobs with expired endDate
+// Cleanup: deactivate expired endDate jobs + delete jobs older than 30 days
 async function cleanupExpiredJobs() {
     try {
         const now = new Date();
-        const result = await Job.updateMany(
-            {
-                endDate: { $lt: now },
-                isActive: true
-            },
-            {
-                $set: { isActive: false }
-            }
+
+        // 1. Deactivate jobs whose endDate has passed
+        const deactivated = await Job.updateMany(
+            { endDate: { $lt: now }, isActive: true },
+            { $set: { isActive: false } }
         );
-        if (result.modifiedCount > 0) {
-            console.log(`[Job Cleanup] Marked ${result.modifiedCount} expired jobs as inactive`);
+        if (deactivated.modifiedCount > 0) {
+            console.log(`[Cleanup] Deactivated ${deactivated.modifiedCount} expired jobs`);
         }
+
+        // 2. Delete jobs published more than 30 days ago
+        const thirtyDaysAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
+        const deleted = await Job.deleteMany({
+            status: 'published',
+            publishedAt: { $lt: thirtyDaysAgo }
+        });
+        if (deleted.deletedCount > 0) {
+            console.log(`[Cleanup] Deleted ${deleted.deletedCount} jobs older than 30 days`);
+        }
+
     } catch (error) {
-        console.error('[Job Cleanup] Error:', error.message);
+        console.error('[Cleanup] Error:', error.message);
     }
 }
 
 // Run cleanup on server start
 cleanupExpiredJobs();
 
-// Run cleanup every 5 minutes (300000 ms)
-setInterval(cleanupExpiredJobs, 300000);
+// Also run cleanup daily (every 24 hours)
+setInterval(cleanupExpiredJobs, 24 * 60 * 60 * 1000);
 
 // Routes
 app.use('/api/jobs', jobRoutes);

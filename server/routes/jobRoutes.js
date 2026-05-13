@@ -48,11 +48,11 @@ router.get('/', async (req, res) => {
             });
         }
 
-        // Add cache control to reduce re-fetching, but disable for admin (status=all)
+        // Cache control
         if (req.query.status === 'all') {
             res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
         } else {
-            res.set('Cache-Control', 'public, max-age=10'); // 10 seconds for quick updates
+            res.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=30');
         }
 
         // Search filter
@@ -195,7 +195,6 @@ router.get('/', async (req, res) => {
 router.get('/latest', async (req, res) => {
     try {
         console.log('GET /jobs/latest - Fetching published jobs only');
-        
         // Treat endDate as inclusive of the entire day
         const todayStart = new Date();
         todayStart.setHours(0, 0, 0, 0);
@@ -226,6 +225,7 @@ router.get('/latest', async (req, res) => {
         ]);
 
         console.log(`GET /jobs/latest - Returning ${jobs.length} published jobs`);
+        res.set('Cache-Control', 'public, max-age=120, stale-while-revalidate=60');
         res.json(jobs);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -247,6 +247,7 @@ router.get('/locations', async (req, res) => {
             ]
         });
 
+        res.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=60');
         res.json(locations);
     } catch (error) {
         res.status(500).json({ message: error.message });

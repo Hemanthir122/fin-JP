@@ -56,8 +56,8 @@ function Jobs({ type: propType }) {
         return params;
     }, [currentPage, filters, propType]);
 
-    const { data: jobsData,    isLoading: isLoadingJobs    } = useJobs(!isWalkin ? queryParams : {});
-    const { data: walkinsData, isLoading: isLoadingWalkins } = useWalkins(isWalkin ? queryParams : {});
+    const { data: jobsData,    isLoading: isLoadingJobs    } = useJobs(!isWalkin ? queryParams : null);
+    const { data: walkinsData, isLoading: isLoadingWalkins } = useWalkins(isWalkin ? queryParams : null);
     const { data: companies = [] } = useCompanies();
     const { data: locations  = [] } = useLocations();
 

@@ -10,8 +10,6 @@ async function checkAndPublishScheduledJobs() {
     try {
         const now = new Date();
         
-        console.log('🕐 Checking for scheduled jobs to publish...');
-        
         // Find all scheduled jobs that should be published now
         const scheduledJobs = await Job.find({
             status: 'scheduled',
@@ -82,13 +80,13 @@ async function checkAndPublishScheduledJobs() {
  * Checks every minute for scheduled posts
  */
 function startScheduler() {
-    console.log('🚀 Scheduler started - checking every minute for scheduled posts');
+    console.log('🚀 Scheduler started - checking every 5 minutes for scheduled posts');
     
     // Run immediately on start
     checkAndPublishScheduledJobs();
     
-    // Then run every minute (60000 ms)
-    setInterval(checkAndPublishScheduledJobs, 60000);
+    // Then run every 5 minutes (300000 ms) — reduced from 1 minute
+    setInterval(checkAndPublishScheduledJobs, 300000);
 }
 
 module.exports = {
