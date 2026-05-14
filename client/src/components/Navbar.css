@@ -56,7 +56,7 @@
 }
 
 .logo-text   { color: var(--text-primary); }
-.logo-accent { color: #f97316; }
+.logo-accent { color: var(--primary); }
 
 /* ── Center Nav Links ── */
 .navbar-links {
@@ -83,7 +83,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--primary-bg);
+    background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(96,165,250,0.04) 100%);
     opacity: 0;
     transition: opacity var(--transition-fast);
     border-radius: 8px;
@@ -100,7 +100,7 @@
 .navbar-link.active {
     color: var(--primary);
     font-weight: 600;
-    background: var(--primary-bg);
+    background: linear-gradient(135deg, rgba(59,130,246,0.10) 0%, rgba(96,165,250,0.05) 100%);
 }
 
 .navbar-link.active::after {
@@ -201,7 +201,7 @@
 .navbar-mobile-link:hover,
 .navbar-mobile-link.active {
     color: var(--primary);
-    background: var(--primary-bg);
+    background: linear-gradient(135deg, rgba(59,130,246,0.10) 0%, rgba(96,165,250,0.05) 100%);
     font-weight: 600;
 }
 
