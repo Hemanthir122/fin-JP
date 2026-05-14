@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
@@ -50,6 +50,15 @@ function ProtectedRoute({ children }) {
 import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
+  useEffect(() => {
+    const existing = document.querySelector('script[src*="53e55836ee891aa30b1843270191bee1"]');
+    if (existing) return;
+    const script = document.createElement('script');
+    script.src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <HelmetProvider>
       <Router>
