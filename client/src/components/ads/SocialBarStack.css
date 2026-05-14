@@ -1,23 +1,22 @@
-/* ── Social Bar Stack — sits in normal flow, never overlaps content ── */
+/* ── Social Bar Stack — fixed at top, 3 bars stacked downward ── */
+/* Matches original Social Bar behavior (pops from top) */
 .social-bar-stack {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 800; /* below navbar (1000) */
     display: flex;
     flex-direction: column;
     width: 100%;
-    /* In normal document flow — not fixed/absolute */
-    position: static;
-    /* Push page content down so bars don't sit on top of anything */
-    margin-top: 0;
+    pointer-events: auto;
 }
 
 .social-bar-frame {
     width: 100%;
-    /* Tall enough for Adsterra's bar to render fully */
-    height: 70px;
-    min-height: 50px;
+    height: 60px;
     border: none;
     display: block;
     background: transparent;
-    /* Prevent iframe from creating its own stacking context that overlaps */
-    position: static;
     overflow: hidden;
 }

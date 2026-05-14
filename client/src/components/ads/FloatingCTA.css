@@ -18,8 +18,7 @@
     transition: opacity 0.4s ease, transform 0.4s ease;
     white-space: nowrap;
     border-radius: 0;
-    /* safe area for phones with home bar */
-    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+    padding-bottom: 14px;
 }
 
 .floating-cta-visible {
