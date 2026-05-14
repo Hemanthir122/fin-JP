@@ -171,9 +171,9 @@ function Jobs({ type: propType }) {
                                     )}
                                 </div>
 
-                                {/* Native banner after job list */}
+                                {/* Sponsored after job list */}
                                 <div className="jobs-native-banner-wrap">
-                                    <NativeBannerSection title="Sponsored Resources" />
+                                    <SponsoredCard />
                                 </div>
 
                                 {totalPages > 1 && (

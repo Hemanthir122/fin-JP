@@ -8,7 +8,6 @@ import JobFilter from '../components/JobFilter';
 import CountryBar from '../components/CountryBar';
 import { useLatestJobs, useCompanies, useLocations } from '../hooks/useJobs';
 import SponsoredCard from '../components/ads/SponsoredCard';
-import NativeBannerSection from '../components/ads/NativeBannerSection';
 import FloatingCTA from '../components/ads/FloatingCTA';
 import MobileBannerAd from '../components/ads/MobileBannerAd';
 import './Home.css';
@@ -154,9 +153,9 @@ function Home() {
                     </div>
                 </div>
             </section>
-            {/* ── Native Banner — between Why Choose Us and Latest Opportunities ── */}
+            {/* ── Sponsored — between Why Choose Us and Latest Opportunities ── */}
             <div className="container home-native-banner-wrap">
-                <NativeBannerSection title="Trending Career Picks" />
+                <SponsoredCard />
             </div>
 
             {/* ── Latest Opportunities ── */}
@@ -255,9 +254,9 @@ function Home() {
 
 
 
-            {/* ── Native Banner — after career resources ── */}
+            {/* ── Sponsored — after career resources ── */}
             <div className="container home-native-banner-wrap">
-                <NativeBannerSection title="Featured Openings" />
+                <SponsoredCard />
             </div>
 
             {/* ── CTA Section ── */}
