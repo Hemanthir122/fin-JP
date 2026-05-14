@@ -1,9 +1,10 @@
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import SocialBarStack from './components/ads/SocialBarStack';
 
 // Lazy load pages for better performance
 const Home = lazy(() => import('./pages/Home'));
@@ -50,16 +51,6 @@ function ProtectedRoute({ children }) {
 import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
-  // Load Social Bar after app mounts — avoids race with other ad scripts
-  useEffect(() => {
-    const existing = document.querySelector('script[src*="53e55836ee891aa30b1843270191bee1"]');
-    if (existing) return; // already loaded
-    const script = document.createElement('script');
-    script.src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
-
   return (
     <HelmetProvider>
       <Router>
@@ -148,6 +139,7 @@ function App() {
             </Routes>
           </Suspense>
         </div>
+        <SocialBarStack />
         <Analytics />
       </Router>
     </HelmetProvider>
