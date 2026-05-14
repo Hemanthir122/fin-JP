@@ -4,7 +4,6 @@ import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import SocialBarStack from './components/ads/SocialBarStack';
 
 // Lazy load pages for better performance
 const Home = lazy(() => import('./pages/Home'));
@@ -139,7 +138,6 @@ function App() {
             </Routes>
           </Suspense>
         </div>
-        <SocialBarStack />
         <Analytics />
       </Router>
     </HelmetProvider>
