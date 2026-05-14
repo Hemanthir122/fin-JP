@@ -117,7 +117,7 @@
     }
 }
 
-/* Extra bottom padding on mobile for social bars + CTA */
+/* Extra bottom padding on mobile for the fixed CTA bar */
 @media (max-width: 900px) {
     .company-jobs-page { padding-bottom: 64px; }
 }
