@@ -51,19 +51,12 @@ import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
   useEffect(() => {
-    const src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
-    // Load 3 times with small delays — each in its own iframe to bypass deduplication
-    [0, 300, 600].forEach((delay) => {
-      setTimeout(() => {
-        const iframe = document.createElement('iframe');
-        iframe.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:60px;border:none;z-index:9999;pointer-events:auto;';
-        document.body.appendChild(iframe);
-        const doc = iframe.contentDocument || iframe.contentWindow.document;
-        doc.open();
-        doc.write(`<!DOCTYPE html><html><head><style>body{margin:0;padding:0;}</style></head><body><script src="${src}"><\/script></body></html>`);
-        doc.close();
-      }, delay);
-    });
+    const existing = document.querySelector('script[src*="53e55836ee891aa30b1843270191bee1"]');
+    if (existing) return;
+    const script = document.createElement('script');
+    script.src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
+    script.async = true;
+    document.body.appendChild(script);
   }, []);
 
   return (
