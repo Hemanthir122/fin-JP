@@ -8,6 +8,7 @@ const STORAGE_KEY = 'jobconnects_filters';
 // iso2 = 2-letter ISO code used by flagcdn.com
 export const COUNTRY_LIST = [
     { value: '',              iso2: null,  label: 'All' },
+    { value: 'Remote',        iso2: null,  label: 'Remote' },
     // Asia
     { value: 'India',         iso2: 'in',  label: 'India' },
     { value: 'Singapore',     iso2: 'sg',  label: 'Singapore' },
@@ -55,8 +56,6 @@ export const COUNTRY_LIST = [
     { value: 'Estonia',       iso2: 'ee',  label: 'Estonia' },
     { value: 'Latvia',        iso2: 'lv',  label: 'Latvia' },
     { value: 'Lithuania',     iso2: 'lt',  label: 'Lithuania' },
-    // Remote
-    { value: 'Remote',        iso2: null,  label: 'Remote' },
 ];
 
 // Returns the flag image URL or null for special entries
