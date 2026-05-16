@@ -7,3 +7,15 @@
 .main-content {
   flex: 1;
 }
+
+/* Push content below navbar + 3 social bars */
+.main-content {
+  padding-top: 232px; /* 64px navbar + 3 × 56px social bars */
+}
+
+@media (min-width: 901px) {
+  /* On desktop social bars may not show — keep normal padding */
+  .main-content {
+    padding-top: 64px;
+  }
+}

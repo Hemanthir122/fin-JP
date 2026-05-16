@@ -51,12 +51,36 @@ import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
   useEffect(() => {
-    const existing = document.querySelector('script[src*="53e55836ee891aa30b1843270191bee1"]');
-    if (existing) return;
-    const script = document.createElement('script');
-    script.src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
-    script.async = true;
-    document.body.appendChild(script);
+    const src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
+    const NAVBAR_HEIGHT = 64; // px — navbar height
+    const BAR_HEIGHT = 56;    // px — each social bar height
+
+    [0, 1, 2].forEach((i) => {
+      const iframe = document.createElement('iframe');
+      iframe.style.cssText = [
+        'position:fixed',
+        `top:${NAVBAR_HEIGHT + i * BAR_HEIGHT}px`,
+        'left:0',
+        'width:100%',
+        `height:${BAR_HEIGHT}px`,
+        'border:none',
+        `z-index:${999 - i}`, // below navbar (1000)
+        'pointer-events:auto',
+        'background:transparent',
+      ].join(';');
+      iframe.setAttribute('scrolling', 'no');
+      iframe.setAttribute('frameborder', '0');
+      document.body.appendChild(iframe);
+
+      // Write after appended so contentDocument is available
+      setTimeout(() => {
+        const doc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (!doc) return;
+        doc.open();
+        doc.write(`<!DOCTYPE html><html><head><style>*{margin:0;padding:0;}body{overflow:hidden;background:transparent;}</style></head><body><script src="${src}"><\/script></body></html>`);
+        doc.close();
+      }, i * 200);
+    });
   }, []);
 
   return (
