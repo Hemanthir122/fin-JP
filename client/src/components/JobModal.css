@@ -407,3 +407,56 @@
     }
     .jm-btn-apply { order: -1; } /* Apply on top on mobile */
 }
+
+/* ── Similar Opportunities smartlink banner (inside modal) ── */
+.jm-similar-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0 4px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+    border: 1.5px solid #bfdbfe;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.18s;
+    cursor: pointer;
+}
+
+.jm-similar-banner:hover {
+    background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+    border-color: #93c5fd;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.jm-similar-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.jm-similar-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.jm-similar-text strong {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #1e40af;
+}
+
+.jm-similar-text span {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.jm-similar-arrow {
+    font-size: 1.1rem;
+    color: #3b82f6;
+    font-weight: 700;
+    flex-shrink: 0;
+}

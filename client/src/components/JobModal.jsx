@@ -33,14 +33,14 @@ function JobModal({ job, onClose }) {
     };
 
     const handleApply = () => {
-        // Smart link ad on every 2nd apply
-        let count = parseInt(sessionStorage.getItem('job_apply_count') || '0') + 1;
+        // Fire smartlink every 3rd apply click (shared counter across modal + detail page)
+        const count = parseInt(sessionStorage.getItem('job_apply_count') || '0') + 1;
         sessionStorage.setItem('job_apply_count', count.toString());
-        if (count % 2 === 0) {
-            window.open('https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085', '_blank');
+        if (count % 3 === 0) {
+            window.open('https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085', '_blank', 'noopener,noreferrer');
         }
         if (job.applyLink && job.applyLink !== '#') {
-            window.open(job.applyLink, '_blank');
+            setTimeout(() => window.open(job.applyLink, '_blank'), 300);
         }
         onClose();
     };
@@ -194,6 +194,22 @@ function JobModal({ job, onClose }) {
                             </div>
                         </section>
                     )}
+
+                    {/* ── Similar Opportunities smartlink banner ── */}
+                    <a
+                        href="https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085"
+                        className="jm-similar-banner"
+                        target="_blank"
+                        rel="noopener noreferrer nofollow"
+                        onClick={(e) => { e.preventDefault(); window.open('https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085', '_blank', 'noopener,noreferrer'); }}
+                    >
+                        <span className="jm-similar-icon">🚀</span>
+                        <div className="jm-similar-text">
+                            <strong>Explore Similar Opportunities</strong>
+                            <span>Thousands of jobs matching your profile</span>
+                        </div>
+                        <span className="jm-similar-arrow">→</span>
+                    </a>
 
                 </div>
 

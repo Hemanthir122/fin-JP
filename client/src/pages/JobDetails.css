@@ -441,3 +441,57 @@
     margin-top: 16px;
     font-weight: 500;
 }
+
+/* ── Sidebar smartlink banner ── */
+.jd-sidebar-smartlink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #fefce8 0%, #fff7ed 100%);
+    border: 1.5px solid #fde68a;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.18s;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.jd-sidebar-smartlink:hover {
+    background: linear-gradient(135deg, #fef9c3 0%, #ffedd5 100%);
+    border-color: #fbbf24;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
+}
+
+.jd-sl-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.jd-sl-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.jd-sl-body strong {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #92400e;
+}
+
+.jd-sl-body span {
+    font-size: 0.72rem;
+    color: #78716c;
+}
+
+.jd-sl-cta {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #d97706;
+    flex-shrink: 0;
+    white-space: nowrap;
+}

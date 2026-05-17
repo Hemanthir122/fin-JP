@@ -91,22 +91,14 @@ function JobDetails() {
 
     // Handle Apply Now click with alternating smart link ad
     const handleApplyClick = (applyLink) => {
-        // Get or initialize apply counter from sessionStorage
-        let applyCount = parseInt(sessionStorage.getItem('job_apply_count') || '0');
-        applyCount++;
-        sessionStorage.setItem('job_apply_count', applyCount.toString());
-        
-        // Open smart link ad for every 2nd apply (50% of the time)
-        if (applyCount % 2 === 0) {
-            window.open('https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085', '_blank');
-            console.log(`Apply clicked (${applyCount}), smart link ad opened`);
-        } else {
-            console.log(`Apply clicked (${applyCount}), no ad this time`);
+        // Fire smartlink every 3rd apply click (shared counter across modal + detail page)
+        const count = parseInt(sessionStorage.getItem('job_apply_count') || '0') + 1;
+        sessionStorage.setItem('job_apply_count', count.toString());
+        if (count % 3 === 0) {
+            window.open('https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085', '_blank', 'noopener,noreferrer');
         }
-        
-        // Open the actual apply link
         if (applyLink && applyLink !== '#') {
-            window.open(applyLink, '_blank');
+            setTimeout(() => window.open(applyLink, '_blank'), 300);
         }
     };
 
@@ -475,6 +467,22 @@ ${platformLink}`;
                                     </div>
                                 </div>
                             )}
+
+                            {/* ── Smartlink sidebar banner ── */}
+                            <a
+                                href="https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085"
+                                className="jd-sidebar-smartlink"
+                                target="_blank"
+                                rel="noopener noreferrer nofollow"
+                                onClick={(e) => { e.preventDefault(); window.open('https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085', '_blank', 'noopener,noreferrer'); }}
+                            >
+                                <div className="jd-sl-icon">💼</div>
+                                <div className="jd-sl-body">
+                                    <strong>More Jobs Like This</strong>
+                                    <span>Find similar roles instantly</span>
+                                </div>
+                                <span className="jd-sl-cta">Explore →</span>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -28,6 +28,7 @@ const ApprovedExternalJobs = lazy(() => import('./pages/admin/ApprovedExternalJo
 const ManageCompanyLogos = lazy(() => import('./pages/admin/ManageCompanyLogos'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const ResumeBuilder = lazy(() => import('./pages/ResumeBuilder'));
+const AIAnalysis = lazy(() => import('./pages/admin/AIAnalysis'));
 
 import './App.css';
 
@@ -51,36 +52,44 @@ import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
   useEffect(() => {
+    // Social bar — 1 iframe just below navbar (top: 64px)
+    // Page content pushed down via paddingTop so nothing is hidden
     const src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
-    const NAVBAR_HEIGHT = 64; // px — navbar height
-    const BAR_HEIGHT = 56;    // px — each social bar height
+    const SOCIAL_BAR_HEIGHT = 56;
 
-    [0, 1, 2].forEach((i) => {
-      const iframe = document.createElement('iframe');
-      iframe.style.cssText = [
+    const iframe = document.createElement('iframe');
+    iframe.id = 'adsterra-social-bar';
+    iframe.style.cssText = [
         'position:fixed',
-        `top:${NAVBAR_HEIGHT + i * BAR_HEIGHT}px`,
+        'top:64px',
         'left:0',
         'width:100%',
-        `height:${BAR_HEIGHT}px`,
+        `height:${SOCIAL_BAR_HEIGHT}px`,
         'border:none',
-        `z-index:${999 - i}`, // below navbar (1000)
+        'z-index:998',   // below navbar drawer (1001) and navbar (1000)
         'pointer-events:auto',
         'background:transparent',
-      ].join(';');
-      iframe.setAttribute('scrolling', 'no');
-      iframe.setAttribute('frameborder', '0');
-      document.body.appendChild(iframe);
+    ].join(';');
+    iframe.setAttribute('scrolling', 'no');
+    iframe.setAttribute('frameborder', '0');
+    document.body.appendChild(iframe);
 
-      // Write after appended so contentDocument is available
-      setTimeout(() => {
+    // Push page content down so it isn't hidden behind the bar
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) mainContent.style.paddingTop = `${SOCIAL_BAR_HEIGHT}px`;
+
+    setTimeout(() => {
         const doc = iframe.contentDocument || iframe.contentWindow?.document;
         if (!doc) return;
         doc.open();
         doc.write(`<!DOCTYPE html><html><head><style>*{margin:0;padding:0;}body{overflow:hidden;background:transparent;}</style></head><body><script src="${src}"><\/script></body></html>`);
         doc.close();
-      }, i * 200);
-    });
+    }, 300);
+
+    return () => {
+        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+        if (mainContent) mainContent.style.paddingTop = '';
+    };
   }, []);
 
   return (
@@ -142,6 +151,11 @@ function App() {
               <Route path="/admin/manage-company-logos" element={
                 <ProtectedRoute>
                   <ManageCompanyLogos />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/ai" element={
+                <ProtectedRoute>
+                  <AIAnalysis />
                 </ProtectedRoute>
               } />
 

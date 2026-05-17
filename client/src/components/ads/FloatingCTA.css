@@ -5,7 +5,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 900;
+    z-index: 998;
     background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
     color: #fff !important;
     text-decoration: none;
@@ -18,7 +18,6 @@
     transition: opacity 0.4s ease, transform 0.4s ease;
     white-space: nowrap;
     border-radius: 0;
-    /* safe area for phones with home bar */
     padding-bottom: calc(14px + env(safe-area-inset-bottom));
 }
 
