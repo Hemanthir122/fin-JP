@@ -1,11 +1,13 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import JobCard from '../components/JobCard';
 import WalkinCard from '../components/WalkinCard';
 import Pagination from '../components/Pagination';
 import JobFilter from '../components/JobFilter';
 import CountryBar from '../components/CountryBar';
-import { useJobs, useCompanies, useLocations, useWalkins } from '../hooks/useJobs';
+import JobModal from '../components/JobModal';
+import { useJobs, useCompanies, useLocations, useWalkins, useJobDetails } from '../hooks/useJobs';
 import SponsoredCard from '../components/ads/SponsoredCard';
 import NativeBannerSection from '../components/ads/NativeBannerSection';
 import DesktopSidebar from '../components/ads/DesktopSidebar';
@@ -15,11 +17,37 @@ import './Jobs.css';
 
 const SMARTLINK = 'https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085';
 
+// Fetches a single job by ID and opens the modal — used for shared link redirects
+function ModalJobLoader({ jobId, onClose }) {
+    const { data: job, isLoading } = useJobDetails(jobId);
+    if (isLoading || !job) return null;
+    return <JobModal job={job} onClose={onClose} />;
+}
+
 function Jobs({ type: propType }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [filters, setFilters] = useState({});
+    const [modalJobId, setModalJobId] = useState(null);
 
+    const location = useLocation();
+    const navigate = useNavigate();
     const isWalkin = propType === 'walkin';
+
+    // Auto-open modal if ?modal=:id is in URL (from shared link redirect)
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const modalId = params.get('modal');
+        if (modalId) {
+            setModalJobId(modalId);
+            // Clean the URL without reloading
+            params.delete('modal');
+            const newSearch = params.toString();
+            navigate(
+                { pathname: location.pathname, search: newSearch ? `?${newSearch}` : '' },
+                { replace: true }
+            );
+        }
+    }, [location.search]);
 
     const queryParams = useMemo(() => {
         const params = {
@@ -262,6 +290,14 @@ function Jobs({ type: propType }) {
 
             {/* ── Floating Mobile CTA ── */}
             <FloatingCTA />
+
+            {/* ── Auto-open modal from shared link ── */}
+            {modalJobId && (
+                <ModalJobLoader
+                    jobId={modalJobId}
+                    onClose={() => setModalJobId(null)}
+                />
+            )}
         </div>
     );
 }

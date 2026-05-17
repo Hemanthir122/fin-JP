@@ -110,41 +110,15 @@ function JobDetails() {
         }
     };
 
-    // Handle browser back button - redirect to jobs page if coming from external link
+    // Redirect to jobs page with modal param when accessed from shared link
     useEffect(() => {
-        // Check if user came from external link (no referrer from same domain)
-        const isExternalReferrer = !document.referrer || 
+        const isExternalReferrer = !document.referrer ||
                                    !document.referrer.includes(window.location.hostname);
-        
-        if (isExternalReferrer) {
-            // Replace current history entry so back button goes to jobs page
-            window.history.replaceState(
-                { fromExternal: true },
-                '',
-                window.location.pathname + window.location.search
-            );
-            
-            // Add jobs page to history so back button works
-            window.history.pushState(
-                { page: 'job-details' },
-                '',
-                window.location.pathname + window.location.search
-            );
+        if (isExternalReferrer && !viewParam) {
+            // Redirect to /jobs and open modal for this job
+            navigate(`/jobs?modal=${id}`, { replace: true });
         }
-
-        const handlePopState = (event) => {
-            // If user came from external link, navigate to jobs page
-            if (event.state?.fromExternal || window.history.length <= 2) {
-                navigate('/jobs', { replace: true });
-            }
-        };
-
-        window.addEventListener('popstate', handlePopState);
-        
-        return () => {
-            window.removeEventListener('popstate', handlePopState);
-        };
-    }, [navigate]);
+    }, [id, navigate, viewParam]);
 
     // Generate Schema.org JSON-LD
     const jobSchema = useMemo(() => {
