@@ -81,9 +81,19 @@ function JobCard({ job }) {
             {/* ── Logo ── */}
             <div className="jc-logo">
                 {job.companyLogo
-                    ? <img src={job.companyLogo} alt={job.company} />
-                    : <span className="jc-logo-fallback">{job.company?.charAt(0).toUpperCase()}</span>
+                    ? <img
+                        src={job.companyLogo}
+                        alt={job.company}
+                        onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                      />
+                    : null
                 }
+                <span
+                    className="jc-logo-fallback"
+                    style={{ display: job.companyLogo ? 'none' : 'flex' }}
+                >
+                    {job.company?.charAt(0).toUpperCase()}
+                </span>
             </div>
 
             {/* ── Body ── */}

@@ -92,6 +92,23 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    // Popunder — fires once per session after user spends 15 seconds on site
+    if (sessionStorage.getItem('popunder_fired')) return;
+
+    const timer = setTimeout(() => {
+        if (sessionStorage.getItem('popunder_fired')) return;
+        sessionStorage.setItem('popunder_fired', '1');
+
+        const script = document.createElement('script');
+        script.src = 'https://breachuptown.com/31/2d/00/312d000878fa23ff92459a4fb1eac311.js';
+        script.async = true;
+        document.body.appendChild(script);
+    }, 15000); // 15 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <HelmetProvider>
       <Router>
