@@ -1,23 +1,21 @@
-/* ── Social Bar Stack — sits in normal flow, never overlaps content ── */
 .social-bar-stack {
     display: flex;
     flex-direction: column;
     width: 100%;
-    /* In normal document flow — not fixed/absolute */
     position: static;
-    /* Push page content down so bars don't sit on top of anything */
-    margin-top: 0;
+    margin: 0;
+    gap: 8px; /* Spacing between bars */
+    padding: 10px 0;
+    background: transparent;
 }
 
 .social-bar-frame {
     width: 100%;
-    /* Tall enough for Adsterra's bar to render fully */
-    height: 70px;
-    min-height: 50px;
+    height: 100px; /* Increased from 70px to ensure full visibility */
+    min-height: 80px;
     border: none;
     display: block;
     background: transparent;
-    /* Prevent iframe from creating its own stacking context that overlaps */
     position: static;
     overflow: hidden;
 }

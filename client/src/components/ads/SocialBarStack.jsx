@@ -12,16 +12,17 @@ function SocialBarFrame({ index }) {
             || iframeRef.current.contentWindow?.document;
         if (!doc) return;
 
-        doc.open();
-        doc.write(`<!DOCTYPE html><html><head>
+        const script = doc.createElement('script');
+        script.src = SOCIAL_BAR_SRC;
+        script.async = true;
+        
+        doc.head.innerHTML = `
             <style>
                 * { margin: 0; padding: 0; box-sizing: border-box; }
-                body { background: transparent; overflow: hidden; }
+                body { background: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
             </style>
-        </head><body>
-            <script src="${SOCIAL_BAR_SRC}"><\/script>
-        </body></html>`);
-        doc.close();
+        `;
+        doc.body.appendChild(script);
     }, []);
 
     return (
