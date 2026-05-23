@@ -52,6 +52,8 @@ function ProtectedRoute({ children }) {
 import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
+  useEffect(() => {
+    // Initial setup if needed
   }, []);
 
   useEffect(() => {

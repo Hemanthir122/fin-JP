@@ -39,9 +39,7 @@ function SocialBarFrame({ index }) {
 function SocialBarStack() {
     return (
         <div className="social-bar-stack">
-            <SocialBarFrame index={1} />
-            <SocialBarFrame index={2} />
-            <SocialBarFrame index={3} />
+            <SocialBarFrame key="single-ad" index={1} />
         </div>
     );
 }

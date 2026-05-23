@@ -3,16 +3,15 @@
     flex-direction: column;
     width: 100%;
     position: static;
-    margin: 0;
-    gap: 8px; /* Spacing between bars */
-    padding: 10px 0;
+    margin-top: 64px; /* Account for fixed Navbar */
+    padding: 0;
     background: transparent;
 }
 
 .social-bar-frame {
     width: 100%;
-    height: 100px; /* Increased from 70px to ensure full visibility */
-    min-height: 80px;
+    height: 180px; /* Big enough for full visibility of any notification scale */
+    min-height: 120px;
     border: none;
     display: block;
     background: transparent;
