@@ -31,6 +31,62 @@ const ResumeBuilder = lazy(() => import('./pages/ResumeBuilder'));
 const AIAnalysis = lazy(() => import('./pages/admin/AIAnalysis'));
 import './App.css';
 
+// ─── Social bar singleton — created once, never duplicated ───────────────────
+// Lives outside the component so StrictMode double-invoke can't create a second one.
+let _socialBarMounted = false;
+
+function mountSocialBar() {
+  if (_socialBarMounted) return;
+  // Remove any stale iframe from a previous HMR reload
+  const stale = document.getElementById('adsterra-social-bar');
+  if (stale) stale.remove();
+
+  _socialBarMounted = true;
+
+  const BAR_HEIGHT = 70;  // enough room for Adsterra's social bar widget
+  const src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
+
+  const iframe = document.createElement('iframe');
+  iframe.id = 'adsterra-social-bar';
+  iframe.style.cssText = [
+    'position:fixed',
+    'top:64px',
+    'left:0',
+    'width:100%',
+    `height:${BAR_HEIGHT}px`,
+    'border:none',
+    'z-index:998',
+    'pointer-events:auto',
+    'background:transparent',
+    'overflow:hidden',
+  ].join(';');
+  iframe.setAttribute('scrolling', 'no');
+  iframe.setAttribute('frameborder', '0');
+  document.body.appendChild(iframe);
+
+  // Push page content down so nothing is hidden behind the bar
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) mainContent.style.paddingTop = `${BAR_HEIGHT}px`;
+
+  // Small delay so the iframe is fully attached before writing into it
+  setTimeout(() => {
+    try {
+      const doc = iframe.contentDocument || iframe.contentWindow?.document;
+      if (!doc) return;
+      doc.open();
+      doc.write(
+        '<!DOCTYPE html><html><head>' +
+        '<style>*{margin:0;padding:0;}body{overflow:hidden;background:transparent;}</style>' +
+        '</head><body>' +
+        '<script src="' + src + '"><\/script>' +
+        '</body></html>'
+      );
+      doc.close();
+    } catch (_) { /* cross-origin guard */ }
+  }, 300);
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Loading component
 const Loading = () => (
   <div className="loading-container" style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -51,43 +107,9 @@ import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
   useEffect(() => {
-    // Social bar — 1 iframe just below navbar (top: 64px)
-    const src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
-    const BAR_HEIGHT = 56;
-
-    const iframe = document.createElement('iframe');
-    iframe.id = 'adsterra-social-bar';
-    iframe.style.cssText = [
-      'position:fixed',
-      'top:64px',
-      'left:0',
-      'width:100%',
-      `height:${BAR_HEIGHT}px`,
-      'border:none',
-      'z-index:998',
-      'pointer-events:auto',
-      'background:transparent',
-    ].join(';');
-    iframe.setAttribute('scrolling', 'no');
-    iframe.setAttribute('frameborder', '0');
-    document.body.appendChild(iframe);
-
-    // Push page content down so nothing is hidden behind the bar
-    const mainContent = document.querySelector('.main-content');
-    if (mainContent) mainContent.style.paddingTop = `${BAR_HEIGHT}px`;
-
-    setTimeout(() => {
-      const doc = iframe.contentDocument || iframe.contentWindow?.document;
-      if (!doc) return;
-      doc.open();
-      doc.write(`<!DOCTYPE html><html><head><style>*{margin:0;padding:0;}body{overflow:hidden;background:transparent;}</style></head><body><script src="${src}"><\/script></body></html>`);
-      doc.close();
-    }, 300);
-
-    return () => {
-      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
-      if (mainContent) mainContent.style.paddingTop = '';
-    };
+    // Social bar — singleton, safe against StrictMode double-invoke
+    mountSocialBar();
+    // No cleanup — the bar should persist for the entire session
   }, []);
 
   useEffect(() => {
