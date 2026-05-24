@@ -29,8 +29,6 @@ const ManageCompanyLogos = lazy(() => import('./pages/admin/ManageCompanyLogos')
 const NotFound = lazy(() => import('./pages/NotFound'));
 const ResumeBuilder = lazy(() => import('./pages/ResumeBuilder'));
 const AIAnalysis = lazy(() => import('./pages/admin/AIAnalysis'));
-import SocialBarStack from './components/ads/SocialBarStack';
-
 import './App.css';
 
 // Loading component
@@ -53,7 +51,43 @@ import { HelmetProvider } from 'react-helmet-async';
 
 function App() {
   useEffect(() => {
-    // Initial setup if needed
+    // Social bar — 1 iframe just below navbar (top: 64px)
+    const src = 'https://breachuptown.com/53/e5/58/53e55836ee891aa30b1843270191bee1.js';
+    const BAR_HEIGHT = 56;
+
+    const iframe = document.createElement('iframe');
+    iframe.id = 'adsterra-social-bar';
+    iframe.style.cssText = [
+      'position:fixed',
+      'top:64px',
+      'left:0',
+      'width:100%',
+      `height:${BAR_HEIGHT}px`,
+      'border:none',
+      'z-index:998',
+      'pointer-events:auto',
+      'background:transparent',
+    ].join(';');
+    iframe.setAttribute('scrolling', 'no');
+    iframe.setAttribute('frameborder', '0');
+    document.body.appendChild(iframe);
+
+    // Push page content down so nothing is hidden behind the bar
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) mainContent.style.paddingTop = `${BAR_HEIGHT}px`;
+
+    setTimeout(() => {
+      const doc = iframe.contentDocument || iframe.contentWindow?.document;
+      if (!doc) return;
+      doc.open();
+      doc.write(`<!DOCTYPE html><html><head><style>*{margin:0;padding:0;}body{overflow:hidden;background:transparent;}</style></head><body><script src="${src}"><\/script></body></html>`);
+      doc.close();
+    }, 300);
+
+    return () => {
+      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+      if (mainContent) mainContent.style.paddingTop = '';
+    };
   }, []);
 
   useEffect(() => {
@@ -144,7 +178,6 @@ function App() {
               <Route path="/*" element={
                 <>
                   <Navbar />
-                  <SocialBarStack />
                   <main className="main-content">
                     <Routes>
                       <Route path="/" element={<Home />} />

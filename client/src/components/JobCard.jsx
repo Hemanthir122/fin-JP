@@ -4,6 +4,17 @@ import { MapPin, Clock, Briefcase, Share2, MoreVertical } from 'lucide-react';
 import JobModal from './JobModal';
 import './JobCard.css';
 
+const SMART_LINK_URL = 'https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085';
+const APPLY_COUNT_KEY = 'apply_click_count';
+
+function triggerSmartLinkEvery5th() {
+    const current = parseInt(sessionStorage.getItem(APPLY_COUNT_KEY) || '0', 10) + 1;
+    sessionStorage.setItem(APPLY_COUNT_KEY, String(current));
+    if (current % 5 === 0) {
+        window.open(SMART_LINK_URL, '_blank', 'noopener,noreferrer');
+    }
+}
+
 function JobCard({ job }) {
     const [showMenu, setShowMenu] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -147,7 +158,7 @@ function JobCard({ job }) {
                 <div className="jc-actions">
                     <button
                         className={`jc-btn-apply ${isExpired ? 'jc-btn-expired' : ''}`}
-                        onClick={(e) => { e.stopPropagation(); setModalOpen(true); }}
+                        onClick={(e) => { e.stopPropagation(); if (!isExpired) triggerSmartLinkEvery5th(); setModalOpen(true); }}
                     >
                         {isExpired ? 'Expired' : 'Apply Now'}
                     </button>
@@ -179,7 +190,7 @@ function JobCard({ job }) {
                 <div className="jc-mobile-footer-right">
                     <button
                         className={`jc-btn-apply ${isExpired ? 'jc-btn-expired' : ''}`}
-                        onClick={(e) => { e.stopPropagation(); setModalOpen(true); }}
+                        onClick={(e) => { e.stopPropagation(); if (!isExpired) triggerSmartLinkEvery5th(); setModalOpen(true); }}
                     >
                         {isExpired ? 'Expired' : 'Apply Now'}
                     </button>
