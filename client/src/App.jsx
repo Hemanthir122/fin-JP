@@ -21,14 +21,12 @@ const PostJob = lazy(() => import('./pages/admin/PostJob'));
 const ManageJobs = lazy(() => import('./pages/admin/ManageJobs'));
 const EditJob = lazy(() => import('./pages/admin/EditJob'));
 const UpdateCompanyLogo = lazy(() => import('./pages/admin/UpdateCompanyLogo'));
-const FeedbackStats = lazy(() => import('./pages/admin/FeedbackStats'));
 const ExternalJobs = lazy(() => import('./pages/admin/ExternalJobs'));
 const ExternalJobsHistory = lazy(() => import('./pages/admin/ExternalJobsHistory'));
 const ApprovedExternalJobs = lazy(() => import('./pages/admin/ApprovedExternalJobs'));
 const ManageCompanyLogos = lazy(() => import('./pages/admin/ManageCompanyLogos'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const ResumeBuilder = lazy(() => import('./pages/ResumeBuilder'));
-const AIAnalysis = lazy(() => import('./pages/admin/AIAnalysis'));
 import './App.css';
 
 // ─── Social bar singleton — created once, never duplicated ───────────────────
@@ -184,11 +182,6 @@ function App() {
                   <ExternalJobsHistory />
                 </ProtectedRoute>
               } />
-              <Route path="/admin/feedback-stats" element={
-                <ProtectedRoute>
-                  <FeedbackStats />
-                </ProtectedRoute>
-              } />
               <Route path="/admin/approved-external-jobs" element={
                 <ProtectedRoute>
                   <ApprovedExternalJobs />
@@ -199,12 +192,6 @@ function App() {
                   <ManageCompanyLogos />
                 </ProtectedRoute>
               } />
-              <Route path="/admin/ai" element={
-                <ProtectedRoute>
-                  <AIAnalysis />
-                </ProtectedRoute>
-              } />
-
               {/* Public Routes with Navbar/Footer */}
               <Route path="/*" element={
                 <>

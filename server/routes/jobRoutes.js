@@ -155,14 +155,35 @@ router.get('/', async (req, res) => {
                 .sort({ approvedAt: -1 })
                 .limit(parseInt(limit))
                 .lean()
-                .then(jobs => jobs.map(job => ({
-                    ...job,
-                    source: 'external',
-                    title: job.role,
-                    package: job.salary,
-                    description: job.description || `${job.role} at ${job.company}`,
-                    companyLogo: job.companyLogo || ''
-                })));
+                .then(async (jobs) => {
+                    // Fetch logos from external DB for jobs missing companyLogo
+                    const missingLogoCompanies = [...new Set(
+                        jobs.filter(j => !j.companyLogo).map(j => j.company)
+                    )];
+
+                    let logoMap = {};
+                    if (missingLogoCompanies.length > 0) {
+                        try {
+                            const externalDbService = require('../services/externalDbService');
+                            const logosCollection = await externalDbService.getCompanyLogosCollection();
+                            const logos = await logosCollection.find({
+                                company: { $in: missingLogoCompanies }
+                            }).toArray();
+                            logos.forEach(l => { logoMap[l.company] = l.logo; });
+                        } catch (e) {
+                            // non-blocking
+                        }
+                    }
+
+                    return jobs.map(job => ({
+                        ...job,
+                        source: 'external',
+                        title: job.role,
+                        package: job.salary,
+                        description: job.description || `${job.role} at ${job.company}`,
+                        companyLogo: job.companyLogo || logoMap[job.company] || '',
+                    }));
+                });
         }
 
         // Combine and sort by date

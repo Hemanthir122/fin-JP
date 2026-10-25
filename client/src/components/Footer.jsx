@@ -148,11 +148,14 @@ function Footer() {
 
                 {/* ── Bottom Bar ── */}
                 <div className="footer-bottom">
-                    <p>&copy; {currentYear} JobConnects. All rights reserved.</p>
-                    <p className="footer-disclaimer">
-                        JobConnects is a job listing platform. We are not responsible for the
-                        accuracy of job postings or the actions of employers.
-                    </p>
+                    <Link to="/" className="footer-bottom-brand">
+                        <span className="footer-bottom-name">jobconnects</span>
+                        <span className="footer-bottom-tagline">Cleaner paths to better work.</span>
+                    </Link>
+                    <div className="footer-bottom-links">
+                        <Link to="/about">About</Link>
+                        <Link to="/privacy">Privacy policy</Link>
+                    </div>
                 </div>
             </div>
         </footer>

@@ -14,7 +14,6 @@ function PostJob() {
     const [success, setSuccess] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-
     const [formData, setFormData] = useState({
         title: '',
         company: '',

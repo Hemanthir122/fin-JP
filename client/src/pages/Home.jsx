@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Target, Zap, Shield, Users } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import JobCard from '../components/JobCard';
@@ -17,6 +17,7 @@ const SMARTLINK = 'https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131e
 function Home() {
     const [filters, setFilters] = useState({});
     const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 640);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handler = () => setIsMobile(window.innerWidth <= 640);
@@ -34,6 +35,15 @@ function Home() {
 
     const handleCountryChange = useCallback((country) => {
         setFilters(prev => ({ ...prev, country, cities: [] }));
+    }, []);
+
+    // Hero search — update filter
+    const handleHeroSearch = useCallback((search) => {
+        setFilters(prev => ({ ...prev, search }));
+        // Scroll to jobs section
+        setTimeout(() => {
+            document.querySelector('.home-latest')?.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
     }, []);
 
     const filteredJobs = useMemo(() => {
@@ -74,34 +84,18 @@ function Home() {
         return result;
     }, [jobs, filters]);
 
-    const features = [
-        { icon: Target, title: 'Curated Opportunities', description: 'Hand-picked jobs from verified companies across industries' },
-        { icon: Zap,    title: 'Quick Apply',           description: 'Apply to multiple jobs instantly with your profile' },
-        { icon: Shield, title: 'Verified Listings',     description: 'All job postings are verified for authenticity' },
-        { icon: Users,  title: 'Career Support',        description: 'Get guidance and support throughout your job search' },
+    // Count categories from real data
+    const totalPublished = jobs.filter(j => j.status === 'published' || !j.status).length;
+    const freshers  = jobs.filter(j => (j.experience || '').toLowerCase().includes('fresh') || (j.experience || '') === 'Fresher').length;
+    const internships = jobs.filter(j => j.type === 'internship').length;
+    const remote    = jobs.filter(j => (j.location || '').toLowerCase().includes('remote') || (j.jobType || '').toLowerCase().includes('remote')).length;
+
+    const LANES = [
+        { count: totalPublished || 148, label: 'Off campus drives',  desc: 'Find your next opportunity', filter: { types: ['job'] } },
+        { count: freshers || 96,        label: 'Fresher jobs',        desc: 'Start strong, grow fast',    filter: { search: 'fresher' } },
+        { count: internships || 72,     label: 'Internships',         desc: 'Learn by doing',             filter: { types: ['internship'] } },
+        { count: remote || 54,          label: 'Work from home',      desc: 'Work from anywhere',         filter: { search: 'remote' } },
     ];
-
-    /* Inject sponsored native ad + mobile banner:
-       - Only sponsored when total > 6: mobile after 3, desktop after 6
-       - Mobile banner after every job card (mobile only via CSS)
-    */
-    const jobsWithAds = useMemo(() => {
-        const items = [];
-        const total = filteredJobs.length;
-        const interval = isMobile ? 3 : 6;
-        let adCount = 0;
-
-        filteredJobs.forEach((job, i) => {
-            items.push({ type: 'job', job, key: job._id });
-            // Mobile banner after every job
-            items.push({ type: 'mobile-banner', key: `mb-${i}` });
-            // Sponsored native ad at interval (only if > 6 jobs)
-            if (total > 6 && (i + 1) % interval === 0) {
-                items.push({ type: 'sponsored', key: `sponsored-${adCount++}` });
-            }
-        });
-        return items;
-    }, [filteredJobs, isMobile]);
 
     return (
         <div className="home-page">
@@ -120,64 +114,35 @@ function Home() {
                 <meta name="twitter:description" content="Find remote, part-time, per hour, delivery and full-time jobs worldwide." />
             </Helmet>
 
-
-            <Hero />
-
-            {/* ── Why Choose Us ── */}
-            <section className="section about-section">
-                <div className="container">
-                    <div className="about-content">
-                        <h2 className="section-title">Why Choose JobConnects?</h2>
-                        <p className="section-subtitle">
-                            We connect talented individuals with their dream careers. Our platform
-                            makes job hunting simple, efficient, and effective.
-                        </p>
-                    </div>
-
-                    <div className="features-grid">
-                        {features.map((feature, index) => (
-                            <div key={index} className="feature-card card">
-                                <div className="feature-icon">
-                                    <feature.icon size={28} />
-                                </div>
-                                <h3 className="feature-title">{feature.title}</h3>
-                                <p className="feature-description">{feature.description}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="features-navigation">
-                        <span className="dot active"></span>
-                        <span className="dot"></span>
-                        <span className="dot"></span>
-                    </div>
-                </div>
-            </section>
-            {/* ── Sponsored — between Why Choose Us and Latest Opportunities ── */}
-            <div className="container home-native-banner-wrap">
-                <SponsoredCard />
-            </div>
+            {/* ── Hero ── */}
+            <Hero onSearch={handleHeroSearch} />
 
             {/* ── Latest Opportunities ── */}
-            <section className="section jobs-section">
-                <div className="container">
-                    <div className="jobs-header">
+            <div className="home-latest">
+                <div className="home-latest-inner">
+                    <div className="home-latest-header">
                         <div>
-                            <h2 className="section-title">Latest Opportunities</h2>
-                            <p className="section-subtitle">Explore the newest job openings from top companies</p>
+                            <div className="home-label">The latest</div>
+                            <h2 className="home-latest-title">Opportunities worth a look</h2>
                         </div>
+                        <Link to="/jobs" className="home-latest-view-all">
+                            View all jobs <ArrowRight size={14} />
+                        </Link>
                     </div>
 
                     <CountryBar onCountryChange={handleCountryChange} />
-                    <JobFilter onFilter={handleFilter} companies={companies} locations={locations} />
+
+                    <div className="home-filters-bar">
+                        <JobFilter onFilter={handleFilter} companies={companies} locations={locations} />
+                    </div>
 
                     {jobsLoading ? (
-                        <div className="loading-container">
+                        <div style={{ display: 'flex', justifyContent: 'center', padding: '48px 0' }}>
                             <div className="spinner"></div>
                         </div>
                     ) : filteredJobs.length > 0 ? (
                         <>
-                            {/* ── Mobile: flat list, banner after every 4th card ── */}
+                            {/* Mobile: flat list, banner every 4th */}
                             <div className="jobs-mobile-list">
                                 {filteredJobs.map((job, i) => (
                                     <div key={job._id}>
@@ -189,8 +154,8 @@ function Home() {
                                 ))}
                             </div>
 
-                            {/* ── Desktop: 2-col grid, sponsored every 6 ── */}
-                            <div className="jobs-grid grid grid-2 jobs-desktop-grid">
+                            {/* Desktop: 2-col grid */}
+                            <div className="jobs-grid grid-2 jobs-desktop-grid">
                                 {filteredJobs.map((job, i) => (
                                     <div key={job._id} className={`animate-fadeIn stagger-${(i % 5) + 1}`}>
                                         <JobCard job={job} />
@@ -204,13 +169,11 @@ function Home() {
 
                             <div className="view-all-container">
                                 <Link to="/jobs" className="btn btn-primary btn-lg">
-                                    View All Jobs
-                                    <ArrowRight size={18} />
+                                    View All Jobs <ArrowRight size={16} />
                                 </Link>
                             </div>
                         </>
                     ) : (
-                        /* ── Premium Empty State ── */
                         <div className="home-empty-state">
                             <div className="empty-state-icon">🔍</div>
                             {filters.cities && filters.cities.length > 0 ? (
@@ -236,57 +199,68 @@ function Home() {
                             ) : (
                                 <>
                                     <h3>No jobs found</h3>
-                                    <p>Try adjusting your filters or explore these opportunities:</p>
+                                    <p>Try adjusting your filters or explore all opportunities:</p>
                                     <div className="empty-state-actions">
                                         <Link to="/jobs" className="btn btn-primary">Browse All Jobs</Link>
                                     </div>
                                 </>
                             )}
-
-                            {/* Premium fallback sponsored cards */}
                             <div className="empty-sponsored-grid">
                                 <SponsoredCard />
                             </div>
                         </div>
                     )}
                 </div>
-            </section>
+            </div>
 
-
-
-            {/* ── Sponsored — after career resources ── */}
-            <div className="container home-native-banner-wrap">
+            {/* ── Sponsored ── */}
+            <div className="home-native-banner-wrap" style={{ paddingTop: '24px', paddingBottom: '0' }}>
                 <SponsoredCard />
             </div>
 
-            {/* ── CTA Section ── */}
-            <section className="section cta-section">
-                <div className="container">
-                    <div className="cta-content glass">
-                        <div className="cta-text">
-                            <h2>Ready to Start Your Journey?</h2>
-                            <p>
-                                Thousands of companies are hiring right now. Find your perfect
-                                match and take the next step in your career.
-                            </p>
-                        </div>
-                        <div className="cta-buttons">
-                            <Link to="/jobs" className="btn btn-primary btn-lg">
-                                Browse Jobs
-                            </Link>
-                            <a
-                                href={SMARTLINK}
-                                className="btn btn-secondary btn-lg"
-                                target="_blank"
-                                rel="noopener noreferrer nofollow"
-                                onClick={(e) => { e.preventDefault(); window.open(SMARTLINK, '_blank', 'noopener,noreferrer'); }}
+            {/* ── Find your lane ── */}
+            <div className="home-lanes">
+                <div className="home-lanes-inner">
+                    <div className="home-label">Find your lane</div>
+                    <div className="home-lanes-grid">
+                        {LANES.map((lane, i) => (
+                            <div
+                                key={i}
+                                className="home-lane-card"
+                                onClick={() => {
+                                    handleFilter(lane.filter);
+                                    document.querySelector('.home-latest')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
                             >
-                                Explore Opportunities
-                            </a>
-                        </div>
+                                <ArrowRight size={14} className="home-lane-arrow" />
+                                <div className="home-lane-count">{lane.count}</div>
+                                <div className="home-lane-title">{lane.label}</div>
+                                <div className="home-lane-desc">{lane.desc}</div>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            </section>
+            </div>
+
+            {/* ── Manifesto ── */}
+            <div className="home-manifesto">
+                <div className="home-manifesto-inner">
+                    <div className="home-manifesto-headline">
+                        A better job search.<br />
+                        <span style={{ color: '#2d6a4f' }}>Less noise.</span> More signal.
+                    </div>
+                    <div className="home-manifesto-body">
+                        JobConnects turns scattered <em>hiring updates</em> into clear, useful reads. Every post is
+                        structured so you can quickly understand the role, check the essentials, and <strong>apply
+                        through the official source.</strong>
+                    </div>
+                </div>
+            </div>
+
+            {/* ── Sponsored ── */}
+            <div className="home-native-banner-wrap" style={{ paddingTop: '24px', paddingBottom: '24px' }}>
+                <SponsoredCard />
+            </div>
 
             {/* ── Floating Mobile CTA ── */}
             <FloatingCTA />

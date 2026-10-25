@@ -87,9 +87,7 @@ function ApprovedExternalJobs() {
                     <Link to="/admin/update-company-logo" className="nav-item">
                         Update Company Logo
                     </Link>
-                    <Link to="/admin/feedback-stats" className="nav-item">
-                        Feedback Stats
-                    </Link>
+
                     <Link to="/admin/approved-external-jobs" className="nav-item active">
                         Approved External Jobs
                     </Link>

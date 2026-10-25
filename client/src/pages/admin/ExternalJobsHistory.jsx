@@ -122,9 +122,7 @@ function ExternalJobsHistory() {
                     <Link to="/admin/update-company-logo" className="nav-item">
                         Update Company Logo
                     </Link>
-                    <Link to="/admin/feedback-stats" className="nav-item">
-                        Feedback Stats
-                    </Link>
+
                 </nav>
                 <div className="admin-sidebar-footer">
                     <Link to="/" className="nav-item back-link">
