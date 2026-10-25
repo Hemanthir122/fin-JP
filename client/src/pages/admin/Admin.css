@@ -989,7 +989,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #f97316, #fb923c);
+    background: linear-gradient(90deg, #2d6a4f, #40916c);
 }
 
 .approved-job-card:hover {
@@ -1018,7 +1018,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #f97316, #fb923c);
+    background: linear-gradient(135deg, #2d6a4f, #40916c);
     color: white;
     border-radius: 10px;
     font-weight: 700;
@@ -1237,3 +1237,4 @@
     animation: ai-spin 0.8s linear infinite;
     display: inline-block;
 }
+

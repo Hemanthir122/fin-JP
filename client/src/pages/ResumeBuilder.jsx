@@ -239,7 +239,7 @@ function ResumeBuilder() {
 
     const getScoreGradient = (score) => {
         if (score >= 70) return 'linear-gradient(135deg, #22c55e, #16a34a)';
-        if (score >= 45) return 'linear-gradient(135deg, #f97316, #ea580c)';
+        if (score >= 45) return 'linear-gradient(135deg, #2d6a4f, #1b4332)';
         return 'linear-gradient(135deg, #ef4444, #dc2626)';
     };
 
@@ -703,3 +703,4 @@ Include:
 }
 
 export default ResumeBuilder;
+

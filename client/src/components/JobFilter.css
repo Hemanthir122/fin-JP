@@ -141,7 +141,7 @@
 .filter-icon {
     position: absolute;
     left: 14px;
-    color: #f97316;
+    color: #2d6a4f;
     pointer-events: none;
     z-index: 1;
     opacity: 0.7;
@@ -355,7 +355,7 @@
         padding: 13px;
         font-size: 0.95rem;
         border-radius: 10px;
-        background: #f97316;
+        background: #2d6a4f;
         color: #fff;
         border: none;
         font-weight: 700;
@@ -657,3 +657,4 @@
     background: rgba(255,255,255,0.05);
     border-color: rgba(255,255,255,0.2);
 }
+

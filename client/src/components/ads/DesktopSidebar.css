@@ -111,7 +111,7 @@
 }
 .tag-hot      { background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; }
 .tag-new      { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
-.tag-trending { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
+.tag-trending { background: #ebf5ef; color: #1b4332; border: 1px solid #95d5b2; }
 
 /* ── Resources list ── */
 .sidebar-resources-list {
@@ -149,14 +149,14 @@
 
 /* ── CTA widget ── */
 .sidebar-cta-widget {
-    background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
-    border-color: #fed7aa;
+    background: linear-gradient(135deg, #ebf5ef 0%, #fef3c7 100%);
+    border-color: #95d5b2;
     text-align: center;
 }
 
 [data-theme="dark"] .sidebar-cta-widget {
-    background: linear-gradient(135deg, rgba(249,115,22,0.1) 0%, rgba(245,158,11,0.08) 100%);
-    border-color: rgba(249,115,22,0.25);
+    background: linear-gradient(135deg, rgba(45,106,79,0.1) 0%, rgba(245,158,11,0.08) 100%);
+    border-color: rgba(45,106,79,0.25);
 }
 
 .sidebar-cta-icon { font-size: 1.8rem; margin-bottom: 6px; }
@@ -180,14 +180,14 @@
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
-    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%);
     color: #fff !important;
     border-radius: 8px;
     font-size: 0.78rem;
     font-weight: 700;
     text-decoration: none;
     transition: opacity 0.15s ease, transform 0.15s ease;
-    box-shadow: 0 2px 8px rgba(249,115,22,0.3);
+    box-shadow: 0 2px 8px rgba(45,106,79,0.3);
     width: 100%;
 }
 
@@ -237,3 +237,4 @@
     display: block;
     background: transparent;
 }
+

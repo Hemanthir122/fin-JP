@@ -6,7 +6,7 @@
 
 /* ── Hero ── */
 .companies-hero {
-    background: linear-gradient(135deg, #f5f0ff 0%, #faf5ff 40%, #fff7ed 100%);
+    background: linear-gradient(135deg, #f5f0ff 0%, #faf5ff 40%, #ebf5ef 100%);
     border-bottom: 1px solid var(--border-color);
     padding: 100px 0 40px;
     overflow: hidden;
@@ -360,7 +360,7 @@
 .cg-sub-count {
     font-size: 0.7rem;
     font-weight: 600;
-    color: #f97316;
+    color: #2d6a4f;
 }
 
 .cg-chevron { color: var(--text-muted); flex-shrink: 0; transition: all 0.15s; }
@@ -425,3 +425,4 @@
     grid-column: unset;
     width: 100%;
 }
+

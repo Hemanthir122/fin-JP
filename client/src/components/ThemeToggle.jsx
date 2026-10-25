@@ -43,21 +43,21 @@ function ThemeToggle() {
             root.style.setProperty('--shadow-glow-hover', '0 0 12px rgba(77, 163, 255, 0.35)');
         } else {
             // Light theme (Orange & White - Attractive)
-            root.style.setProperty('--primary', '#f97316');
-            root.style.setProperty('--primary-light', '#fb923c');
-            root.style.setProperty('--primary-dark', '#ea580c');
+            root.style.setProperty('--primary', '#2d6a4f');
+            root.style.setProperty('--primary-light', '#40916c');
+            root.style.setProperty('--primary-dark', '#1b4332');
             
             root.style.setProperty('--bg-dark', '#ffffff');
             root.style.setProperty('--bg-card', '#ffffff');
-            root.style.setProperty('--bg-card-hover', '#fff7ed');
+            root.style.setProperty('--bg-card-hover', '#ebf5ef');
             root.style.setProperty('--bg-glass', 'rgba(255, 255, 255, 0.95)');
             
             root.style.setProperty('--text-primary', '#000000');
             root.style.setProperty('--text-secondary', '#1a1a1a');
             root.style.setProperty('--text-muted', '#4a5568');
             
-            root.style.setProperty('--gradient-primary', 'linear-gradient(135deg, #f97316 0%, #fb923c 100%)');
-            root.style.setProperty('--gradient-hero', 'linear-gradient(135deg, #ffffff 0%, #fff7ed 50%, #ffedd5 100%)');
+            root.style.setProperty('--gradient-primary', 'linear-gradient(135deg, #2d6a4f 0%, #40916c 100%)');
+            root.style.setProperty('--gradient-hero', 'linear-gradient(135deg, #ffffff 0%, #ebf5ef 50%, #ffedd5 100%)');
             root.style.setProperty('--gradient-card', 'linear-gradient(145deg, #ffffff 0%, #fffbf5 100%)');
             
             root.style.setProperty('--border-color', 'rgba(249, 115, 22, 0.12)');
@@ -89,3 +89,4 @@ function ThemeToggle() {
 }
 
 export default ThemeToggle;
+

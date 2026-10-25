@@ -670,7 +670,7 @@
     width: 20px;
     height: 20px;
     cursor: pointer;
-    accent-color: #f97316;
+    accent-color: #2d6a4f;
 }
 
 .ej-card-new {
@@ -678,7 +678,7 @@
 }
 
 .ej-card-selected {
-    border-color: #f97316 !important;
+    border-color: #2d6a4f !important;
     background: rgba(249, 115, 22, 0.05) !important;
     box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
 }
@@ -910,3 +910,4 @@
     border-color: #ff6b1a;
     color: #ff6b1a;
 }
+

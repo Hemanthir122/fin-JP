@@ -132,7 +132,7 @@
 [data-theme="light"] .walkin-share-btn {
     background: rgba(249, 115, 22, 0.1);
     border-color: rgba(249, 115, 22, 0.2);
-    color: #f97316;
+    color: #2d6a4f;
 }
 
 [data-theme="light"] .walkin-share-btn:hover {
@@ -237,7 +237,7 @@
 }
 
 .walkin-email-link {
-    color: #f97316;
+    color: #2d6a4f;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s;
@@ -251,7 +251,7 @@
 
 .walkin-email-link:hover {
     text-decoration: none;
-    color: #ea580c;
+    color: #1b4332;
     background: rgba(249, 115, 22, 0.25);
     border-color: rgba(249, 115, 22, 0.5);
     transform: translateY(-1px);
@@ -281,7 +281,7 @@
 }
 
 .walkin-url-link {
-    color: #f97316;
+    color: #2d6a4f;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s;
@@ -297,7 +297,7 @@
 
 .walkin-url-link:hover {
     text-decoration: none;
-    color: #ea580c;
+    color: #1b4332;
     background: rgba(249, 115, 22, 0.25);
     border-color: rgba(249, 115, 22, 0.5);
     transform: translateY(-1px);
@@ -653,3 +653,4 @@
         transform: scale(1);
     }
 }
+

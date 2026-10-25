@@ -397,7 +397,7 @@
 }
 
 .rb-progress-fill.score-medium {
-    background: linear-gradient(90deg, #f97316, #ea580c);
+    background: linear-gradient(90deg, #2d6a4f, #1b4332);
 }
 
 .rb-progress-fill.score-low {
@@ -850,3 +850,4 @@
         padding: 16px;
     }
 }
+

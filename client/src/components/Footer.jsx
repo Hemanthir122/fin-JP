@@ -132,7 +132,7 @@ function Footer() {
                             ))}
                             <circle cx="85"  cy="70"  r="5" fill="#2563eb" opacity="0.9"/>
                             <circle cx="140" cy="85"  r="5" fill="#7c3aed" opacity="0.9"/>
-                            <circle cx="110" cy="120" r="5" fill="#ea580c" opacity="0.9"/>
+                            <circle cx="110" cy="120" r="5" fill="#1b4332" opacity="0.9"/>
                             {/* Briefcase */}
                             <rect x="88" y="155" width="44" height="32" rx="5" fill="#2563eb" opacity="0.85"/>
                             <rect x="98" y="150" width="24" height="10" rx="3" fill="#1d4ed8" opacity="0.85"/>
@@ -163,3 +163,4 @@ function Footer() {
 }
 
 export default Footer;
+

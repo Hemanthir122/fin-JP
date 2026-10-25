@@ -70,17 +70,17 @@
 }
 
 .country-btn.active {
-    background: #f97316;
+    background: #2d6a4f;
     border-color: transparent;
     color: #fff;
-    box-shadow: 0 2px 8px rgba(249,115,22,0.3);
+    box-shadow: 0 2px 8px rgba(45,106,79,0.3);
     transform: translateY(-1px);
 }
 
 [data-theme="dark"] .country-btn.active {
-    background: #f97316;
+    background: #2d6a4f;
     color: #fff;
-    box-shadow: 0 2px 10px rgba(249,115,22,0.4);
+    box-shadow: 0 2px 10px rgba(45,106,79,0.4);
 }
 
 .country-flag-img {
@@ -185,3 +185,4 @@
         height: 28px;
     }
 }
+

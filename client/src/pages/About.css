@@ -51,7 +51,7 @@
 .stat-number {
     font-size: 1.5rem;
     font-weight: 800;
-    color: #f97316;
+    color: #2d6a4f;
 }
 
 .stat-label {
@@ -82,7 +82,7 @@
 .value-card:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-glow-hover);
-    border-color: #fed7aa;
+    border-color: #95d5b2;
 }
 
 .value-icon {
@@ -92,10 +92,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff7ed;
-    border: 1px solid #fed7aa;
+    background: #ebf5ef;
+    border: 1px solid #95d5b2;
     border-radius: 14px;
-    color: #f97316;
+    color: #2d6a4f;
 }
 
 .value-card h3 {
@@ -116,13 +116,13 @@
     padding: 52px 48px;
     border-radius: var(--border-radius-lg);
     text-align: center;
-    background: linear-gradient(135deg, #fff7ed 0%, #fffbf5 100%);
-    border: 1px solid #fed7aa;
+    background: linear-gradient(135deg, #ebf5ef 0%, #fffbf5 100%);
+    border: 1px solid #95d5b2;
 }
 
 [data-theme="dark"] .about-cta {
-    background: linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(249,115,22,0.04) 100%);
-    border-color: rgba(249,115,22,0.2);
+    background: linear-gradient(135deg, rgba(45,106,79,0.08) 0%, rgba(45,106,79,0.04) 100%);
+    border-color: rgba(45,106,79,0.2);
 }
 
 .about-cta h2 {
@@ -160,3 +160,4 @@
     .about-cta .cta-buttons { flex-direction: column; }
     .about-cta .cta-buttons .btn { width: 100%; }
 }
+

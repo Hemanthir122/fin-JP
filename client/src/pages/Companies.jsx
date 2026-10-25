@@ -15,7 +15,7 @@ const HERO_BUBBLES = [
     { label: 'in', color: '#0a66c2', bg: '#dbeafe', size: 52, top: '5%',  right: '4%'  },
     { label: '♫',  color: '#1db954', bg: '#dcfce7', size: 56, top: '52%', right: '30%' },
     { label: 'A',  color: '#ff0000', bg: '#fee2e2', size: 56, top: '50%', right: '16%' },
-    { label: 'a',  color: '#ff9900', bg: '#fff7ed', size: 64, top: '28%', right: '5%'  },
+    { label: 'a',  color: '#ff9900', bg: '#ebf5ef', size: 64, top: '28%', right: '5%'  },
     { label: '🍎', color: '#1c1c1e', bg: '#f1f5f9', size: 44, top: '72%', right: '22%' },
 ];
 
@@ -251,3 +251,4 @@ function Companies() {
 }
 
 export default Companies;
+
