@@ -216,6 +216,35 @@ app.get('/api/debug-local-jobs', async (req, res) => {
     }
 });
 
+// One-time repair: delete duplicate jobs (same applyLink), keep newest publishedAt per link
+app.post('/api/repair/dedup-jobs', async (req, res) => {
+    try {
+        // Find all applyLinks that appear more than once
+        const dupes = await Job.aggregate([
+            { $match: { applyLink: { $ne: '', $ne: null, $exists: true } } },
+            { $group: { _id: '$applyLink', count: { $sum: 1 }, ids: { $push: '$_id' }, dates: { $push: '$publishedAt' } } },
+            { $match: { count: { $gt: 1 } } }
+        ]);
+
+        let totalDeleted = 0;
+        for (const group of dupes) {
+            // Sort ids by publishedAt desc — keep the first (newest), delete the rest
+            const withDates = group.ids.map((id, i) => ({ id, date: group.dates[i] || new Date(0) }));
+            withDates.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const toDelete = withDates.slice(1).map(x => x.id);
+            if (toDelete.length) {
+                await Job.deleteMany({ _id: { $in: toDelete } });
+                totalDeleted += toDelete.length;
+            }
+        }
+
+        console.log(`[Dedup] Deleted ${totalDeleted} duplicate job documents`);
+        res.json({ ok: true, duplicateGroups: dupes.length, deleted: totalDeleted });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);

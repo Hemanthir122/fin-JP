@@ -95,7 +95,7 @@ router.get('/', async (req, res) => {
 
         const skip = (parseInt(page) - 1) * parseInt(limit);
 
-        // Get internal jobs
+        // Get internal jobs — deduplicate by applyLink (keep newest publishedAt per link)
         const internalJobs = await Job.aggregate([
             { $match: matchQuery },
             {
@@ -104,6 +104,24 @@ router.get('/', async (req, res) => {
                     source: 'internal'
                 }
             },
+            { $sort: { sortDate: -1 } },
+            // Group by applyLink to deduplicate — keep the first (newest) doc per link
+            {
+                $group: {
+                    _id: {
+                        // Jobs without applyLink get their own _id so they aren't collapsed
+                        dedupeKey: {
+                            $cond: [
+                                { $and: [{ $ne: ['$applyLink', ''] }, { $ne: ['$applyLink', null] }] },
+                                '$applyLink',
+                                { $toString: '$_id' }
+                            ]
+                        }
+                    },
+                    doc: { $first: '$$ROOT' }
+                }
+            },
+            { $replaceRoot: { newRoot: '$doc' } },
             { $sort: { sortDate: -1 } },
             { $skip: skip },
             { $limit: parseInt(limit) }
@@ -206,7 +224,23 @@ router.get('/', async (req, res) => {
             })
             .slice(0, parseInt(limit));
 
-        const internalTotal = await Job.countDocuments(matchQuery);
+        // Count deduplicated internal jobs
+        const internalTotalAgg = await Job.aggregate([
+            { $match: matchQuery },
+            {
+                $group: {
+                    _id: {
+                        $cond: [
+                            { $and: [{ $ne: ['$applyLink', ''] }, { $ne: ['$applyLink', null] }] },
+                            '$applyLink',
+                            { $toString: '$_id' }
+                        ]
+                    }
+                }
+            },
+            { $count: 'total' }
+        ]);
+        const internalTotal = internalTotalAgg[0]?.total || 0;
         const externalTotal = req.query.status !== 'all' && isExternalJob !== 'false' ? await ExternalJob.countDocuments({ status: 'approved' }) : 0;
         const total = internalTotal + externalTotal;
 
