@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, MousePointerClick, X as XIcon } from 'lucide-react';
 import JobCard from '../components/JobCard';
 import WalkinCard from '../components/WalkinCard';
 import Pagination from '../components/Pagination';
@@ -12,36 +12,74 @@ import { useJobs, useCompanies, useLocations, useWalkins, useJobDetails } from '
 import SponsoredCard from '../components/ads/SponsoredCard';
 import DesktopSidebar from '../components/ads/DesktopSidebar';
 import FloatingCTA from '../components/ads/FloatingCTA';
-import MobileBannerAd from '../components/ads/MobileBannerAd';
 import './Jobs.css';
 
-const SMARTLINK = 'https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085';
+const SMARTLINK   = 'https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085';
 const HOUR_OPTIONS = [1, 3, 6, 12, 24];
 
-// Fetches a single job by ID and opens the modal — used for shared link redirects
 function ModalJobLoader({ jobId, onClose }) {
     const { data: job, isLoading } = useJobDetails(jobId);
     if (isLoading || !job) return null;
     return <JobModal job={job} onClose={onClose} />;
 }
 
-function Jobs({ type: propType }) {
-    const [currentPage, setCurrentPage]   = useState(1);
-    const [filters, setFilters]           = useState({});
-    const [modalJobId, setModalJobId]     = useState(null);
+// ── Shared text formatter (used by both copy modes) ──────────────────────────
+function formatJobText(job) {
+    const baseUrl   = 'https://www.jobconnects.online/job/';
+    const typeLabel = job.type === 'internship' ? 'Internship'
+                    : job.type === 'walkin'      ? 'Walk-in'
+                    : 'Job';
+    const pkg = job.package;
+    const showPkg = pkg && pkg !== 'Not disclosed'
+                       && pkg !== 'Not disclosed in supplied listing'
+                       && pkg !== 'Not specified';
 
-    // ── Copy toolbar state ───────────────────────────────────────────────────
-    const [copyHours, setCopyHours]       = useState(1);
-    const [copyCountry, setCopyCountry]   = useState('');
-    const [copied, setCopied]             = useState(false);
-    const [copyCount, setCopyCount]       = useState(null);
-    const copyTimerRef                    = useRef(null);
+    const lines = [
+        `🔥 New ${typeLabel} Alert!`,
+        ``,
+        `🏢 Company  : ${job.company}`,
+        `💼 Role       : ${job.title}`,
+    ];
+    if (job.location)   lines.push(`📍 Location  : ${job.location}`);
+    if (job.experience) lines.push(`🎓 Experience: ${job.experience}`);
+    if (showPkg)        lines.push(`💰 Package   : ${pkg}`);
+    if (job.batch && job.batch !== 'Not specified') lines.push(`🎓 Batch      : ${job.batch}`);
+    if (job.skills?.length) lines.push(`🛠 Skills      : ${job.skills.slice(0, 5).join(', ')}`);
+    lines.push(``);
+    lines.push(`🔗 Apply Now: ${baseUrl}${job._id}`);
+    lines.push(``);
+    lines.push(`✨ Share with someone who needs this!`);
+    return lines.join('\n');
+}
+
+function combineJobTexts(jobList) {
+    return jobList.map(formatJobText).join('\n\n━━━━━━━━━━━━━━━━━━━━━━━\n\n');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+function Jobs({ type: propType }) {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [filters, setFilters]         = useState({});
+    const [modalJobId, setModalJobId]   = useState(null);
+
+    // ── Auto-copy toolbar state ──────────────────────────────────────────────
+    const [copyHours, setCopyHours]     = useState(1);
+    const [copyCountry, setCopyCountry] = useState('');
+    const [copied, setCopied]           = useState(false);
+    const [copyCount, setCopyCount]     = useState(null);
+    const copyTimerRef                  = useRef(null);
+
+    // ── Select-to-copy state ─────────────────────────────────────────────────
+    const [selectMode, setSelectMode]   = useState(false);   // is select mode active?
+    const [selected, setSelected]       = useState(new Set()); // set of job._id
+    const [selCopied, setSelCopied]     = useState(false);
+    const selTimerRef                   = useRef(null);
 
     const location = useLocation();
     const navigate = useNavigate();
     const isWalkin = propType === 'walkin';
 
-    // Auto-open modal if ?modal=:id is in URL
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const modalId = params.get('modal');
@@ -57,36 +95,23 @@ function Jobs({ type: propType }) {
     }, [location.search]);
 
     const queryParams = useMemo(() => {
-        const params = {
-            page: currentPage,
-            limit: 20,
-            ...filters,
-            ...(propType && { type: propType }),
-        };
-
+        const params = { page: currentPage, limit: 20, ...filters, ...(propType && { type: propType }) };
         if (!propType) {
-            if (Array.isArray(params.types) && params.types.length > 0) {
-                params.type = params.types.join(',');
-            } else {
-                delete params.type;
-            }
+            if (Array.isArray(params.types) && params.types.length > 0) params.type = params.types.join(',');
+            else delete params.type;
         }
         delete params.types;
-
         if (Array.isArray(params.company)) {
             if (params.company.length > 0) params.company = params.company.join(',');
             else delete params.company;
         }
-
         if (params.cities && params.cities.length > 0) {
             params.location = params.cities.join('|');
-            delete params.cities;
-            delete params.country;
+            delete params.cities; delete params.country;
         } else if (params.country) {
             if (!params.location) params.location = params.country;
             delete params.country;
         }
-
         delete params.cities;
         return params;
     }, [currentPage, filters, propType]);
@@ -98,89 +123,69 @@ function Jobs({ type: propType }) {
 
     const data      = isWalkin ? walkinsData : jobsData;
     const isLoading = isWalkin ? isLoadingWalkins : isLoadingJobs;
-
-    let jobs = isWalkin ? (data?.walkins || []) : (data?.jobs || []);
-    jobs = jobs.filter(job => job.status === 'published' || !job.status);
+    let   jobs      = isWalkin ? (data?.walkins || []) : (data?.jobs || []);
+    jobs = jobs.filter(j => j.status === 'published' || !j.status);
 
     const totalPages = data?.totalPages || 1;
     const total      = data?.total      || 0;
 
-    const handleFilter = useCallback((newFilters) => {
-        setFilters(newFilters);
-        setCurrentPage(1);
-    }, []);
-
+    const handleFilter = useCallback((f) => { setFilters(f); setCurrentPage(1); }, []);
     const handleCountryChange = useCallback((country) => {
         setFilters(prev => ({ ...prev, country, cities: [] }));
         setCurrentPage(1);
     }, []);
 
-    // ── Copy jobs handler ────────────────────────────────────────────────────
+    // ── Auto-copy by time window ─────────────────────────────────────────────
     const handleCopyJobs = useCallback(() => {
-        const cutoff = new Date(Date.now() - copyHours * 3600000);
+        const cutoff   = new Date(Date.now() - copyHours * 3600000);
         const countryQ = copyCountry.trim().toLowerCase();
-
-        const matched = jobs.filter(job => {
+        const matched  = jobs.filter(job => {
             const pubDate = new Date(job.publishedAt || job.createdAt);
             if (pubDate < cutoff) return false;
             if (countryQ) {
-                const inCountry  = (job.country  || '').toLowerCase().includes(countryQ);
-                const inLocation = (job.location || '').toLowerCase().includes(countryQ);
-                if (!inCountry && !inLocation) return false;
+                const inC = (job.country  || '').toLowerCase().includes(countryQ);
+                const inL = (job.location || '').toLowerCase().includes(countryQ);
+                if (!inC && !inL) return false;
             }
             return true;
         });
-
         setCopyCount(matched.length);
-
         if (matched.length === 0) {
             alert(`No jobs found in the last ${copyHours}h${countryQ ? ` for "${copyCountry}"` : ''}.`);
             return;
         }
-
-        const baseUrl = 'https://www.jobconnects.online/job/';
-
-        const blocks = matched.map(job => {
-            const isIntern = job.type === 'internship';
-            const isWalkin = job.type === 'walkin';
-            const typeLabel = isIntern ? 'Internship' : isWalkin ? 'Walk-in' : 'Job';
-
-            const lines = [
-                `🔥 New ${typeLabel} Alert!`,
-                ``,
-                `🏢 Company  : ${job.company}`,
-                `💼 Role       : ${job.title}`,
-            ];
-            if (job.location)   lines.push(`📍 Location  : ${job.location}`);
-            if (job.experience) lines.push(`🎓 Experience: ${job.experience}`);
-            const pkg = job.package;
-            if (pkg && pkg !== 'Not disclosed' && pkg !== 'Not disclosed in supplied listing' && pkg !== 'Not specified') {
-                lines.push(`💰 Package   : ${pkg}`);
-            }
-            if (job.batch && job.batch !== 'Not specified') {
-                lines.push(`🎓 Batch      : ${job.batch}`);
-            }
-            if (job.skills && job.skills.length) {
-                lines.push(`🛠 Skills      : ${job.skills.slice(0, 5).join(', ')}`);
-            }
-            lines.push(``);
-            lines.push(`🔗 Apply Now: ${baseUrl}${job._id}`);
-            lines.push(``);
-            lines.push(`✨ Share with someone who needs this!`);
-            return lines.join('\n');
-        });
-
-        // Join each job block with a clear separator + blank line
-        const fullText = blocks.join('\n\n━━━━━━━━━━━━━━━━━━━━━━━\n\n');
-
-        navigator.clipboard.writeText(fullText)
+        navigator.clipboard.writeText(combineJobTexts(matched))
             .then(() => {
                 setCopied(true);
                 clearTimeout(copyTimerRef.current);
                 copyTimerRef.current = setTimeout(() => { setCopied(false); setCopyCount(null); }, 4000);
             })
-            .catch(() => alert('Copy failed — please allow clipboard access in your browser.'));
+            .catch(() => alert('Copy failed — allow clipboard access in your browser.'));
     }, [jobs, copyHours, copyCountry]);
+
+    // ── Select-mode handlers ─────────────────────────────────────────────────
+    const enterSelectMode = () => { setSelectMode(true); setSelected(new Set()); setSelCopied(false); };
+    const exitSelectMode  = () => { setSelectMode(false); setSelected(new Set()); setSelCopied(false); };
+
+    const toggleSelect = useCallback((jobId) => {
+        setSelected(prev => {
+            const next = new Set(prev);
+            next.has(jobId) ? next.delete(jobId) : next.add(jobId);
+            return next;
+        });
+    }, []);
+
+    const handleCopySelected = useCallback(() => {
+        const selectedJobs = jobs.filter(j => selected.has(j._id));
+        if (selectedJobs.length === 0) return;
+        navigator.clipboard.writeText(combineJobTexts(selectedJobs))
+            .then(() => {
+                setSelCopied(true);
+                clearTimeout(selTimerRef.current);
+                selTimerRef.current = setTimeout(() => { setSelCopied(false); }, 3000);
+            })
+            .catch(() => alert('Copy failed — allow clipboard access in your browser.'));
+    }, [jobs, selected]);
 
     const getPageTitle = () => {
         switch (propType) {
@@ -189,7 +194,6 @@ function Jobs({ type: propType }) {
             default:           return 'All Job Opportunities';
         }
     };
-
     const getPageDescription = () => {
         switch (propType) {
             case 'internship': return 'Start your career with hands-on experience at top companies';
@@ -218,24 +222,20 @@ function Jobs({ type: propType }) {
                 <CountryBar onCountryChange={handleCountryChange} />
                 <JobFilter onFilter={handleFilter} companies={companies} locations={locations} />
 
-                {/* ── Copy Jobs Toolbar ───────────────────────────────────────── */}
+                {/* ── Copy Toolbar ──────────────────────────────────────────── */}
                 <div className="copy-toolbar">
                     <span className="copy-toolbar-label">📋 Copy Jobs</span>
 
-                    {/* Time window pills */}
                     <div className="copy-hours-group">
                         {HOUR_OPTIONS.map(h => (
-                            <button
-                                key={h}
+                            <button key={h}
                                 className={`copy-hour-pill${copyHours === h ? ' active' : ''}`}
-                                onClick={() => setCopyHours(h)}
-                            >
+                                onClick={() => setCopyHours(h)}>
                                 {h}h
                             </button>
                         ))}
                     </div>
 
-                    {/* Country filter */}
                     <input
                         type="text"
                         className="copy-country-input"
@@ -244,15 +244,20 @@ function Jobs({ type: propType }) {
                         onChange={e => setCopyCountry(e.target.value)}
                     />
 
-                    {/* Copy button */}
-                    <button
-                        className={`copy-btn${copied ? ' copied' : ''}`}
-                        onClick={handleCopyJobs}
-                    >
+                    <button className={`copy-btn${copied ? ' copied' : ''}`} onClick={handleCopyJobs}>
                         {copied
-                            ? <><Check size={14} /> Copied {copyCount} job{copyCount !== 1 ? 's' : ''}!</>
-                            : <><Copy size={14} /> Copy last {copyHours}h</>
-                        }
+                            ? <><Check size={14} /> Copied {copyCount}!</>
+                            : <><Copy size={14} /> Copy last {copyHours}h</>}
+                    </button>
+
+                    {/* Select Mode toggle */}
+                    <button
+                        className={`copy-btn select-mode-btn${selectMode ? ' active' : ''}`}
+                        onClick={selectMode ? exitSelectMode : enterSelectMode}
+                        title={selectMode ? 'Exit select mode' : 'Select jobs to copy'}
+                    >
+                        <MousePointerClick size={14} />
+                        {selectMode ? 'Exit Select' : 'Select Jobs'}
                     </button>
                 </div>
 
@@ -260,43 +265,51 @@ function Jobs({ type: propType }) {
                 <div className="jobs-with-sidebar">
                     <div className="jobs-main-col">
                         {isLoading ? (
-                            <div className="loading-container">
-                                <div className="spinner"></div>
-                            </div>
+                            <div className="loading-container"><div className="spinner" /></div>
                         ) : jobs.length > 0 ? (
                             <>
-                                {/* ── Single responsive job list ── */}
                                 <div className="jobs-grid grid grid-2">
-                                    {jobs.map((job, i) => (
-                                        <div key={job._id} className={`animate-fadeIn stagger-${(i % 5) + 1}`}>
-                                            {isWalkin || job.type === 'walkin'
-                                                ? <WalkinCard job={job} />
-                                                : <JobCard job={job} />
-                                            }
-                                        </div>
-                                    ))}
+                                    {jobs.map((job, i) => {
+                                        const isSelected = selected.has(job._id);
+                                        return (
+                                            <div
+                                                key={job._id}
+                                                className={`animate-fadeIn stagger-${(i % 5) + 1} job-select-wrap${selectMode ? ' select-mode' : ''}${isSelected ? ' selected' : ''}`}
+                                                onClick={selectMode ? (e) => { e.preventDefault(); e.stopPropagation(); toggleSelect(job._id); } : undefined}
+                                            >
+                                                {/* Selection tick overlay */}
+                                                {selectMode && (
+                                                    <div className={`job-select-tick${isSelected ? ' checked' : ''}`}>
+                                                        {isSelected ? <Check size={14} /> : ''}
+                                                    </div>
+                                                )}
+                                                {/* Pointer-events blocked on card when in select mode */}
+                                                <div style={selectMode ? { pointerEvents: 'none', userSelect: 'none' } : {}}>
+                                                    {isWalkin || job.type === 'walkin'
+                                                        ? <WalkinCard job={job} />
+                                                        : <JobCard job={job} />
+                                                    }
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                                     {jobs.length > 6 && Array.from(
                                         { length: Math.floor(jobs.length / 10) },
                                         (_, i) => <SponsoredCard key={`sp-d-${i}`} />
                                     )}
                                 </div>
 
-                                {/* Sponsored after job list */}
                                 <div className="jobs-native-banner-wrap">
                                     <SponsoredCard />
                                 </div>
 
                                 {totalPages > 1 && (
-                                    <Pagination
-                                        currentPage={currentPage}
-                                        totalPages={totalPages}
-                                        onPageChange={setCurrentPage}
-                                    />
+                                    <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
                                 )}
                             </>
                         ) : (
                             <div className="empty-state">
-                                {filters.cities && filters.cities.length > 0 ? (
+                                {filters.cities?.length > 0 ? (
                                     <>
                                         <div className="empty-state-icon">📍</div>
                                         <h3>No jobs found in {filters.cities.join(', ')}</h3>
@@ -324,11 +337,9 @@ function Jobs({ type: propType }) {
                                         <h3>No jobs found for {filters.country}</h3>
                                         <p>New listings are added daily — check back soon!</p>
                                         <div className="empty-state-actions">
-                                            <button className="btn btn-secondary" onClick={() => handleFilter({ ...filters, country: '' })}>
-                                                Show All Countries
-                                            </button>
+                                            <button className="btn btn-secondary" onClick={() => handleFilter({ ...filters, country: '' })}>Show All Countries</button>
                                             <a href={SMARTLINK} className="btn btn-primary" target="_blank" rel="noopener noreferrer nofollow"
-                                                onClick={(e) => { e.preventDefault(); window.open(SMARTLINK, '_blank', 'noopener,noreferrer'); }}>
+                                                onClick={e => { e.preventDefault(); window.open(SMARTLINK, '_blank', 'noopener,noreferrer'); }}>
                                                 Explore Remote Jobs
                                             </a>
                                         </div>
@@ -340,27 +351,53 @@ function Jobs({ type: propType }) {
                                         <p>Try adjusting your filters or explore these opportunities:</p>
                                         <div className="empty-state-actions">
                                             <a href={SMARTLINK} className="btn btn-primary" target="_blank" rel="noopener noreferrer nofollow"
-                                                onClick={(e) => { e.preventDefault(); window.open(SMARTLINK, '_blank', 'noopener,noreferrer'); }}>
+                                                onClick={e => { e.preventDefault(); window.open(SMARTLINK, '_blank', 'noopener,noreferrer'); }}>
                                                 View Remote Jobs
                                             </a>
                                         </div>
                                     </>
                                 )}
-                                <div className="empty-sponsored-row">
-                                    <SponsoredCard />
-                                </div>
+                                <div className="empty-sponsored-row"><SponsoredCard /></div>
                             </div>
                         )}
                     </div>
 
-                    {/* ── Desktop Sidebar ── */}
                     <DesktopSidebar />
                 </div>
             </div>
 
             <FloatingCTA />
 
-            {modalJobId && (
+            {/* ── Floating selection bar (shown in select mode) ── */}
+            {selectMode && (
+                <div className="select-floating-bar">
+                    <span className="select-count">
+                        {selected.size > 0
+                            ? `${selected.size} job${selected.size !== 1 ? 's' : ''} selected`
+                            : 'Tap jobs to select them'}
+                    </span>
+                    <div className="select-bar-actions">
+                        {selected.size > 0 && (
+                            <button
+                                className={`copy-btn${selCopied ? ' copied' : ''}`}
+                                onClick={handleCopySelected}
+                            >
+                                {selCopied
+                                    ? <><Check size={14} /> Copied!</>
+                                    : <><Copy size={14} /> Copy {selected.size}</>}
+                            </button>
+                        )}
+                        <button className="select-clear-btn" onClick={() => setSelected(new Set())} disabled={selected.size === 0}>
+                            Clear
+                        </button>
+                        <button className="select-exit-btn" onClick={exitSelectMode}>
+                            <XIcon size={15} /> Done
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {!selectMode && modalJobId && (
                 <ModalJobLoader jobId={modalJobId} onClose={() => setModalJobId(null)} />
             )}
         </div>

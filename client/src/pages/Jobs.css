@@ -305,3 +305,130 @@
     .copy-country-input { width: 110px; }
     .copy-hour-pill { padding: 4px 9px; font-size: 11px; }
 }
+
+/* ── Select-to-copy ─────────────────────────────────────────────────────── */
+
+/* Select Mode toolbar button variant */
+.select-mode-btn {
+    background: #7c3aed;
+}
+.select-mode-btn:hover { background: #6d28d9; }
+.select-mode-btn.active { background: #dc2626; }
+.select-mode-btn.active:hover { background: #b91c1c; }
+
+/* Each card wrapper in select mode */
+.job-select-wrap {
+    position: relative;
+}
+.job-select-wrap.select-mode {
+    cursor: pointer;
+    border-radius: 12px;
+    transition: box-shadow 0.15s, transform 0.1s;
+}
+.job-select-wrap.select-mode:hover {
+    box-shadow: 0 0 0 2px #7c3aed40;
+    transform: scale(1.005);
+}
+.job-select-wrap.select-mode.selected {
+    box-shadow: 0 0 0 2.5px #7c3aed, 0 2px 12px rgba(124,58,237,0.18);
+}
+.job-select-wrap.select-mode.selected::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: rgba(124, 58, 237, 0.07);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Tick badge */
+.job-select-tick {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #cbd5e1;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.15s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+.job-select-tick.checked {
+    background: #7c3aed;
+    border-color: #7c3aed;
+    color: #fff;
+}
+[data-theme="dark"] .job-select-tick { background: #1e293b; border-color: #475569; }
+[data-theme="dark"] .job-select-tick.checked { background: #7c3aed; border-color: #7c3aed; }
+
+/* Floating selection bar at the bottom */
+.select-floating-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: #1e293b;
+    border-radius: 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    animation: slideUp 0.2s ease;
+    white-space: nowrap;
+}
+@keyframes slideUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.select-count {
+    color: #94a3b8;
+    font-size: 13px;
+}
+.select-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.select-clear-btn {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.select-clear-btn:disabled { opacity: 0.35; cursor: default; }
+.select-clear-btn:not(:disabled):hover { background: rgba(255,255,255,0.1); color: #fff; }
+.select-exit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: none;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.select-exit-btn:hover { background: rgba(255,255,255,0.2); }
+@media (max-width: 480px) {
+    .select-floating-bar { bottom: 70px; left: 12px; right: 12px; transform: none; border-radius: 16px; flex-wrap: wrap; }
+}
