@@ -1,6 +1,7 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { Copy, Check } from 'lucide-react';
 import JobCard from '../components/JobCard';
 import WalkinCard from '../components/WalkinCard';
 import Pagination from '../components/Pagination';
@@ -9,13 +10,13 @@ import CountryBar from '../components/CountryBar';
 import JobModal from '../components/JobModal';
 import { useJobs, useCompanies, useLocations, useWalkins, useJobDetails } from '../hooks/useJobs';
 import SponsoredCard from '../components/ads/SponsoredCard';
-import NativeBannerSection from '../components/ads/NativeBannerSection';
 import DesktopSidebar from '../components/ads/DesktopSidebar';
 import FloatingCTA from '../components/ads/FloatingCTA';
 import MobileBannerAd from '../components/ads/MobileBannerAd';
 import './Jobs.css';
 
 const SMARTLINK = 'https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085';
+const HOUR_OPTIONS = [1, 3, 6, 12, 24];
 
 // Fetches a single job by ID and opens the modal — used for shared link redirects
 function ModalJobLoader({ jobId, onClose }) {
@@ -25,21 +26,27 @@ function ModalJobLoader({ jobId, onClose }) {
 }
 
 function Jobs({ type: propType }) {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [filters, setFilters] = useState({});
-    const [modalJobId, setModalJobId] = useState(null);
+    const [currentPage, setCurrentPage]   = useState(1);
+    const [filters, setFilters]           = useState({});
+    const [modalJobId, setModalJobId]     = useState(null);
+
+    // ── Copy toolbar state ───────────────────────────────────────────────────
+    const [copyHours, setCopyHours]       = useState(1);
+    const [copyCountry, setCopyCountry]   = useState('');
+    const [copied, setCopied]             = useState(false);
+    const [copyCount, setCopyCount]       = useState(null);
+    const copyTimerRef                    = useRef(null);
 
     const location = useLocation();
     const navigate = useNavigate();
     const isWalkin = propType === 'walkin';
 
-    // Auto-open modal if ?modal=:id is in URL (from shared link redirect)
+    // Auto-open modal if ?modal=:id is in URL
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const modalId = params.get('modal');
         if (modalId) {
             setModalJobId(modalId);
-            // Clean the URL without reloading
             params.delete('modal');
             const newSearch = params.toString();
             navigate(
@@ -108,6 +115,73 @@ function Jobs({ type: propType }) {
         setCurrentPage(1);
     }, []);
 
+    // ── Copy jobs handler ────────────────────────────────────────────────────
+    const handleCopyJobs = useCallback(() => {
+        const cutoff = new Date(Date.now() - copyHours * 3600000);
+        const countryQ = copyCountry.trim().toLowerCase();
+
+        const matched = jobs.filter(job => {
+            const pubDate = new Date(job.publishedAt || job.createdAt);
+            if (pubDate < cutoff) return false;
+            if (countryQ) {
+                const inCountry  = (job.country  || '').toLowerCase().includes(countryQ);
+                const inLocation = (job.location || '').toLowerCase().includes(countryQ);
+                if (!inCountry && !inLocation) return false;
+            }
+            return true;
+        });
+
+        setCopyCount(matched.length);
+
+        if (matched.length === 0) {
+            alert(`No jobs found in the last ${copyHours}h${countryQ ? ` for "${copyCountry}"` : ''}.`);
+            return;
+        }
+
+        const baseUrl = 'https://www.jobconnects.online/job/';
+
+        const blocks = matched.map(job => {
+            const isIntern = job.type === 'internship';
+            const isWalkin = job.type === 'walkin';
+            const typeLabel = isIntern ? 'Internship' : isWalkin ? 'Walk-in' : 'Job';
+
+            const lines = [
+                `🔥 New ${typeLabel} Alert!`,
+                ``,
+                `🏢 Company  : ${job.company}`,
+                `💼 Role       : ${job.title}`,
+            ];
+            if (job.location)   lines.push(`📍 Location  : ${job.location}`);
+            if (job.experience) lines.push(`🎓 Experience: ${job.experience}`);
+            const pkg = job.package;
+            if (pkg && pkg !== 'Not disclosed' && pkg !== 'Not disclosed in supplied listing' && pkg !== 'Not specified') {
+                lines.push(`💰 Package   : ${pkg}`);
+            }
+            if (job.batch && job.batch !== 'Not specified') {
+                lines.push(`🎓 Batch      : ${job.batch}`);
+            }
+            if (job.skills && job.skills.length) {
+                lines.push(`🛠 Skills      : ${job.skills.slice(0, 5).join(', ')}`);
+            }
+            lines.push(``);
+            lines.push(`🔗 Apply Now: ${baseUrl}${job._id}`);
+            lines.push(``);
+            lines.push(`✨ Share with someone who needs this!`);
+            return lines.join('\n');
+        });
+
+        // Join each job block with a clear separator + blank line
+        const fullText = blocks.join('\n\n━━━━━━━━━━━━━━━━━━━━━━━\n\n');
+
+        navigator.clipboard.writeText(fullText)
+            .then(() => {
+                setCopied(true);
+                clearTimeout(copyTimerRef.current);
+                copyTimerRef.current = setTimeout(() => { setCopied(false); setCopyCount(null); }, 4000);
+            })
+            .catch(() => alert('Copy failed — please allow clipboard access in your browser.'));
+    }, [jobs, copyHours, copyCountry]);
+
     const getPageTitle = () => {
         switch (propType) {
             case 'internship': return 'Internship Opportunities';
@@ -123,21 +197,6 @@ function Jobs({ type: propType }) {
             default:           return 'Discover thousands of opportunities from leading companies';
         }
     };
-
-    /* Inject sponsored card every 10 jobs + mobile banner after every job */
-    const jobsWithAds = useMemo(() => {
-        const items = [];
-        jobs.forEach((job, i) => {
-            items.push({ type: 'job', job, key: job._id });
-            // Mobile banner after every job card
-            items.push({ type: 'mobile-banner', key: `mb-${i}` });
-            // Sponsored native ad every 10 jobs (desktop + mobile)
-            if ((i + 1) % 10 === 0) {
-                items.push({ type: 'sponsored', key: `sp-${i}` });
-            }
-        });
-        return items;
-    }, [jobs]);
 
     return (
         <div className="jobs-page">
@@ -158,6 +217,44 @@ function Jobs({ type: propType }) {
             <div className="container">
                 <CountryBar onCountryChange={handleCountryChange} />
                 <JobFilter onFilter={handleFilter} companies={companies} locations={locations} />
+
+                {/* ── Copy Jobs Toolbar ───────────────────────────────────────── */}
+                <div className="copy-toolbar">
+                    <span className="copy-toolbar-label">📋 Copy Jobs</span>
+
+                    {/* Time window pills */}
+                    <div className="copy-hours-group">
+                        {HOUR_OPTIONS.map(h => (
+                            <button
+                                key={h}
+                                className={`copy-hour-pill${copyHours === h ? ' active' : ''}`}
+                                onClick={() => setCopyHours(h)}
+                            >
+                                {h}h
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Country filter */}
+                    <input
+                        type="text"
+                        className="copy-country-input"
+                        placeholder="Country (optional)"
+                        value={copyCountry}
+                        onChange={e => setCopyCountry(e.target.value)}
+                    />
+
+                    {/* Copy button */}
+                    <button
+                        className={`copy-btn${copied ? ' copied' : ''}`}
+                        onClick={handleCopyJobs}
+                    >
+                        {copied
+                            ? <><Check size={14} /> Copied {copyCount} job{copyCount !== 1 ? 's' : ''}!</>
+                            : <><Copy size={14} /> Copy last {copyHours}h</>
+                        }
+                    </button>
+                </div>
 
                 {/* ── Desktop layout: jobs + sidebar ── */}
                 <div className="jobs-with-sidebar">
@@ -245,13 +342,8 @@ function Jobs({ type: propType }) {
                                             <button className="btn btn-secondary" onClick={() => handleFilter({ ...filters, country: '' })}>
                                                 Show All Countries
                                             </button>
-                                            <a
-                                                href={SMARTLINK}
-                                                className="btn btn-primary"
-                                                target="_blank"
-                                                rel="noopener noreferrer nofollow"
-                                                onClick={(e) => { e.preventDefault(); window.open(SMARTLINK, '_blank', 'noopener,noreferrer'); }}
-                                            >
+                                            <a href={SMARTLINK} className="btn btn-primary" target="_blank" rel="noopener noreferrer nofollow"
+                                                onClick={(e) => { e.preventDefault(); window.open(SMARTLINK, '_blank', 'noopener,noreferrer'); }}>
                                                 Explore Remote Jobs
                                             </a>
                                         </div>
@@ -262,20 +354,13 @@ function Jobs({ type: propType }) {
                                         <h3>No jobs found</h3>
                                         <p>Try adjusting your filters or explore these opportunities:</p>
                                         <div className="empty-state-actions">
-                                            <a
-                                                href={SMARTLINK}
-                                                className="btn btn-primary"
-                                                target="_blank"
-                                                rel="noopener noreferrer nofollow"
-                                                onClick={(e) => { e.preventDefault(); window.open(SMARTLINK, '_blank', 'noopener,noreferrer'); }}
-                                            >
+                                            <a href={SMARTLINK} className="btn btn-primary" target="_blank" rel="noopener noreferrer nofollow"
+                                                onClick={(e) => { e.preventDefault(); window.open(SMARTLINK, '_blank', 'noopener,noreferrer'); }}>
                                                 View Remote Jobs
                                             </a>
                                         </div>
                                     </>
                                 )}
-
-                                {/* Sponsored fallback cards */}
                                 <div className="empty-sponsored-row">
                                     <SponsoredCard />
                                 </div>
@@ -288,15 +373,10 @@ function Jobs({ type: propType }) {
                 </div>
             </div>
 
-            {/* ── Floating Mobile CTA ── */}
             <FloatingCTA />
 
-            {/* ── Auto-open modal from shared link ── */}
             {modalJobId && (
-                <ModalJobLoader
-                    jobId={modalJobId}
-                    onClose={() => setModalJobId(null)}
-                />
+                <ModalJobLoader jobId={modalJobId} onClose={() => setModalJobId(null)} />
             )}
         </div>
     );

@@ -204,3 +204,104 @@
     .jobs-mobile-list  { display: none !important; }
     .jobs-desktop-grid { display: grid !important; }
 }
+
+/* ── Copy Jobs Toolbar ──────────────────────────────────────────────────── */
+.copy-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 16px;
+    padding: 10px 14px;
+    background: var(--bg-card, #fff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+[data-theme="dark"] .copy-toolbar {
+    background: #1e293b;
+    border-color: rgba(255,255,255,0.08);
+}
+.copy-toolbar-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary, #475569);
+    white-space: nowrap;
+    margin-right: 4px;
+}
+.copy-hours-group {
+    display: flex;
+    gap: 4px;
+}
+.copy-hour-pill {
+    padding: 5px 11px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border-color, #e2e8f0);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary, #64748b);
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1;
+}
+.copy-hour-pill:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+.copy-hour-pill.active {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #fff;
+}
+[data-theme="dark"] .copy-hour-pill {
+    border-color: rgba(255,255,255,0.15);
+    color: #94a3b8;
+}
+[data-theme="dark"] .copy-hour-pill.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+}
+.copy-country-input {
+    padding: 6px 11px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border-color, #e2e8f0);
+    font-size: 12px;
+    background: var(--bg-page, #f8fafc);
+    color: var(--text-primary, #0f172a);
+    width: 140px;
+    outline: none;
+    transition: border-color 0.15s;
+}
+.copy-country-input:focus {
+    border-color: #2563eb;
+}
+[data-theme="dark"] .copy-country-input {
+    background: #0f172a;
+    border-color: rgba(255,255,255,0.1);
+    color: #e2e8f0;
+}
+.copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 15px;
+    border-radius: 8px;
+    border: none;
+    background: #2563eb;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+.copy-btn:hover  { background: #1d4ed8; }
+.copy-btn.copied { background: #16a34a; }
+@media (max-width: 600px) {
+    .copy-toolbar { gap: 6px; padding: 8px 10px; }
+    .copy-toolbar-label { width: 100%; margin-bottom: 2px; }
+    .copy-country-input { width: 110px; }
+    .copy-hour-pill { padding: 4px 9px; font-size: 11px; }
+}

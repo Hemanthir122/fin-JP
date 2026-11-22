@@ -33,12 +33,8 @@ function JobModal({ job, onClose }) {
     };
 
     const handleApply = () => {
-        // Fire smartlink every 3rd apply click (shared counter across modal + detail page)
-        const count = parseInt(sessionStorage.getItem('job_apply_count') || '0') + 1;
-        sessionStorage.setItem('job_apply_count', count.toString());
-        if (count % 3 === 0) {
-            window.open('https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085', '_blank', 'noopener,noreferrer');
-        }
+        // Fire smartlink ad on EVERY apply click
+        window.open('https://breachuptown.com/jnv7mma2?key=d47de908fdd389381c8131eaa2a36085', '_blank', 'noopener,noreferrer');
         if (job.applyLink && job.applyLink !== '#') {
             setTimeout(() => window.open(job.applyLink, '_blank'), 300);
         }
