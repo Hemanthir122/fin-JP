@@ -321,6 +321,7 @@ function ScheduledPosts() {
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}>
                                     <CheckCircle2 size={16} color={submitResult.failed === 0 ? '#15803d' : '#92400e'} />
                                     {submitResult.saved} saved
+                                    {submitResult.skipped > 0 && `, ${submitResult.skipped} skipped (duplicates)`}
                                     {submitResult.failed > 0 && `, ${submitResult.failed} failed`}
                                 </div>
                                 {submitResult.errors.length > 0 && (

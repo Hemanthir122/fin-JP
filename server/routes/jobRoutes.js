@@ -361,9 +361,38 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Allowed fields for a Job document — anything else is stripped before saving
+const JOB_ALLOWED_FIELDS = new Set([
+    'title', 'company', 'companyLogo', 'aboutCompany', 'location', 'country',
+    'package', 'experience', 'batch', 'type', 'jobType', 'description',
+    'skills', 'responsibilities', 'qualifications', 'applyLink',
+    'isActive', 'endDate', 'status', 'publishedAt', 'scheduledPublishAt',
+    'isExternalJob', 'autoDeleteAt'
+]);
+
+function sanitizeJobData(raw) {
+    const out = {};
+    for (const key of JOB_ALLOWED_FIELDS) {
+        if (raw[key] !== undefined) out[key] = raw[key];
+    }
+    // Normalise type to lowercase
+    if (out.type) out.type = out.type.toLowerCase();
+    // Ensure type is a valid enum value
+    if (!['job', 'internship', 'walkin'].includes(out.type)) out.type = 'job';
+    // Fill required-ish fields with safe defaults so validation never crashes
+    if (!out.title)       out.title       = 'Untitled';
+    if (!out.company)     out.company     = 'Unknown';
+    if (!out.location)    out.location    = 'India';
+    if (!out.package)     out.package     = '';
+    if (!out.experience)  out.experience  = '';
+    if (!out.description) out.description = '';
+    return out;
+}
+
 // Bulk create jobs — accepts an array of job objects, each may include
 // an optional "scheduledPublishAt" field (ISO string) to schedule individually.
 // Jobs without it are posted immediately as published.
+// Duplicate detection: skips jobs where (title + company + applyLink) already exist.
 router.post('/bulk', async (req, res) => {
     const items = req.body;
     if (!Array.isArray(items) || items.length === 0) {
@@ -373,17 +402,39 @@ router.post('/bulk', async (req, res) => {
         return res.status(400).json({ message: 'Maximum 1000 jobs per bulk request' });
     }
 
-    const results = { saved: 0, failed: 0, errors: [] };
+    const results = { saved: 0, skipped: 0, failed: 0, errors: [] };
     const now = new Date();
+
+    // Build a set of existing (title+company+applyLink) combos to detect dupes cheaply
+    const incomingApplyLinks = items
+        .map(j => j.applyLink)
+        .filter(Boolean);
+
+    const existingByLink = new Set();
+    if (incomingApplyLinks.length) {
+        const existing = await Job.find(
+            { applyLink: { $in: incomingApplyLinks } },
+            { applyLink: 1 }
+        ).lean();
+        for (const e of existing) existingByLink.add(e.applyLink);
+    }
 
     for (let i = 0; i < items.length; i++) {
         try {
-            const jobData = { ...items[i] };
+            const raw = items[i];
 
+            // ── Duplicate check ──────────────────────────────────────────────
+            if (raw.applyLink && existingByLink.has(raw.applyLink)) {
+                results.skipped++;
+                continue;
+            }
+
+            const jobData = sanitizeJobData(raw);
+
+            // ── Schedule / publish logic ──────────────────────────────────────
             if (jobData.scheduledPublishAt) {
                 const scheduledDate = new Date(jobData.scheduledPublishAt);
                 if (scheduledDate <= now) {
-                    // Past time — publish immediately
                     delete jobData.scheduledPublishAt;
                     jobData.status = 'published';
                     jobData.publishedAt = now;
@@ -391,13 +442,15 @@ router.post('/bulk', async (req, res) => {
                     jobData.status = 'scheduled';
                 }
             } else {
-                // No schedule time — publish now
                 jobData.status = 'published';
                 jobData.publishedAt = now;
             }
 
             const job = new Job(jobData);
             const saved = await job.save();
+
+            // Track so duplicates within the same batch are also caught
+            if (raw.applyLink) existingByLink.add(raw.applyLink);
 
             // Upsert company (non-blocking)
             if (jobData.company?.trim()) {

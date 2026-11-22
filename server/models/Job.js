@@ -30,11 +30,11 @@ const jobSchema = new mongoose.Schema({
     },
     package: {
         type: String,
-        required: true
+        default: ''
     },
     experience: {
         type: String,
-        required: true
+        default: ''
     },
     batch: {
         type: String,
