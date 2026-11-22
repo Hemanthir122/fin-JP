@@ -265,23 +265,8 @@ function Jobs({ type: propType }) {
                             </div>
                         ) : jobs.length > 0 ? (
                             <>
-                                {/* ── Mobile: flat list, banner after every 4th card ── */}
-                                <div className="jobs-mobile-list">
-                                    {jobs.map((job, i) => (
-                                        <div key={job._id}>
-                                            <div className={`animate-fadeIn stagger-${(i % 5) + 1}`}>
-                                                {isWalkin || job.type === 'walkin'
-                                                    ? <WalkinCard job={job} />
-                                                    : <JobCard job={job} />
-                                                }
-                                            </div>
-                                            {(i + 1) % 4 === 0 && <MobileBannerAd key={`mb-${job._id}`} />}
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* ── Desktop: 2-col grid ── */}
-                                <div className="jobs-grid grid grid-2 jobs-desktop-grid">
+                                {/* ── Single responsive job list ── */}
+                                <div className="jobs-grid grid grid-2">
                                     {jobs.map((job, i) => (
                                         <div key={job._id} className={`animate-fadeIn stagger-${(i % 5) + 1}`}>
                                             {isWalkin || job.type === 'walkin'
