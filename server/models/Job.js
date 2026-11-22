@@ -111,4 +111,10 @@ const jobSchema = new mongoose.Schema({
 // Index for search functionality
 jobSchema.index({ title: 'text', company: 'text', location: 'text' });
 
+// Compound index to prevent duplicate title+company+location combinations
+jobSchema.index(
+    { title: 1, company: 1, location: 1 },
+    { unique: false, sparse: true }  // not unique (same role can reopen), but fast lookup
+);
+
 module.exports = mongoose.model('Job', jobSchema);

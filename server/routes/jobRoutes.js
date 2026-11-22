@@ -405,26 +405,58 @@ router.post('/bulk', async (req, res) => {
     const results = { saved: 0, skipped: 0, failed: 0, errors: [] };
     const now = new Date();
 
-    // Build a set of existing (title+company+applyLink) combos to detect dupes cheaply
-    const incomingApplyLinks = items
-        .map(j => j.applyLink)
-        .filter(Boolean);
+    // ── Pre-fetch existing jobs that match any incoming (title+company+location) combo ──
+    // Build lookup keys: lowercase "title||company||location"
+    const makeKey = (title, company, location) =>
+        `${(title || '').toLowerCase().trim()}||${(company || '').toLowerCase().trim()}||${(location || '').toLowerCase().trim()}`;
 
-    const existingByLink = new Set();
-    if (incomingApplyLinks.length) {
-        const existing = await Job.find(
-            { applyLink: { $in: incomingApplyLinks } },
-            { applyLink: 1 }
-        ).lean();
-        for (const e of existing) existingByLink.add(e.applyLink);
+    const incomingKeys = items.map(j => makeKey(j.title, j.company, j.location));
+
+    // Also check applyLinks as a secondary dedup signal
+    const incomingApplyLinks = items.map(j => j.applyLink).filter(Boolean);
+
+    // Fetch potential duplicates from DB in one query
+    const titleCompanyCombos = items
+        .filter(j => j.title && j.company)
+        .map(j => ({ title: j.title.trim(), company: j.company.trim() }));
+
+    const existingKeys = new Set();
+    const existingLinks = new Set();
+
+    if (titleCompanyCombos.length) {
+        const orClauses = titleCompanyCombos.map(({ title, company }) => ({
+            title:   { $regex: `^${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`,   $options: 'i' },
+            company: { $regex: `^${company.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, $options: 'i' },
+        }));
+        const existing = await Job.find({ $or: orClauses }, { title: 1, company: 1, location: 1, applyLink: 1 }).lean();
+        for (const e of existing) {
+            existingKeys.add(makeKey(e.title, e.company, e.location));
+            if (e.applyLink) existingLinks.add(e.applyLink);
+        }
     }
+
+    // Also seed from applyLinks
+    if (incomingApplyLinks.length) {
+        const byLink = await Job.find({ applyLink: { $in: incomingApplyLinks } }, { applyLink: 1 }).lean();
+        for (const e of byLink) {
+            if (e.applyLink) existingLinks.add(e.applyLink);
+        }
+    }
+
+    // In-batch dedup tracking
+    const batchKeys  = new Set();
+    const batchLinks = new Set();
 
     for (let i = 0; i < items.length; i++) {
         try {
             const raw = items[i];
+            const compositeKey = makeKey(raw.title, raw.company, raw.location);
 
-            // ── Duplicate check ──────────────────────────────────────────────
-            if (raw.applyLink && existingByLink.has(raw.applyLink)) {
+            // ── Duplicate check: DB + same batch ─────────────────────────────
+            const isDupByKey  = existingKeys.has(compositeKey) || batchKeys.has(compositeKey);
+            const isDupByLink = raw.applyLink && (existingLinks.has(raw.applyLink) || batchLinks.has(raw.applyLink));
+
+            if (isDupByKey || isDupByLink) {
                 results.skipped++;
                 continue;
             }
@@ -449,8 +481,9 @@ router.post('/bulk', async (req, res) => {
             const job = new Job(jobData);
             const saved = await job.save();
 
-            // Track so duplicates within the same batch are also caught
-            if (raw.applyLink) existingByLink.add(raw.applyLink);
+            // Track in-batch so a second occurrence in the same submit is also skipped
+            batchKeys.add(compositeKey);
+            if (raw.applyLink) batchLinks.add(raw.applyLink);
 
             // Upsert company (non-blocking) — escape regex special chars in company name
             if (jobData.company?.trim()) {
@@ -467,10 +500,6 @@ router.post('/bulk', async (req, res) => {
             if (saved.status === 'scheduled') {
                 // no notification yet — will fire when scheduler publishes it
             }
-            // Uncomment below to send Telegram on immediate publish too (not recommended for bulk):
-            // if (saved.status === 'published') {
-            //     sendNewJobNotification(saved).catch(() => {});
-            // }
 
             results.saved++;
         } catch (err) {
