@@ -186,8 +186,19 @@ router.get('/', async (req, res) => {
                 });
         }
 
-        // Combine and sort by date
+        // Combine, dedup by _id, and sort by date
+        const seenIds = new Set();
+        const seenTitleCompany = new Set();
         const allJobs = [...internalJobs, ...externalJobs]
+            .filter(job => {
+                const id = job._id?.toString();
+                const tcKey = `${(job.title || job.role || '').toLowerCase().trim()}||${(job.company || '').toLowerCase().trim()}`;
+                if (id && seenIds.has(id)) return false;
+                if (seenTitleCompany.has(tcKey)) return false;
+                if (id) seenIds.add(id);
+                seenTitleCompany.add(tcKey);
+                return true;
+            })
             .sort((a, b) => {
                 const dateA = a.sortDate || a.approvedAt || new Date(0);
                 const dateB = b.sortDate || b.approvedAt || new Date(0);

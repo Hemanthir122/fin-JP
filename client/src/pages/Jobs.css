@@ -432,3 +432,17 @@
 @media (max-width: 480px) {
     .select-floating-bar { bottom: 70px; left: 12px; right: 12px; transform: none; border-radius: 16px; flex-wrap: wrap; }
 }
+
+/* ── Inline ad row — full width inside the 2-col grid ─────────────────── */
+.inline-ad-row {
+    grid-column: 1 / -1;   /* span all columns on desktop (2-col) */
+    width: 100%;
+    margin: 4px 0;
+}
+
+/* On mobile it's already 1-col so grid-column: 1 / -1 still works */
+@media (max-width: 768px) {
+    .inline-ad-row {
+        margin: 2px 0;
+    }
+}

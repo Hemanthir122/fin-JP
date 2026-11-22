@@ -123,8 +123,16 @@ function Jobs({ type: propType }) {
 
     const data      = isWalkin ? walkinsData : jobsData;
     const isLoading = isWalkin ? isLoadingWalkins : isLoadingJobs;
-    let   jobs      = isWalkin ? (data?.walkins || []) : (data?.jobs || []);
-    jobs = jobs.filter(j => j.status === 'published' || !j.status);
+    let   rawJobs   = isWalkin ? (data?.walkins || []) : (data?.jobs || []);
+
+    // Client-side dedup by _id (belt-and-suspenders over server dedup)
+    const seenIds = new Set();
+    const jobs = rawJobs.filter(j => {
+        const id = j._id?.toString();
+        if (!id || seenIds.has(id)) return false;
+        seenIds.add(id);
+        return j.status === 'published' || !j.status;
+    });
 
     const totalPages = data?.totalPages || 1;
     const total      = data?.total      || 0;
@@ -268,39 +276,42 @@ function Jobs({ type: propType }) {
                             <div className="loading-container"><div className="spinner" /></div>
                         ) : jobs.length > 0 ? (
                             <>
+                                {/* Build interleaved list: job, job, ad, job, job, ad … */}
                                 <div className="jobs-grid grid grid-2">
-                                    {jobs.map((job, i) => {
-                                        const isSelected = selected.has(job._id);
-                                        return (
-                                            <div
-                                                key={job._id}
-                                                className={`animate-fadeIn stagger-${(i % 5) + 1} job-select-wrap${selectMode ? ' select-mode' : ''}${isSelected ? ' selected' : ''}`}
-                                                onClick={selectMode ? (e) => { e.preventDefault(); e.stopPropagation(); toggleSelect(job._id); } : undefined}
-                                            >
-                                                {/* Selection tick overlay */}
-                                                {selectMode && (
-                                                    <div className={`job-select-tick${isSelected ? ' checked' : ''}`}>
-                                                        {isSelected ? <Check size={14} /> : ''}
+                                    {(() => {
+                                        const items = [];
+                                        jobs.forEach((job, i) => {
+                                            const isSelected = selected.has(job._id);
+                                            items.push(
+                                                <div
+                                                    key={job._id}
+                                                    className={`animate-fadeIn stagger-${(i % 5) + 1} job-select-wrap${selectMode ? ' select-mode' : ''}${isSelected ? ' selected' : ''}`}
+                                                    onClick={selectMode ? (e) => { e.preventDefault(); e.stopPropagation(); toggleSelect(job._id); } : undefined}
+                                                >
+                                                    {selectMode && (
+                                                        <div className={`job-select-tick${isSelected ? ' checked' : ''}`}>
+                                                            {isSelected ? <Check size={14} /> : ''}
+                                                        </div>
+                                                    )}
+                                                    <div style={selectMode ? { pointerEvents: 'none', userSelect: 'none' } : {}}>
+                                                        {isWalkin || job.type === 'walkin'
+                                                            ? <WalkinCard job={job} />
+                                                            : <JobCard job={job} />
+                                                        }
                                                     </div>
-                                                )}
-                                                {/* Pointer-events blocked on card when in select mode */}
-                                                <div style={selectMode ? { pointerEvents: 'none', userSelect: 'none' } : {}}>
-                                                    {isWalkin || job.type === 'walkin'
-                                                        ? <WalkinCard job={job} />
-                                                        : <JobCard job={job} />
-                                                    }
                                                 </div>
-                                            </div>
-                                        );
-                                    })}
-                                    {jobs.length > 6 && Array.from(
-                                        { length: Math.floor(jobs.length / 10) },
-                                        (_, i) => <SponsoredCard key={`sp-d-${i}`} />
-                                    )}
-                                </div>
-
-                                <div className="jobs-native-banner-wrap">
-                                    <SponsoredCard />
+                                            );
+                                            // After every 2nd job insert a full-width ad
+                                            if ((i + 1) % 2 === 0) {
+                                                items.push(
+                                                    <div key={`ad-${i}`} className="inline-ad-row">
+                                                        <SponsoredCard />
+                                                    </div>
+                                                );
+                                            }
+                                        });
+                                        return items;
+                                    })()}
                                 </div>
 
                                 {totalPages > 1 && (
