@@ -25,6 +25,7 @@ const ExternalJobs = lazy(() => import('./pages/admin/ExternalJobs'));
 const ExternalJobsHistory = lazy(() => import('./pages/admin/ExternalJobsHistory'));
 const ApprovedExternalJobs = lazy(() => import('./pages/admin/ApprovedExternalJobs'));
 const ManageCompanyLogos = lazy(() => import('./pages/admin/ManageCompanyLogos'));
+const ScheduledPosts = lazy(() => import('./pages/admin/ScheduledPosts'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const ResumeBuilder = lazy(() => import('./pages/ResumeBuilder'));
 import './App.css';
@@ -190,6 +191,11 @@ function App() {
               <Route path="/admin/manage-company-logos" element={
                 <ProtectedRoute>
                   <ManageCompanyLogos />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/scheduled-posts" element={
+                <ProtectedRoute>
+                  <ScheduledPosts />
                 </ProtectedRoute>
               } />
               {/* Public Routes with Navbar/Footer */}

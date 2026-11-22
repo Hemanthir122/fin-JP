@@ -203,6 +203,12 @@ function ManageJobs() {
                     <Link to="/admin/manage-jobs" className="nav-item active">
                         Manage Jobs
                     </Link>
+                    <Link to="/admin/scheduled-posts" className="nav-item">
+                        🕐 Scheduled Posts
+                    </Link>
+                    <Link to="/admin/external-jobs" className="nav-item">
+                        External Jobs Database
+                    </Link>
                 </nav>
                 <div className="admin-sidebar-footer">
                     <Link to="/" className="nav-item back-link">
@@ -367,14 +373,24 @@ function ManageJobs() {
                                                 <span
                                                     className="badge"
                                                     style={{
-                                                        background: job.status === 'draft' ? '#e0e0e0' : 'var(--accent-green)',
-                                                        color: job.status === 'draft' ? '#333' : '#fff',
+                                                        background: job.status === 'draft'
+                                                            ? '#e0e0e0'
+                                                            : job.status === 'scheduled'
+                                                            ? '#fef3c7'
+                                                            : 'var(--accent-green)',
+                                                        color: job.status === 'draft'
+                                                            ? '#333'
+                                                            : job.status === 'scheduled'
+                                                            ? '#92400e'
+                                                            : '#fff',
                                                         padding: '4px 8px',
                                                         borderRadius: '4px',
                                                         fontSize: '12px'
                                                     }}
                                                 >
-                                                    {job.status === 'draft' ? 'Draft' : 'Published'}
+                                                    {job.status === 'draft' ? 'Draft'
+                                                        : job.status === 'scheduled' ? '🕐 Scheduled'
+                                                        : 'Published'}
                                                 </span>
                                             </td>
                                             <td>{formatDate(job.createdAt)}</td>

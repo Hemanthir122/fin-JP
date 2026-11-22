@@ -85,6 +85,9 @@ function AdminDashboard() {
                     <Link to="/admin/manage-jobs" className="nav-item">
                         Manage Jobs
                     </Link>
+                    <Link to="/admin/scheduled-posts" className="nav-item">
+                        🕐 Scheduled Posts
+                    </Link>
                     <Link to="/admin/external-jobs" className="nav-item">
                         External Jobs Database
                     </Link>

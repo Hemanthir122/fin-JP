@@ -361,6 +361,67 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Bulk create jobs — accepts an array of job objects, each may include
+// an optional "scheduledPublishAt" field (ISO string) to schedule individually.
+// Jobs without it are posted immediately as published.
+router.post('/bulk', async (req, res) => {
+    const items = req.body;
+    if (!Array.isArray(items) || items.length === 0) {
+        return res.status(400).json({ message: 'Body must be a non-empty array of job objects' });
+    }
+    if (items.length > 1000) {
+        return res.status(400).json({ message: 'Maximum 1000 jobs per bulk request' });
+    }
+
+    const results = { saved: 0, failed: 0, errors: [] };
+    const now = new Date();
+
+    for (let i = 0; i < items.length; i++) {
+        try {
+            const jobData = { ...items[i] };
+
+            if (jobData.scheduledPublishAt) {
+                const scheduledDate = new Date(jobData.scheduledPublishAt);
+                if (scheduledDate <= now) {
+                    // Past time — publish immediately
+                    delete jobData.scheduledPublishAt;
+                    jobData.status = 'published';
+                    jobData.publishedAt = now;
+                } else {
+                    jobData.status = 'scheduled';
+                }
+            } else {
+                // No schedule time — publish now
+                jobData.status = 'published';
+                jobData.publishedAt = now;
+            }
+
+            const job = new Job(jobData);
+            const saved = await job.save();
+
+            // Upsert company (non-blocking)
+            if (jobData.company?.trim()) {
+                Company.findOneAndUpdate(
+                    { name: { $regex: `^${jobData.company.trim()}$`, $options: 'i' } },
+                    { $set: { name: jobData.company.trim(), ...(jobData.companyLogo ? { logo: jobData.companyLogo } : {}) } },
+                    { upsert: true }
+                ).catch(() => {});
+            }
+
+            if (saved.status === 'published') {
+                sendNewJobNotification(saved).catch(() => {});
+            }
+
+            results.saved++;
+        } catch (err) {
+            results.failed++;
+            results.errors.push({ index: i, error: err.message });
+        }
+    }
+
+    res.status(201).json(results);
+});
+
 // Create new job
 router.post('/', async (req, res) => {
     try {

@@ -194,18 +194,30 @@ router.put('/:id', async (req, res) => {
 
         // Ensure incoming status is valid; preserve existing if omitted
         let newStatus = req.body.status || walkin.status;
-        if (!['draft', 'published'].includes(newStatus)) {
+        if (!['draft', 'published', 'scheduled'].includes(newStatus)) {
             newStatus = 'draft';
         }
 
         // Check if we are moving from a non-published state to published
         const isCurrentlyPublished = walkin.status === 'published';
         const willBePublished = newStatus === 'published';
+        const willBeScheduled = newStatus === 'scheduled';
 
         if (!isCurrentlyPublished && willBePublished) {
             // Only set publishedAt when first publishing, don't modify createdAt
             walkin.publishedAt = new Date();
             walkin.markModified('publishedAt');
+        }
+
+        if (willBeScheduled) {
+            if (!req.body.scheduledPublishAt) {
+                return res.status(400).json({ message: 'scheduledPublishAt is required for scheduled posts' });
+            }
+            const scheduledDate = new Date(req.body.scheduledPublishAt);
+            if (scheduledDate <= new Date()) {
+                return res.status(400).json({ message: 'Scheduled date must be in the future' });
+            }
+            walkin.scheduledPublishAt = scheduledDate;
         }
 
         // Update fields
@@ -221,6 +233,8 @@ router.put('/:id', async (req, res) => {
             sendNewWalkinNotification(savedWalkin).catch(err => {
                 console.error('⚠️ Telegram notification failed (non-blocking):', err.message);
             });
+        } else if (willBeScheduled) {
+            console.log(`📅 Walkin rescheduled for: ${savedWalkin.scheduledPublishAt}`);
         }
         
         res.json(savedWalkin);

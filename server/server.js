@@ -102,6 +102,39 @@ app.get('/api/cron/cleanup', async (req, res) => {
     }
 });
 
+// Cron endpoint — call this from Vercel Cron every 5 minutes to publish scheduled posts
+// Vercel dashboard: Settings → Cron Jobs → path: /api/cron/publish-scheduled, schedule: */5 * * * *
+app.get('/api/cron/publish-scheduled', async (req, res) => {
+    const secret = req.headers['x-cron-secret'] || req.query.secret;
+    if (process.env.CRON_SECRET && secret !== process.env.CRON_SECRET) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    try {
+        const { checkAndPublishScheduledJobs } = require('./services/scheduler');
+        await checkAndPublishScheduledJobs();
+        res.json({ ok: true, ran: new Date().toISOString() });
+    } catch (e) {
+        res.status(500).json({ ok: false, error: e.message });
+    }
+});
+
+// Admin API — list all scheduled posts (jobs + walkins)
+app.get('/api/scheduled', async (req, res) => {
+    try {
+        const [jobs, walkins] = await Promise.all([
+            Job.find({ status: 'scheduled' }).sort({ scheduledPublishAt: 1 }).lean(),
+            require('./models/Walkin').find({ status: 'scheduled' }).sort({ scheduledPublishAt: 1 }).lean()
+        ]);
+        const jobsWithModel = jobs.map(j => ({ ...j, model: 'job' }));
+        const walkinsWithModel = walkins.map(w => ({ ...w, model: 'walkin', type: 'walkin' }));
+        res.json([...jobsWithModel, ...walkinsWithModel].sort(
+            (a, b) => new Date(a.scheduledPublishAt) - new Date(b.scheduledPublishAt)
+        ));
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 // Repair: backfill missing company logos from external DB into Job documents
 app.post('/api/repair/backfill-logos', async (req, res) => {
     try {
