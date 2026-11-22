@@ -452,18 +452,25 @@ router.post('/bulk', async (req, res) => {
             // Track so duplicates within the same batch are also caught
             if (raw.applyLink) existingByLink.add(raw.applyLink);
 
-            // Upsert company (non-blocking)
+            // Upsert company (non-blocking) — escape regex special chars in company name
             if (jobData.company?.trim()) {
+                const escapedName = jobData.company.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 Company.findOneAndUpdate(
-                    { name: { $regex: `^${jobData.company.trim()}$`, $options: 'i' } },
+                    { name: { $regex: `^${escapedName}$`, $options: 'i' } },
                     { $set: { name: jobData.company.trim(), ...(jobData.companyLogo ? { logo: jobData.companyLogo } : {}) } },
                     { upsert: true }
                 ).catch(() => {});
             }
 
-            if (saved.status === 'published') {
-                sendNewJobNotification(saved).catch(() => {});
+            // Only send Telegram for scheduled jobs (immediate bulk publish skips notifications
+            // to avoid flooding — Telegram rate-limits at ~30 msg/sec)
+            if (saved.status === 'scheduled') {
+                // no notification yet — will fire when scheduler publishes it
             }
+            // Uncomment below to send Telegram on immediate publish too (not recommended for bulk):
+            // if (saved.status === 'published') {
+            //     sendNewJobNotification(saved).catch(() => {});
+            // }
 
             results.saved++;
         } catch (err) {
@@ -498,8 +505,9 @@ router.post('/', async (req, res) => {
                 }
                 
                 // Use findOneAndUpdate with upsert to create or update company
+                const escapedCN1 = companyData.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 await Company.findOneAndUpdate(
-                    { name: { $regex: `^${companyData.name}$`, $options: 'i' } },
+                    { name: { $regex: `^${escapedCN1}$`, $options: 'i' } },
                     { $set: companyData },
                     { upsert: true, new: true }
                 );
@@ -572,8 +580,9 @@ router.put('/:id', async (req, res) => {
                 }
                 
                 // Use findOneAndUpdate with upsert to create or update company
+                const escapedCN2 = companyData.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                 await Company.findOneAndUpdate(
-                    { name: { $regex: `^${companyData.name}$`, $options: 'i' } },
+                    { name: { $regex: `^${escapedCN2}$`, $options: 'i' } },
                     { $set: companyData },
                     { upsert: true, new: true }
                 );
